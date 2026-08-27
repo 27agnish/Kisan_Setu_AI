@@ -1,0 +1,78 @@
+{
+  "training_timestamp": "2026-08-27T01:15:34.203354",
+  "total_records": 48084,
+  "train_rows": 33661,
+  "val_rows": 7198,
+  "test_rows": 7225,
+  "best_model": "RandomForest",
+  "models": {
+    "RandomForestRegressor": {
+      "model_name": "RandomForestRegressor",
+      "mae": 0.7257,
+      "rmse": 0.9722,
+      "r2": 0.981,
+      "mape_percent": 3.48,
+      "residual_mean": 0.1185,
+      "residual_std": 0.965,
+      "prediction_interval_95": 1.89
+    },
+    "XGBoostRegressor": {
+      "model_name": "XGBoostRegressor",
+      "mae": 0.7396,
+      "rmse": 1.0079,
+      "r2": 0.9796,
+      "mape_percent": 3.52,
+      "residual_mean": 0.1631,
+      "residual_std": 0.9946,
+      "prediction_interval_95": 1.95
+    }
+  },
+  "feature_names": {
+    "categorical": [
+      "commodity",
+      "variety",
+      "state",
+      "district",
+      "market",
+      "season",
+      "quality_grade"
+    ],
+    "numerical": [
+      "month_sin",
+      "month_cos",
+      "day_sin",
+      "day_cos",
+      "is_weekend",
+      "lag_1_price",
+      "lag_7_price",
+      "lag_14_price",
+      "lag_30_price",
+      "rolling_7_mean",
+      "rolling_14_mean",
+      "rolling_30_mean",
+      "price_volatility_7d",
+      "price_trend_7d",
+      "arrival_quantity",
+      "rolling_arrival_7d",
+      "arrival_ratio_7d"
+    ]
+  },
+  "supported_crops": [
+    "Onion",
+    "Potato",
+    "Tomato",
+    "Wheat"
+  ],
+  "supported_markets": [
+    "Azadpur",
+    "Bangalore",
+    "Indore",
+    "Khanna",
+    "Kolar",
+    "Lasalgaon",
+    "Nashik",
+    "Pune",
+    "Sangamner",
+    "Surat"
+  ]
+}

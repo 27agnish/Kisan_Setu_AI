@@ -1,0 +1,104 @@
+"""
+Kisan Setu FastAPI Backend Application.
+Multi-user architecture with real authentication, Google Maps Platform integration, and ML price prediction.
+"""
+
+import os
+from contextlib import asynccontextmanager
+from fastapi import FastAPI, Depends, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from sqlalchemy.orm import Session
+
+from backend.config import settings
+from backend.database import engine, Base, get_db
+from backend.seed_data import seed_database
+from backend.routes import auth, listings, marketplace, orders, price_prediction, logistics, maps, tracking
+from ml.predict import predictor
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Ensure database schema is created and initial seed data is present
+    print("🚀 Initializing Kisan Setu multi-user backend...")
+    Base.metadata.create_all(bind=engine)
+    seed_database()
+    
+    # Check ML Predictor
+    if not predictor.is_ready:
+        print("⚠️ ML model artifacts not found. Initiating on-the-fly training...")
+        try:
+            from ml.train_model import train_pipeline
+            train_pipeline()
+            predictor.load_artifacts()
+        except Exception as e:
+            print(f"Error auto-training ML model on startup: {e}")
+            
+    yield
+    print("🛑 Shutting down Kisan Setu backend.")
+
+app = FastAPI(
+    title="Kisan Setu API",
+    description="Multi-user agricultural marketplace, AI price prediction, and Google Maps logistics platform.",
+    version="2.1.0",
+    lifespan=lifespan
+)
+
+# CORS Configuration
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include Routers
+app.include_router(auth.router)
+app.include_router(maps.router)
+app.include_router(listings.router)
+app.include_router(marketplace.router)
+app.include_router(orders.router)
+app.include_router(tracking.router)
+app.include_router(price_prediction.router)
+app.include_router(logistics.router)
+
+@app.get("/api/health")
+def health_check():
+    """System health check and ML status."""
+    return {
+        "status": "healthy",
+        "service": "Kisan Setu API",
+        "ml_model_loaded": predictor.is_ready,
+        "active_model": predictor.metrics.get("best_model", "RandomForest"),
+        "total_historical_records": predictor.metrics.get("total_records", 48084),
+        "has_google_maps_key": bool(settings.google_maps_api_key and len(settings.google_maps_api_key) > 5)
+    }
+
+@app.post("/api/reset-demo-data")
+def reset_demo_data(db: Session = Depends(get_db)):
+    """Resets the demo database back to clean authentic initial state."""
+    seed_database(db, force_refresh=True)
+    return {"message": "Demo data successfully reset to initial state."}
+
+# Serve the HTML frontend
+FRONTEND_FILE_PATH = os.path.abspath("kisan-setu-frontend.html")
+
+@app.get("/", response_class=FileResponse)
+def serve_home():
+    if os.path.exists(FRONTEND_FILE_PATH):
+        return FileResponse(
+            FRONTEND_FILE_PATH,
+            media_type="text/html",
+            headers={
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0",
+            }
+        )
+    return JSONResponse({"message": "Frontend HTML file not found."})
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
