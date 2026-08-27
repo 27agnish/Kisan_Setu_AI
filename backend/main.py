@@ -82,14 +82,27 @@ def reset_demo_data(db: Session = Depends(get_db)):
     seed_database(db, force_refresh=True)
     return {"message": "Demo data successfully reset to initial state."}
 
-# Serve the HTML frontend
-FRONTEND_FILE_PATH = os.path.abspath("kisan-setu-frontend.html")
+# Frontend Path Configuration
+FRONTEND_DIR = os.path.join(str(settings.base_dir), "frontend")
+FRONTEND_INDEX = os.path.join(FRONTEND_DIR, "index.html")
+LEGACY_FRONTEND = os.path.join(str(settings.base_dir), "kisan-setu-frontend.html")
+
+# Mount static asset routes
+if os.path.exists(FRONTEND_DIR):
+    app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+    if os.path.exists(os.path.join(FRONTEND_DIR, "css")):
+        app.mount("/css", StaticFiles(directory=os.path.join(FRONTEND_DIR, "css")), name="css")
+    if os.path.exists(os.path.join(FRONTEND_DIR, "js")):
+        app.mount("/js", StaticFiles(directory=os.path.join(FRONTEND_DIR, "js")), name="js")
+    if os.path.exists(os.path.join(FRONTEND_DIR, "assets")):
+        app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="assets")
 
 @app.get("/", response_class=FileResponse)
 def serve_home():
-    if os.path.exists(FRONTEND_FILE_PATH):
+    target = FRONTEND_INDEX if os.path.exists(FRONTEND_INDEX) else LEGACY_FRONTEND
+    if os.path.exists(target):
         return FileResponse(
-            FRONTEND_FILE_PATH,
+            target,
             media_type="text/html",
             headers={
                 "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -99,6 +112,14 @@ def serve_home():
         )
     return JSONResponse({"message": "Frontend HTML file not found."})
 
+@app.get("/index.html", response_class=FileResponse)
+def serve_index():
+    return serve_home()
+
+@app.get("/kisan-setu-frontend.html", response_class=FileResponse)
+def serve_legacy_frontend():
+    return serve_home()
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("backend.main:app", host=settings.host, port=settings.port, reload=True)

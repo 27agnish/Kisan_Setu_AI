@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kisan Setu — Direct Agricultural Marketplace, AI Pricing & Logistics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Leaflet.js & OpenStreetMap (Free, Open-Source Map Stack) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<!-- Kisan Setu Master Stylesheet -->
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="grain-bg"></div>
+
+<!-- ==========================================
+     LANDING PAGE (PUBLIC / PRESERVED IDENTITY)
+     ========================================== -->
+<div id="landing-page">
+  <header class="site-header">
+    <div class="nav">
+      <div class="logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <span class="mark">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 6 6 6 12C6 16.4 8.7 20 12 22C15.3 20 18 16.4 18 12C18 6 12 2 12 2Z" fill="#F6F2E7"/></svg>
+        </span>
+        Kisan Setu
+      </div>
+      <nav class="navlinks">
+        <a href="#workflow">How it works</a>
+        <a href="#modules">Modules</a>
+        <a href="#screens">Screens</a>
+        <a href="#ledger">Farmer earnings</a>
+      </nav>
+      <div class="nav-right" id="landing-nav-right">
+        <span class="status-pill"><span class="status-dot"></span> DoCA Concept · Live ML</span>
+        <button class="nav-btn-ghost" id="nav-btn-open-app" onclick="handleOpenAppNav()">Open the App</button>
+        <button class="nav-btn-ghost" id="nav-btn-login" onclick="openAuthModal('login')">Sign In</button>
+        <button class="nav-cta" id="nav-btn-signup" onclick="openAuthModal('signup')">Sign Up →</button>
+        <button class="nav-btn-ghost" id="nav-btn-profile" style="display:none;" onclick="openApp('profile')">👤 Profile</button>
+        <button class="nav-cta" id="nav-btn-app" style="display:none;" onclick="openApp('dashboard')">🌾 Open App →</button>
+        <button class="nav-btn-ghost" id="nav-btn-logout" style="display:none;" onclick="logout()">🚪 Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <div class="eyebrow">
+            <span class="dot"></span>
+            Direct Farm-to-Buyer Protocol · Zero Middlemen
+          </div>
+          <h1 class="headline">
+            Where farmers ask <em>fair prices</em> and buyers get <em>fresh harvest.</em>
+          </h1>
+          <p class="sub">
+            Kisan Setu eliminates 5+ intermediate trading layers with genuine ML-backed fair price discovery, direct farmgate buying, shared freight route optimisation, and real-time shipment tracking.
+          </p>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="handlePrimaryHeroCTA()">List your produce →</button>
+            <button class="btn-ghost" onclick="handleMarketplaceHeroCTA()">Browse marketplace</button>
+          </div>
+          <div class="ledger-mini">
+            <div>
+              <div class="num gold">+38%</div>
+              <div class="lbl">Avg. Farmer Net Gain</div>
+            </div>
+            <div>
+              <div class="num">−18%</div>
+              <div class="lbl">Buyer Procurement Cost</div>
+            </div>
+            <div>
+              <div class="num" id="hero-mandi-count">10+</div>
+              <div class="lbl">APMC Mandis Linked</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HERO PHONE MOCKUP -->
+        <div class="phone-stage">
+          <div class="float-pill p1">
+            <div class="circle green">✓</div>
+            <span>Tomato #KS-1024 In Transit</span>
+          </div>
+          <div class="float-pill p2">
+            <div class="circle gold">₹</div>
+            <span>Farmer Ramesh: +₹8,200 payout</span>
+          </div>
+
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-content">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span class="phone-badge">AI FAIR PRICE</span>
+                  <span style="font-size:10px; color:var(--soil-soft);" id="phone-mandi-tag">Nashik APMC</span>
+                </div>
+
+                <div class="crop-chips">
+                  <div class="crop-chip active" onclick="selectPhoneCrop('Tomato', 31.0, 23.0, '🍅')">🍅 Tomato</div>
+                  <div class="crop-chip" onclick="selectPhoneCrop('Onion', 19.0, 14.0, '🧅')">🧅 Onion</div>
+                  <div class="crop-chip" onclick="selectPhoneCrop('Wheat', 24.0, 19.0, '🌾')">🌾 Wheat</div>
+                  <div class="crop-chip" onclick="selectPhoneCrop('Potato', 15.0, 11.0, '🥔')">🥔 Potato</div>
+                </div>
+
+                <div class="phone-card">
+                  <div class="title">Recommended Fair Price</div>
+                  <div class="price" id="phone-price-amt">₹31.00 / kg</div>
+                  <div class="delta" id="phone-price-delta">▲ +₹8.00 vs local middleman</div>
+                </div>
+
+                <div class="phone-list">
+                  <div class="phone-item">
+                    <span>Mandi Spot Modal</span>
+                    <strong id="phone-mandi-amt">₹23.00/kg</strong>
+                  </div>
+                  <div class="phone-item">
+                    <span>XGBoost ML Forecast</span>
+                    <strong id="phone-ml-amt">₹30.80/kg</strong>
+                  </div>
+                  <div class="phone-item">
+                    <span>95% Confidence Band</span>
+                    <strong style="color:var(--olive-deep);" id="phone-ci-amt">₹29.5 – ₹32.8</strong>
+                  </div>
+                </div>
+
+                <div class="phone-cta" onclick="handlePrimaryHeroCTA()">
+                  Open Multi-User App →
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: HOW IT WORKS (WORKFLOW) -->
+    <section id="workflow">
+      <div class="section-tag">Direct Traceability Protocol</div>
+      <h2 class="section-title">From farm gate to city buyer in four transparent steps</h2>
+      <p class="section-sub">Replacing opaque middleman commission auctions with algorithmic fair pricing, direct buyer contracts, and shared multi-stop transport.</p>
+
+      <div class="workflow-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-icon">🧑‍🌾</div>
+          <h3 class="step-title">Farmer Lists Produce</h3>
+          <p class="step-desc">Enter crop, harvest date, location, and quantity. The ML engine forecasts 7-day modal prices and recommends an optimal farmgate asking price.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-icon">🤖</div>
+          <h3 class="step-title">AI Price Discovery</h3>
+          <p class="step-desc">Trained on 48,000+ AGMARKNET mandi records, the model incorporates seasonality, arrival elasticity, and quality grade multipliers with confidence bands.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-icon">🛒</div>
+          <h3 class="step-title">Buyer Direct Order</h3>
+          <p class="step-desc">Retailers and bulk institutions purchase directly from verified farmer listings at ~15% below retail rates, locking quantities and delivery slots.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <div class="step-icon">🗺️</div>
+          <h3 class="step-title">OSRM Corridor Logistics</h3>
+          <p class="step-desc">Shared freight algorithms optimize multi-farm pickups and multi-drop routes with OpenStreetMap road routing, verified by live custody tracking.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: MODULES -->
+    <section id="modules">
+      <div class="section-tag">Comprehensive Platform Pillars</div>
+      <h2 class="section-title">Built for national agricultural market efficiency</h2>
+      <p class="section-sub">Three core architectural modules designed to empower farmer producer organisations (FPOs) and institutional buyers.</p>
+
+      <div class="modules-grid">
+        <div class="mod-card featured">
+          <div>
+            <span class="badge green">Module 01 · Intelligence</span>
+            <h3 class="mod-title">ML Price Prediction</h3>
+            <p class="mod-desc">Autoregressive lag models (Random Forest &amp; XGBoost) calibrated with 7d/14d/30d price momentum, arrival volumes, and Kharif/Rabi/Zaid seasonality cycles.</p>
+          </div>
+          <div class="mod-meta">
+            <span>Historical Mandi Data</span>
+            <span>48,084 Records</span>
+          </div>
+        </div>
+
+        <div class="mod-card">
+          <div>
+            <span class="badge gold">Module 02 · Marketplace</span>
+            <h3 class="mod-title">Direct Procurement</h3>
+            <p class="mod-desc">Transparent marketplace matching farmers with retailers, hotels, processors, and bulk buyers without intermediary commission agent fees.</p>
+          </div>
+          <div class="mod-meta">
+            <span>Direct Orders</span>
+            <span>Zero Brokerage</span>
+          </div>
+        </div>
+
+        <div class="mod-card">
+          <div>
+            <span class="badge soil">Module 03 · Supply Chain</span>
+            <h3 class="mod-title">Leaflet &amp; OSRM Logistics</h3>
+            <p class="mod-desc">Interactive Leaflet.js map routing bundling multiple farm pickups along transit corridors, cutting fuel costs by ~₹3,500 per aggregated trip.</p>
+          </div>
+          <div class="mod-meta">
+            <span>Multi-Stop TSP</span>
+            <span>OSRM Road Routing</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: SCREENS SHOWCASE -->
+    <section id="screens">
+      <div class="section-tag">Application Showcase</div>
+      <h2 class="section-title">Interactive previews across key user flows</h2>
+      <p class="section-sub">Explore the unified portal interface for farmers, FPOs, and bulk buyers.</p>
+
+      <div class="screens-showcase">
+        <div class="tabnav">
+          <button class="tabbtn active" data-tab="tab-pricing">💰 AI Price Discovery</button>
+          <button class="tabbtn" data-tab="tab-market">🛒 Buyer Marketplace</button>
+          <button class="tabbtn" data-tab="tab-logistics">🗺️ Route Optimisation</button>
+          <button class="tabbtn" data-tab="tab-tracking">🚚 9-Stage Tracking</button>
+        </div>
+
+        <!-- TAB 1: AI Pricing -->
+        <div class="tabpanel active" id="tab-pricing">
+          <div class="screen-desc">
+            <h3>Explainable Price Forecasting</h3>
+            <p>Farmers receive granular, real-time modal forecasts based on historical market trends, local arrivals, and quality grades, avoiding distress distress sales.</p>
+            <ul class="feature-list">
+              <li><span class="check">✓</span> 95% Confidence Interval prediction bands</li>
+              <li><span class="check">✓</span> Grade A / B / C quality tier pricing multipliers</li>
+              <li><span class="check">✓</span> Regional mandi spread &amp; demand elasticity analysis</li>
+            </ul>
+            <button class="btn-primary" onclick="handleScreensCTA('ai-pricing')">Experience AI Pricing →</button>
+          </div>
+          <div class="screen-mock">
+            <div class="mock-header">
+              <span>AI Price Recommendation — Nashik APMC</span>
+              <span class="badge-status active">LIVE CALIBRATION</span>
+            </div>
+            <div class="mock-body">
+              <div class="mock-row">
+                <span>Commodity: <strong>🍅 Tomato (Roma)</strong></span>
+                <span>Arrival: <strong>1,548 Quintals</strong></span>
+              </div>
+              <div class="mock-row">
+                <span>Middleman Rate: <span style="color:var(--alert); text-decoration:line-through;">₹23.00/kg</span></span>
+                <span>Fair Price: <strong style="color:var(--olive); font-size:15px;">₹31.00/kg</strong></span>
+              </div>
+              <div class="mock-row">
+                <span>95% Confidence Range</span>
+                <span style="font-family:'JetBrains Mono';">₹29.59 – ₹33.37 / kg</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: Marketplace -->
+        <div class="tabpanel" id="tab-market">
+          <div class="screen-desc">
+            <h3>Direct Bulk Marketplace</h3>
+            <p>Institutional buyers filter by crop, quality grade, quantity, and verified farm locations, ordering direct fresh produce with real-time stock deduction.</p>
+            <ul class="feature-list">
+              <li><span class="check">✓</span> Live produce search &amp; commodity filtering</li>
+              <li><span class="check">✓</span> Verified farmer identity &amp; GPS farm coordinates</li>
+              <li><span class="check">✓</span> Direct escrow settlement upon delivery</li>
+            </ul>
+            <button class="btn-primary" onclick="handleScreensCTA('marketplace')">Browse Marketplace →</button>
+          </div>
+          <div class="screen-mock">
+            <div class="mock-header">
+              <span>Buyer Marketplace Feed</span>
+              <span class="badge-status active">6 Active Lots</span>
+            </div>
+            <div class="mock-body">
+              <div class="mock-row">
+                <div><strong>🍅 Tomato · Grade A (840 kg avail)</strong><br><small>Ramesh Kumar · Dindori, Nashik</small></div>
+                <div style="text-align:right;"><strong style="color:var(--olive);">₹31.00/kg</strong><br><small>Save 18% vs retail</small></div>
+              </div>
+              <div class="mock-row">
+                <div><strong>🧅 Onion · Grade A (2,100 kg avail)</strong><br><small>Lasalgaon FPO Hub · Nashik</small></div>
+                <div style="text-align:right;"><strong style="color:var(--olive);">₹19.00/kg</strong><br><small>Save 14% vs retail</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: Logistics -->
+        <div class="tabpanel" id="tab-logistics">
+          <div class="screen-desc">
+            <h3>OSRM Multi-Stop Route Optimisation</h3>
+            <p>Automated TSP solver groups farm pick-ups and urban drop-offs, recalculating optimal sequence, driving time, and diesel fuel savings.</p>
+            <ul class="feature-list">
+              <li><span class="check">✓</span> Shared multi-farm collection routing</li>
+              <li><span class="check">✓</span> Real road geometry calculation via OSRM</li>
+              <li><span class="check">✓</span> Fuel savings of ~₹3,500 per aggregated run</li>
+            </ul>
+            <button class="btn-primary" onclick="handleScreensCTA('logistics')">Plan Logistics Route →</button>
+          </div>
+          <div class="screen-mock">
+            <div class="mock-header">
+              <span>Optimised Corridor Route</span>
+              <span class="badge-status in_transit">4 Stops Active</span>
+            </div>
+            <div class="mock-body">
+              <div class="mock-row">
+                <span>Total Corridor Distance: <strong>325.3 km</strong></span>
+                <span>Est. Driving Time: <strong>10h 09m</strong></span>
+              </div>
+              <div class="mock-row">
+                <span>Fuel Cost Savings</span>
+                <strong style="color:var(--olive);">₹3,532.70 saved</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: Tracking -->
+        <div class="tabpanel" id="tab-tracking">
+          <div class="screen-desc">
+            <h3>9-Stage Custody Tracking</h3>
+            <p>Full milestone visibility from crate grading and tamper-seal packing to highway freight transit and doorstep buyer settlement.</p>
+            <ul class="feature-list">
+              <li><span class="check">✓</span> Milestone verification from farm gate to outlet</li>
+              <li><span class="check">✓</span> Live status updates &amp; GPS checkpoint events</li>
+              <li><span class="check">✓</span> Automatic farmer payout upon buyer acceptance</li>
+            </ul>
+            <button class="btn-primary" onclick="handleScreensCTA('tracking')">Track Live Order →</button>
+          </div>
+          <div class="screen-mock">
+            <div class="mock-header">
+              <span>Shipment #KS-1024</span>
+              <span class="badge-status in_transit">IN TRANSIT</span>
+            </div>
+            <div class="mock-body">
+              <div class="mock-row">
+                <span>Current Checkpoint: <strong>Igatpuri Sector, NH-160</strong></span>
+              </div>
+              <div class="mock-row">
+                <span>Driver: <strong>Karan Shinde</strong></span>
+                <span>Vehicle: <strong>MH-15-EG-4482</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: LEDGER COMPARISON -->
+    <section id="ledger" class="ledger-section" style="border-radius:20px; padding:60px 40px; margin:40px 0;">
+      <div class="section-tag">Economics Comparison</div>
+      <h2 class="section-title">The Real Impact of Removing Intermediaries</h2>
+      <p class="section-sub">Direct trade transfers margin back to rural producers while reducing procurement friction for wholesale buyers.</p>
+
+      <div class="table-responsive">
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th>Commodity</th>
+              <th>Middleman APMC Price</th>
+              <th>Kisan Setu AI Fair Price</th>
+              <th>Buyer Retail Baseline</th>
+              <th>Farmer Net Gain</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td><strong>🍅 Tomato (Grade A)</strong></td>
+              <td><span class="old">₹23.00/kg</span></td>
+              <td><strong style="color:var(--olive);">₹31.00/kg</strong></td>
+              <td>₹38.00/kg</td>
+              <td><span class="gain">+34.8% Gain</span></td>
+            </tr>
+            <tr>
+              <td><strong>🧅 Onion (Nashik Red)</strong></td>
+              <td><span class="old">₹14.00/kg</span></td>
+              <td><strong style="color:var(--olive);">₹19.00/kg</strong></td>
+              <td>₹23.50/kg</td>
+              <td><span class="gain">+35.7% Gain</span></td>
+            </tr>
+            <tr>
+              <td><strong>🌾 Wheat (Sharbati)</strong></td>
+              <td><span class="old">₹19.00/kg</span></td>
+              <td><strong style="color:var(--olive);">₹24.00/kg</strong></td>
+              <td>₹28.00/kg</td>
+              <td><span class="gain">+26.3% Gain</span></td>
+            </tr>
+            <tr>
+              <td><strong>🥔 Potato (Jyoti)</strong></td>
+              <td><span class="old">₹11.00/kg</span></td>
+              <td><strong style="color:var(--olive);">₹15.00/kg</strong></td>
+              <td>₹19.00/kg</td>
+              <td><span class="gain">+36.4% Gain</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CTA BAND -->
+    <div class="cta-band">
+      <h2>Transform Agricultural Trade Across India</h2>
+      <p>Join farmers, FPOs, and bulk buyers using Kisan Setu for fair algorithmic price discovery and direct supply chain logistics.</p>
+      <button class="btn-primary" onclick="openAuthModal('signup')">Create Free Account →</button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-grid">
+        <div class="logo">
+          <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 6 6 6 12C6 16.4 8.7 20 12 22C15.3 20 18 16.4 18 12C18 6 12 2 12 2Z" fill="#F6F2E7"/></svg></span>
+          Kisan Setu
+        </div>
+        <div class="foot-note">Design concept for Ministry of Consumer Affairs, Food &amp; Public Distribution — Dept. of Consumer Affairs (DoCA)</div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- ==========================================
+     AUTHENTICATION MODALS & LOCATION SETUP
+     ========================================== -->
+<div class="auth-overlay" id="auth-modal">
+  <div class="auth-box" id="auth-box-container">
+    <button class="auth-close" onclick="closeAuthModal()">✕</button>
+
+    <!-- LOGIN VIEW -->
+    <div id="auth-view-login">
+      <div class="logo" style="margin-bottom:14px;">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 6 6 6 12C6 16.4 8.7 20 12 22C15.3 20 18 16.4 18 12C18 6 12 2 12 2Z" fill="#F6F2E7"/></svg></span>
+        Kisan Setu
+      </div>
+      <h2 style="font-family:'Fraunces',serif; font-size:24px; margin:0 0 6px;">Sign In to Your Account</h2>
+      <p style="font-size:13px; color:var(--soil-soft); margin:0 0 20px;">Access your farmer or buyer dashboard with authentic credentials.</p>
+
+      <!-- Evaluator Demo Quickfill Helper -->
+      <div class="demo-creds-box">
+        <div class="title">
+          <span>🧪 Evaluator Quick Fill (One Click)</span>
+          <span style="font-family:'JetBrains Mono'; font-size:10.5px; color:var(--olive);">Database Demo Users</span>
+        </div>
+        <div class="demo-btns">
+          <button type="button" class="demo-btn" onclick="fillDemoCreds('ramesh@kisansetu.in', 'secret123')">🧑‍🌾 Farmer (Ramesh)</button>
+          <button type="button" class="demo-btn" onclick="fillDemoCreds('cityfresh@kisansetu.in', 'secret123')">🛒 Buyer (City Fresh)</button>
+        </div>
+      </div>
+
+      <form id="form-login" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" class="form-control" id="login-email" placeholder="name@example.com" required>
+        </div>
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between;">
+            <label>Password *</label>
+            <a href="javascript:void(0)" onclick="switchAuthView('forgot')" style="font-size:12px; color:var(--olive); font-weight:600;">Forgot password?</a>
+          </div>
+          <input type="password" class="form-control" id="login-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; justify-content:center; margin-top:8px;" id="login-submit-btn">Sign In to Dashboard →</button>
+      </form>
+
+      <p style="text-align:center; font-size:13px; color:var(--soil-soft); margin-top:20px;">
+        Don't have an account? <a href="javascript:void(0)" onclick="switchAuthView('signup')" style="color:var(--olive); font-weight:700;">Sign Up</a>
+      </p>
+    </div>
+
+    <!-- SIGNUP VIEW -->
+    <div id="auth-view-signup" style="display:none;">
+      <div class="logo" style="margin-bottom:14px;">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 6 6 6 12C6 16.4 8.7 20 12 22C15.3 20 18 16.4 18 12C18 6 12 2 12 2Z" fill="#F6F2E7"/></svg></span>
+        Kisan Setu
+      </div>
+      <h2 style="font-family:'Fraunces',serif; font-size:24px; margin:0 0 6px;">Create New Account</h2>
+      <p style="font-size:13px; color:var(--soil-soft); margin:0 0 16px;">Select your role to start trading direct agricultural produce.</p>
+
+      <div class="role-cards">
+        <div class="role-card-opt selected" id="role-opt-farmer" onclick="selectSignupRole('FARMER_FPO')">
+          <div class="r-icon">🧑‍🌾</div>
+          <div class="r-title">Farmer / FPO</div>
+          <div class="r-desc">List harvest &amp; get ML fair price</div>
+        </div>
+        <div class="role-card-opt" id="role-opt-buyer" onclick="selectSignupRole('BUYER_CONSUMER')">
+          <div class="r-icon">🛒</div>
+          <div class="r-title">Buyer / Retailer</div>
+          <div class="r-desc">Procure bulk fresh crops with logistics</div>
+        </div>
+      </div>
+
+      <form id="form-signup" onsubmit="handleSignup(event)">
+        <input type="hidden" id="signup-role" value="FARMER_FPO">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" class="form-control" id="signup-name" placeholder="e.g. Ramesh Kumar / Sahakari Stores" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" class="form-control" id="signup-email" placeholder="name@domain.com" required>
+          </div>
+          <div class="form-group">
+            <label>Mobile Number (+91) *</label>
+            <input type="tel" class="form-control" id="signup-phone" placeholder="98231 45012" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Password *</label>
+            <input type="password" class="form-control" id="signup-password" minlength="6" placeholder="Min 6 chars" required>
+          </div>
+          <div class="form-group">
+            <label>Confirm Password *</label>
+            <input type="password" class="form-control" id="signup-confirm-password" minlength="6" placeholder="Confirm password" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; justify-content:center; margin-top:8px;" id="signup-submit-btn">Create Account &amp; Setup Profile →</button>
+      </form>
+
+      <p style="text-align:center; font-size:13px; color:var(--soil-soft); margin-top:16px;">
+        Already have an account? <a href="javascript:void(0)" onclick="switchAuthView('login')" style="color:var(--olive); font-weight:700;">Sign In</a>
+      </p>
+    </div>
+
+    <!-- FORGOT PASSWORD VIEW -->
+    <div id="auth-view-forgot" style="display:none;">
+      <h2 style="font-family:'Fraunces',serif; font-size:24px; margin:0 0 6px;">Reset Password</h2>
+      <p style="font-size:13px; color:var(--soil-soft); margin:0 0 20px;">Enter your account email to receive a password reset token.</p>
+      
+      <form onsubmit="handleForgotPassword(event)">
+        <div class="form-group">
+          <label>Registered Email Address *</label>
+          <input type="email" class="form-control" id="forgot-email" placeholder="name@example.com" required>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Send Reset Link →</button>
+      </form>
+
+      <p style="text-align:center; font-size:13px; color:var(--soil-soft); margin-top:20px;">
+        Remembered password? <a href="javascript:void(0)" onclick="switchAuthView('login')" style="color:var(--olive); font-weight:700;">Back to Sign In</a>
+      </p>
+    </div>
+
+    <!-- PROFILE SETUP WITH REAL LEAFLET MAP & OPENSTREETMAP GEOCODING -->
+    <div id="auth-view-profile-setup" style="display:none;">
+      <div class="logo" style="margin-bottom:14px;">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 6 6 6 12C6 16.4 8.7 20 12 22C15.3 20 18 16.4 18 12C18 6 12 2 12 2Z" fill="#F6F2E7"/></svg></span>
+        Kisan Setu
+      </div>
+      <h2 style="font-family:'Fraunces',serif; font-size:24px; margin:0 0 6px;" id="setup-title">Farm &amp; Harvest Setup</h2>
+      <p style="font-size:13px; color:var(--soil-soft); margin:0 0 16px;" id="setup-subtitle">Search your farm, village, city or address with OpenStreetMap or select directly on the Leaflet map.</p>
+
+      <form id="form-profile-setup" onsubmit="handleProfileSetup(event)">
+        
+        <!-- Farmer specific fields -->
+        <div id="setup-farmer-fields">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Farm / FPO Name *</label>
+              <input type="text" class="form-control" id="setup-farm-name" placeholder="e.g. Ramesh Organic Farms">
+            </div>
+            <div class="form-group">
+              <label>Farm Size (Acres)</label>
+              <input type="number" step="0.5" class="form-control" id="setup-farm-size" value="5.0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Crops Grown</label>
+            <input type="text" class="form-control" id="setup-crops-grown" value="Tomato, Onion" placeholder="Tomato, Onion, Wheat, Potato">
+          </div>
+        </div>
+
+        <!-- Buyer specific fields -->
+        <div id="setup-buyer-fields" style="display:none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Business / Entity Name</label>
+              <input type="text" class="form-control" id="setup-business-name" placeholder="e.g. City Fresh Retail Chains">
+            </div>
+            <div class="form-group">
+              <label>Buyer Type *</label>
+              <select class="form-control" id="setup-buyer-type">
+                <option value="Retailer">Retailer / Supermarket</option>
+                <option value="Wholesaler">Wholesaler / APMC Trader</option>
+                <option value="Restaurant">Restaurant / Cloud Kitchen</option>
+                <option value="Food processor">Food Processor / Mill</option>
+                <option value="Individual consumer">Individual Consumer</option>
+                <option value="Other">Other Institutional Buyer</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- OPENSTREETMAP ADDRESS SEARCH SECTION -->
+        <div class="form-group" style="margin-top:8px;">
+          <label id="setup-search-label" style="font-weight:600; color:var(--soil); display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span>Search farm, village, city or address *</span>
+            <span style="font-size:11px; font-weight:600; color:var(--olive-deep);">OpenStreetMap Geocoding</span>
+          </label>
+          
+          <div class="places-search-box">
+            <div style="display:flex; gap:8px; align-items:stretch; flex-wrap:wrap;">
+              <div style="position:relative; flex:1; min-width:260px;">
+                <input type="text" class="form-control" id="setup-address-search" placeholder="Search farm, village, city or address (e.g. KIIT University, Bhubaneswar)" autocomplete="off" style="padding-left:34px;" oninput="handleAddressInput('setup')" onkeydown="handleAddressKeydown(event, 'setup')">
+                <span style="position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:14px; pointer-events:none;">📍</span>
+              </div>
+              <button type="button" class="btn-ghost" style="padding:0 14px; font-size:12.5px; white-space:nowrap;" onclick="triggerManualAddressSearch('setup')">🔍 Search Location</button>
+              <button type="button" class="btn-primary" style="padding:0 14px; font-size:12.5px; white-space:nowrap;" onclick="getUserCurrentLocation('setup')">🎯 Use My Current Location</button>
+            </div>
+            
+            <!-- Dynamic Autocomplete Suggestions Container -->
+            <div id="setup-places-dropdown" class="places-dropdown" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- SELECTED LOCATION INFO CARD -->
+        <div class="selected-loc-card" id="setup-selected-loc-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+            <div class="loc-badge" id="setup-loc-badge">
+              <span>📍</span> <span id="setup-loc-badge-text">Farm location selected</span>
+            </div>
+            <span class="loc-coords" id="setup-coords-display">20.3548, 85.8182</span>
+          </div>
+          <div class="loc-address" id="setup-address-display">KIIT University, Patia, Bhubaneswar, Odisha, 751024</div>
+          <div class="loc-meta" id="setup-meta-display">
+            <span>State: <strong id="setup-state-display">Odisha</strong></span>
+            <span>•</span>
+            <span>District: <strong id="setup-district-display">Khordha</strong></span>
+            <span>•</span>
+            <span>City: <strong id="setup-city-display">Bhubaneswar</strong></span>
+            <span>•</span>
+            <span>Pincode: <strong id="setup-pincode-display">751024</strong></span>
+          </div>
+        </div>
+
+        <!-- REAL LEAFLET MAP CONTAINER -->
+        <div class="form-group" style="margin-top:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label style="margin-bottom:0; font-size:12px; color:var(--soil-soft);">🗺️ Interactive Leaflet Map (Drag pin or click map to adjust exact coordinates)</label>
+          </div>
+          <div class="map-box-container" style="height:420px; min-height:420px;" id="setup-map-box">
+            <div id="setup-map-canvas" class="map-canvas"></div>
+          </div>
+        </div>
+
+        <!-- EXTRACTED & EDITABLE DETAILS SECTION -->
+        <details style="background:var(--creme); border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin-bottom:14px; font-size:12.5px;" id="setup-details-accordion">
+          <summary style="cursor:pointer; font-weight:600; color:var(--olive-deep); user-select:none;">
+            ⚙️ View &amp; Edit Extracted Location Details (State, District, Pincode, Address)
+          </summary>
+          <div style="margin-top:12px;">
+            <div class="form-row">
+              <div class="form-group">
+                <label>State *</label>
+                <input type="text" class="form-control" id="setup-state" value="Odisha" required oninput="updateSelectedLocationDisplay('setup')">
+              </div>
+              <div class="form-group">
+                <label>District *</label>
+                <input type="text" class="form-control" id="setup-district" value="Khordha" required oninput="updateSelectedLocationDisplay('setup')">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>City / Town</label>
+                <input type="text" class="form-control" id="setup-city" value="Bhubaneswar" oninput="updateSelectedLocationDisplay('setup')">
+              </div>
+              <div class="form-group">
+                <label>Pincode</label>
+                <input type="text" class="form-control" id="setup-pincode" value="751024" oninput="updateSelectedLocationDisplay('setup')">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Farm / Delivery Full Address *</label>
+              <input type="text" class="form-control" id="setup-address" value="KIIT University, Patia, Bhubaneswar, Odisha 751024, India" required oninput="updateSelectedLocationDisplay('setup')">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Latitude</label>
+                <input type="text" class="form-control" id="setup-lat" value="20.3548" readonly style="background:var(--paper);">
+              </div>
+              <div class="form-group">
+                <label>Longitude</label>
+                <input type="text" class="form-control" id="setup-lon" value="85.8182" readonly style="background:var(--paper);">
+              </div>
+            </div>
+            <input type="hidden" id="setup-place-id" value="KS_IN_OD_KIIT_01">
+          </div>
+        </details>
+
+        <button type="submit" class="btn-primary" style="width:100%; justify-content:center; margin-top:12px;" id="setup-save-btn">Save Profile &amp; Open Portal →</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==========================================
+     DELIVERY PROOF VERIFICATION MODAL
+     ========================================== -->
+<div class="auth-overlay" id="delivery-proof-modal">
+  <div class="auth-card" style="max-width:500px;">
+    <button class="btn-close-modal" onclick="closeDeliveryProofModal()">✕</button>
+    <div style="text-align:center; margin-bottom:18px;">
+      <span style="font-size:36px;">📦</span>
+      <h3 style="font-family:'Fraunces',serif; font-size:22px; margin:6px 0;">Verify Delivery &amp; Settlement</h3>
+      <p style="font-size:12.5px; color:var(--soil-soft); margin:0;">Record receiver identity and tamper seal inspection before releasing farmer payout.</p>
+    </div>
+
+    <form id="form-delivery-proof" onsubmit="handleDeliveryProofSubmit(event)">
+      <input type="hidden" id="proof-delivery-id" value="">
+      <input type="hidden" id="proof-order-id" value="">
+
+      <div class="form-group">
+        <label>Receiver Full Name *</label>
+        <input type="text" class="form-control" id="proof-receiver-name" required placeholder="e.g. Amit Sharma (Store Manager)">
+      </div>
+
+      <div class="form-group">
+        <label>Receiver Mobile Number</label>
+        <input type="tel" class="form-control" id="proof-receiver-phone" placeholder="+91 98200 11223">
+      </div>
+
+      <div class="form-group">
+        <label>Crate Seal &amp; Physical Inspection Status</label>
+        <select class="form-control" id="proof-seal-status">
+          <option value="📦 Verified Crate Seal Acceptance #CF-8821">📦 Verified Tamper-Evident Seal Intact</option>
+          <option value="📦 All Crates Weighed &amp; Grade Verified">📦 All Crates Weighed &amp; Grade Verified</option>
+          <option value="📦 Direct Mandi Dock Handover Confirmed">📦 Direct Mandi Dock Handover Confirmed</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Delivery Remarks / Acceptance Notes</label>
+        <textarea class="form-control" id="proof-notes" rows="2" placeholder="Produce crates inspected, weighed, and accepted in good order."></textarea>
+      </div>
+
+      <div style="background:var(--pistachio-pale); border:1px solid var(--pistachio-soft); border-radius:10px; padding:12px; font-size:12px; color:var(--olive-deep); margin-bottom:16px;">
+        💰 <strong>Instant Smart Settlement:</strong> Submitting this proof marks the order as <strong>DELIVERED</strong> and immediately credits the farmer's wallet with the transaction payout!
+      </div>
+
+      <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">✓ Confirm Delivery &amp; Release Payout</button>
+    </form>
+  </div>
+</div>
+
+<!-- ==========================================
+     DRIVER GPS CHECKPOINT UPDATE MODAL
+     ========================================== -->
+<div class="auth-overlay" id="checkpoint-update-modal">
+  <div class="auth-card" style="max-width:500px;">
+    <button class="btn-close-modal" onclick="closeCheckpointUpdateModal()">✕</button>
+    <div style="text-align:center; margin-bottom:18px;">
+      <span style="font-size:36px;">🚚</span>
+      <h3 style="font-family:'Fraunces',serif; font-size:22px; margin:6px 0;">Log Highway Checkpoint</h3>
+      <p style="font-size:12.5px; color:var(--soil-soft); margin:0;">Update vehicle coordinates and last-known location along the delivery corridor.</p>
+    </div>
+
+    <form id="form-checkpoint-update" onsubmit="handleCheckpointUpdateSubmit(event)">
+      <input type="hidden" id="chk-delivery-id" value="">
+      <input type="hidden" id="chk-order-id" value="">
+
+      <div class="form-group">
+        <label>Checkpoint Location Name *</label>
+        <input type="text" class="form-control" id="chk-location-name" required placeholder="e.g. Igatpuri Toll Plaza, NH-160">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Latitude</label>
+          <input type="number" step="0.0001" class="form-control" id="chk-lat" required value="19.6967">
+        </div>
+        <div class="form-group">
+          <label>Longitude</label>
+          <input type="number" step="0.0001" class="form-control" id="chk-lon" required value="73.5611">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Quick Location Presets along Corridor</label>
+        <div class="tag-buttons">
+          <button type="button" class="tag-btn" onclick="setCheckpointPreset('Nashik Farm Gate', 19.9975, 73.7898)">📍 Farm Gate</button>
+          <button type="button" class="tag-btn" onclick="setCheckpointPreset('Igatpuri Ghats Toll', 19.6967, 73.5611)">🛣️ Igatpuri NH-160</button>
+          <button type="button" class="tag-btn" onclick="setCheckpointPreset('Shahapur Hub', 19.4500, 73.3300)">🏢 Shahapur</button>
+          <button type="button" class="tag-btn" onclick="setCheckpointPreset('Thane Majiwada Ring', 19.2183, 72.9781)">🏙️ Thane Toll</button>
+          <button type="button" class="tag-btn" onclick="setCheckpointPreset('Dadar Wholesale Market', 19.0178, 72.8478)">🏁 Dadar Mumbai</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Milestone Status Transition (Optional)</label>
+        <select class="form-control" id="chk-status">
+          <option value="">Keep current status</option>
+          <option value="IN_TRANSIT">In Transit on Highway</option>
+          <option value="NEAR_DESTINATION">Near Destination Hub</option>
+          <option value="OUT_FOR_DELIVERY">Out for Final Delivery</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Driver Log / Traffic Condition</label>
+        <input type="text" class="form-control" id="chk-notes" placeholder="e.g. Cleared ghats section smoothly. Normal flow.">
+      </div>
+
+      <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">📍 Save Checkpoint &amp; Update Map</button>
+    </form>
+  </div>
+</div>
+
+<!-- =======================================================
+     APPLICATION PORTAL (AUTHENTICATED & ROLE-BASED)
+     ======================================================= -->
+<div id="app-portal">
+  <header class="app-header">
+    <div class="app-brand">
+      <div class="logo" onclick="closeApp()">
+        <span class="mark">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 6 6 6 12C6 16.4 8.7 20 12 22C15.3 20 18 16.4 18 12C18 6 12 2 12 2Z" fill="#F6F2E7"/></svg>
+        </span>
+        Kisan Setu
+      </div>
+      <span class="badge-gov" id="portal-user-role-tag">Farmer Portal</span>
+    </div>
+
+    <div class="app-user-bar">
+      <!-- User Profile Pill -->
+      <div class="user-badge-pill">
+        <span class="u-avatar" id="app-user-avatar">🧑‍🌾</span>
+        <span style="font-weight:600;" id="app-user-name">Ramesh Kumar</span>
+        <span class="u-role farmer" id="app-user-role-badge">FARMER</span>
+      </div>
+
+      <!-- Wallet / Spend Balance -->
+      <div class="wallet-pill">
+        <span id="wallet-label">Settled Earnings:</span>
+        <span class="bal" id="wallet-amount">₹0.00</span>
+      </div>
+
+      <!-- Notifications -->
+      <button class="notif-btn" onclick="toggleNotifications()" title="Notifications">
+        🔔
+        <span class="notif-badge" id="notif-count" style="display:none;">0</span>
+      </button>
+
+      <button class="btn-ghost" style="padding:6px 14px; font-size:12px;" onclick="logout()">🚪 Logout</button>
+      <button class="btn-close-app" style="background:transparent; border:none; cursor:pointer; font-size:13px;" onclick="closeApp()" title="Minimize to landing">✕</button>
+    </div>
+  </header>
+
+  <!-- Notifications Dropdown -->
+  <div class="notif-dropdown" id="notif-dropdown">
+    <div class="notif-header">
+      <span>Platform Notifications</span>
+      <span style="font-size:11px; cursor:pointer; color:var(--olive);" onclick="clearAllNotifications()">Mark all read</span>
+    </div>
+    <div class="notif-list" id="notif-list-container">
+      <div style="padding:16px; text-align:center; color:var(--soil-soft); font-size:12px;">No new notifications</div>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <!-- DYNAMIC ROLE-BASED SIDEBAR -->
+    <aside class="app-sidebar">
+      
+      <!-- FARMER NAVIGATION MENU -->
+      <div id="sidebar-farmer-nav">
+        <div class="sidebar-section-lbl">Overview</div>
+        <button class="app-nav-item active" onclick="switchAppTab('farmer-dashboard', this)"><span class="ic">📊</span> <span>Dashboard</span></button>
+        
+        <div class="sidebar-section-lbl">Produce &amp; Sales</div>
+        <button class="app-nav-item" onclick="switchAppTab('farmer-portal', this)"><span class="ic">🧑‍🌾</span> <span>List Produce &amp; AI</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('farmer-listings', this)"><span class="ic">📋</span> <span>My Listings</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('orders', this)"><span class="ic">📦</span> <span>Orders &amp; Dispatches</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('farmer-earnings', this)"><span class="ic">💵</span> <span>Settled Earnings</span></button>
+
+        <div class="sidebar-section-lbl">Intelligence &amp; Maps</div>
+        <button class="app-nav-item" onclick="switchAppTab('ai-pricing', this)"><span class="ic">💰</span> <span>AI Price Insights</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('demand', this)"><span class="ic">📈</span> <span>Demand Prediction</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('logistics', this)"><span class="ic">🗺️</span> <span>Route Optimisation</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('tracking', this)"><span class="ic">🚚</span> <span>Order Tracking</span></button>
+      </div>
+
+      <!-- BUYER NAVIGATION MENU -->
+      <div id="sidebar-buyer-nav" style="display:none;">
+        <div class="sidebar-section-lbl">Procurement</div>
+        <button class="app-nav-item active" onclick="switchAppTab('buyer-dashboard', this)"><span class="ic">📊</span> <span>Dashboard</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('marketplace', this)"><span class="ic">🛒</span> <span>Marketplace</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('buyer-search', this)"><span class="ic">🔍</span> <span>Search Produce</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('buyer-saved', this)"><span class="ic">❤️</span> <span>Saved Listings</span></button>
+        
+        <div class="sidebar-section-lbl">Orders &amp; Deliveries</div>
+        <button class="app-nav-item" onclick="switchAppTab('orders', this)"><span class="ic">📦</span> <span>My Orders</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('tracking', this)"><span class="ic">🚚</span> <span>Delivery Tracking</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('ai-pricing', this)"><span class="ic">💰</span> <span>Market Price Trends</span></button>
+      </div>
+
+      <!-- SHARED FOOTER -->
+      <div class="sidebar-footer">
+        <button class="app-nav-item" onclick="switchAppTab('profile', this)"><span class="ic">👤</span> <span>My Profile</span></button>
+        <button class="app-nav-item" onclick="logout()" style="color:var(--alert);"><span class="ic">🚪</span> <span>Logout</span></button>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEWS CONTAINER -->
+    <main class="app-main">
+      
+      <!-- ================= 1. FARMER DASHBOARD ================= -->
+      <div class="app-view active" id="view-farmer-dashboard">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Farmer Operations Dashboard</h2>
+            <p class="view-subtitle">Real-time market rates, active dispatches, and genuine transaction earnings.</p>
+          </div>
+          <button class="btn-primary" onclick="switchAppTab('farmer-portal')">+ Add Produce Listing</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card featured">
+            <div class="lbl">Total Settled Earnings</div>
+            <div class="val" id="f-dash-earnings">₹0.00</div>
+            <div class="sub">▲ Real transaction balance</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Active Listings</div>
+            <div class="val" id="f-dash-listings-count">0</div>
+            <div class="sub">Live in Buyer Marketplace</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Pending / In-Transit Orders</div>
+            <div class="val" id="f-dash-orders-count">0</div>
+            <div class="sub">Queued for fulfillment</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Active ML Model</div>
+            <div class="val" style="font-size:18px;" id="f-dash-model">RandomForest</div>
+            <div class="sub">Calibrated on AGMARKNET</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Direct Agricultural Market Pulse</span>
+            <span class="badge-status active">LIVE APMC AGMARKNET FEED</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Commodity</th>
+                  <th>Mandi / APMC</th>
+                  <th>Middleman Mandi Rate</th>
+                  <th>AI Predicted Modal</th>
+                  <th>Kisan Setu Recommended Rate</th>
+                  <th>Farmer Direct Advantage</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="dash-market-tbody">
+                <!-- Injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Recent Orders Received</span>
+            <button class="tag-btn" onclick="switchAppTab('orders')">View All Orders →</button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order Code</th>
+                  <th>Buyer Name</th>
+                  <th>Commodity</th>
+                  <th>Quantity</th>
+                  <th>Total Amount</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="f-dash-recent-orders-tbody">
+                <tr><td colspan="7" style="text-align:center; padding:20px; color:var(--soil-soft);">Loading orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 2. BUYER DASHBOARD ================= -->
+      <div class="app-view" id="view-buyer-dashboard">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Buyer Procurement Dashboard</h2>
+            <p class="view-subtitle">Procure bulk produce directly from nearby verified farms with route logistics.</p>
+          </div>
+          <button class="btn-primary" onclick="switchAppTab('marketplace')">Explore Marketplace →</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card buyer-featured">
+            <div class="lbl">Total Procurement Spend</div>
+            <div class="val" id="b-dash-spend">₹0.00</div>
+            <div class="sub">Saved ~15% vs spot retail</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Active Deliveries</div>
+            <div class="val" id="b-dash-deliveries">0</div>
+            <div class="sub">In Transit via OSRM Corridor</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Nearby Verified Farms</div>
+            <div class="val" id="b-dash-farms-count">4</div>
+            <div class="sub">Within delivery corridor</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Saved Bookmarks</div>
+            <div class="val" id="b-dash-saved-count">0</div>
+            <div class="sub">Starred farmer lots</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Recommended Fresh Lots Nearby</span>
+            <button class="tag-btn" onclick="switchAppTab('marketplace')">Full Marketplace →</button>
+          </div>
+          <div class="market-grid" id="b-dash-recommended-grid">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 3. FARMER / FPO PORTAL (CREATE LISTING) ================= -->
+      <div class="app-view" id="view-farmer-portal">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">List Produce &amp; AI Price Recommendation</h2>
+            <p class="view-subtitle">Add produce, get real ML price forecasts from AGMARKNET models, and publish directly.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Produce Listing Details</span>
+            <span class="badge-status active">Zero Brokerage</span>
+          </div>
+
+          <form id="listing-form" onsubmit="handleCreateListing(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Select Crop / Commodity *</label>
+                <select class="form-control" id="f-crop" onchange="onListingCropChange(this.value)">
+                  <option value="Tomato">🍅 Tomato</option>
+                  <option value="Onion">🧅 Onion</option>
+                  <option value="Wheat">🌾 Wheat</option>
+                  <option value="Potato">🥔 Potato</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Variety *</label>
+                <input type="text" class="form-control" id="f-variety" value="Roma" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Available Quantity (kg) *</label>
+                <input type="number" class="form-control" id="f-quantity" value="1240" min="1" step="any" required>
+                <div class="tag-buttons">
+                  <button type="button" class="tag-btn" onclick="setListingQty(500)">500 kg</button>
+                  <button type="button" class="tag-btn active" onclick="setListingQty(1240)">1,240 kg</button>
+                  <button type="button" class="tag-btn" onclick="setListingQty(2500)">2,500 kg</button>
+                  <button type="button" class="tag-btn" onclick="setListingQty(5000)">5,000 kg</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Quality Grade *</label>
+                <select class="form-control" id="f-grade">
+                  <option value="Grade A">Grade A (Premium harvest · 0-2% defect)</option>
+                  <option value="Grade B">Grade B (Standard market grade)</option>
+                  <option value="Grade C">Grade C (Processing grade)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Farm Location / Mandi Belt *</label>
+                <input type="text" class="form-control" id="f-location" value="Dindori Road, Nashik" required>
+              </div>
+              <div class="form-group">
+                <label>State &amp; District *</label>
+                <div style="display:flex; gap:8px;">
+                  <input type="text" class="form-control" id="f-state" value="Maharashtra" placeholder="State" required style="flex:1;">
+                  <input type="text" class="form-control" id="f-district" value="Nashik" placeholder="District" required style="flex:1;">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Harvest Date *</label>
+                <input type="date" class="form-control" id="f-harvest-date" required>
+              </div>
+              <div class="form-group">
+                <label>Visual Emoji / Photo Tag</label>
+                <select class="form-control" id="f-photo-url">
+                  <option value="🍅">🍅 Fresh Tomato</option>
+                  <option value="🧅">🧅 Red / White Onion</option>
+                  <option value="🌾">🌾 Golden Wheat</option>
+                  <option value="🥔">🥔 Table Potato</option>
+                  <option value="🌿">🌿 Organic Fresh</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- AI RECOMMENDATION CALLOUT -->
+            <div style="background:var(--creme); border:1px solid var(--line); border-radius:12px; padding:18px; margin:16px 0;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                <div>
+                  <strong style="font-family:'Fraunces',serif; font-size:16px;">Machine Learning Price Discovery</strong>
+                  <p style="font-size:12px; color:var(--soil-soft); margin:2px 0 0;">Evaluates live arrivals, historical momentum, and grade premiums.</p>
+                </div>
+                <button type="button" class="btn-primary" style="padding:8px 16px; font-size:13px;" onclick="requestListingPricePrediction()" id="btn-request-ai">⚡ Request AI Price Recommendation</button>
+              </div>
+
+              <div id="listing-ai-result" style="display:none; background:var(--paper); border:1px solid var(--pistachio); border-radius:10px; padding:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                  <div>
+                    <span style="font-size:11px; color:var(--soil-soft); text-transform:uppercase;">ML Model Forecast:</span>
+                    <strong style="font-family:'JetBrains Mono'; font-size:18px; color:var(--olive-deep); margin-left:6px;" id="ai-res-pred">₹31.48/kg</strong>
+                  </div>
+                  <div>
+                    <span style="font-size:11px; color:var(--soil-soft); text-transform:uppercase;">Recommended Ask:</span>
+                    <strong style="font-family:'JetBrains Mono'; font-size:20px; color:var(--gold-deep); margin-left:6px;" id="ai-res-rec">₹33.00/kg</strong>
+                  </div>
+                </div>
+                <div style="font-size:12px; color:var(--soil-soft); line-height:1.4;" id="ai-res-explanation"></div>
+                <div style="font-family:'JetBrains Mono'; font-size:11px; color:var(--olive); margin-top:6px;" id="ai-res-ci"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Final Asking Price (₹/kg) *</label>
+              <input type="number" step="0.1" class="form-control" id="f-asking-price" value="31.0" required style="font-size:18px; font-weight:700; font-family:'JetBrains Mono'; color:var(--olive-deep);">
+            </div>
+
+            <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:14px;" id="btn-publish-listing">Publish Listing to Marketplace →</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ================= 4. MY LISTINGS (FARMER) ================= -->
+      <div class="app-view" id="view-farmer-listings">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">My Farm Produce Listings</h2>
+            <p class="view-subtitle">Manage active inventory, stock remaining, and pricing.</p>
+          </div>
+          <button class="btn-primary" onclick="switchAppTab('farmer-portal')">+ Add New Listing</button>
+        </div>
+
+        <div class="card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Crop</th>
+                  <th>Variety</th>
+                  <th>Total Qty</th>
+                  <th>Available Stock</th>
+                  <th>Asking Price</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="farmer-my-listings-tbody">
+                <tr><td colspan="9" style="text-align:center; padding:20px; color:var(--soil-soft);">Loading listings...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 5. SETTLED EARNINGS (FARMER) ================= -->
+      <div class="app-view" id="view-farmer-earnings">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Farmer Earnings &amp; Payout Ledger</h2>
+            <p class="view-subtitle">Direct bank transfer settlements upon successful order delivery.</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card featured">
+            <div class="lbl">Wallet Available Balance</div>
+            <div class="val" id="earnings-wallet-val">₹0.00</div>
+            <div class="sub">Ready for Instant Bank Payout</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Completed Transactions</div>
+            <div class="val" id="earnings-completed-count">0</div>
+            <div class="sub">Delivered &amp; Verified</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Middleman Brokerage Avoided</div>
+            <div class="val" id="earnings-saved-val">₹0.00</div>
+            <div class="sub">Retained 100% at Farmgate</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Linked Bank Account</div>
+            <div class="val" style="font-size:15px; font-weight:700;">SBI ···· 4819</div>
+            <div class="sub">IFSC: SBIN0001234 (Verified)</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Delivered Order Settlements</span>
+            <button class="btn-primary" style="padding:6px 14px; font-size:12px;" onclick="requestBankTransfer()">Transfer to Bank Account →</button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Commodity</th>
+                  <th>Quantity</th>
+                  <th>Rate/kg</th>
+                  <th>Total Payout</th>
+                  <th>Buyer</th>
+                  <th>Delivery Date</th>
+                  <th>Settlement Status</th>
+                </tr>
+              </thead>
+              <tbody id="farmer-earnings-tbody">
+                <tr><td colspan="8" style="text-align:center; padding:20px; color:var(--soil-soft);">No settled orders yet. Complete deliveries to see payouts here.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 6. BUYER MARKETPLACE ================= -->
+      <div class="app-view" id="view-marketplace">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Direct Agricultural Marketplace</h2>
+            <p class="view-subtitle">Procure bulk harvest directly from verified farmers &amp; FPOs across India.</p>
+          </div>
+        </div>
+
+        <div class="card" style="padding:16px 20px; margin-bottom:20px;">
+          <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+            <input type="text" class="form-control" id="market-search-input" placeholder="🔍 Search crop, variety, farmer or district..." style="flex:2; min-width:220px;" oninput="filterMarketplace()">
+            
+            <select class="form-control" id="market-crop-filter" style="flex:1; min-width:140px;" onchange="filterMarketplace()">
+              <option value="ALL">All Crops</option>
+              <option value="Tomato">🍅 Tomato</option>
+              <option value="Onion">🧅 Onion</option>
+              <option value="Wheat">🌾 Wheat</option>
+              <option value="Potato">🥔 Potato</option>
+            </select>
+
+            <select class="form-control" id="market-grade-filter" style="flex:1; min-width:130px;" onchange="filterMarketplace()">
+              <option value="ALL">All Grades</option>
+              <option value="Grade A">Grade A</option>
+              <option value="Grade B">Grade B</option>
+            </select>
+
+            <select class="form-control" id="market-sort-filter" style="flex:1; min-width:140px;" onchange="filterMarketplace()">
+              <option value="dist_asc">📍 Nearest Distance</option>
+              <option value="price_asc">₹ Price: Low to High</option>
+              <option value="qty_desc">📦 Highest Quantity</option>
+              <option value="date_desc">🕒 Newest Listed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="market-grid" id="marketplace-cards-container">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- ================= 7. BUYER SEARCH & DISCOVERY ================= -->
+      <div class="app-view" id="view-buyer-search">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Advanced Produce Search</h2>
+            <p class="view-subtitle">Find high-volume FPO lots by region and mandi coordinates.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Commodity Keyword</label>
+              <input type="text" class="form-control" id="adv-search-q" placeholder="e.g. Roma Tomato, Sharbati Wheat" oninput="executeAdvancedSearch()">
+            </div>
+            <div class="form-group">
+              <label>State / Region</label>
+              <input type="text" class="form-control" id="adv-search-region" placeholder="Maharashtra, Punjab..." oninput="executeAdvancedSearch()">
+            </div>
+          </div>
+          <div id="adv-search-results" class="market-grid" style="margin-top:16px;"></div>
+        </div>
+      </div>
+
+      <!-- ================= 8. SAVED LISTINGS (BUYER) ================= -->
+      <div class="app-view" id="view-buyer-saved">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Saved Produce Lots</h2>
+            <p class="view-subtitle">Bookmarked farmer listings for quick reordering.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="market-grid" id="saved-listings-grid">
+            <div style="grid-column:1/-1; padding:30px; text-align:center; color:var(--soil-soft);">
+              No saved lots. Click the ❤️ icon on any marketplace card to bookmark it here.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 9. ORDERS & INVOICES (BOTH ROLES) ================= -->
+      <div class="app-view" id="view-orders">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title" id="orders-view-title">Orders &amp; Dispatch Invoices</h2>
+            <p class="view-subtitle">Track trade lifecycle, accept allocations, and inspect status milestones.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order Code</th>
+                  <th>Role Participant</th>
+                  <th>Produce</th>
+                  <th>Quantity</th>
+                  <th>Rate</th>
+                  <th>Total Amount</th>
+                  <th>Status</th>
+                  <th>Order Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-tbody">
+                <tr><td colspan="9" style="text-align:center; padding:20px; color:var(--soil-soft);">Loading orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 10. AI PRICE INSIGHTS (CANVAS CHART) ================= -->
+      <div class="app-view" id="view-ai-pricing">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">AI Price Intelligence &amp; Forecasting Engine</h2>
+            <p class="view-subtitle">Genuine machine learning predictions with 30-day historical modal prices and 7-day forecast trajectories.</p>
+          </div>
+        </div>
+
+        <div class="card" style="padding:16px 20px; margin-bottom:20px;">
+          <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+            <div class="form-group" style="margin-bottom:0; flex:1; min-width:140px;">
+              <label>Select Commodity</label>
+              <select class="form-control" id="ai-page-crop" onchange="loadAIPriceInsights()">
+                <option value="Tomato">🍅 Tomato</option>
+                <option value="Onion">🧅 Onion</option>
+                <option value="Wheat">🌾 Wheat</option>
+                <option value="Potato">🥔 Potato</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0; flex:1; min-width:140px;">
+              <label>APMC Mandi Yard</label>
+              <select class="form-control" id="ai-page-market" onchange="loadAIPriceInsights()">
+                <option value="Nashik">Nashik APMC</option>
+                <option value="Lasalgaon">Lasalgaon APMC</option>
+                <option value="Pune">Pune Market Yard</option>
+                <option value="Azadpur">Azadpur Mandi (Delhi)</option>
+                <option value="Khanna">Khanna Mandi (Punjab)</option>
+                <option value="Indore">Indore Mandi (MP)</option>
+                <option value="Surat">Surat Mandi (Gujarat)</option>
+                <option value="Bangalore">Bangalore APMC</option>
+                <option value="Kolar">Kolar APMC (Karnataka)</option>
+              </select>
+            </div>
+            <button class="btn-primary" style="margin-top:20px; padding:10px 18px;" onclick="loadAIPriceInsights()">⚡ Refresh AI Forecast</button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="lbl">Current Mandi Modal Rate</div>
+            <div class="val" id="ai-kpi-mandi">₹23.00/kg</div>
+            <div class="sub">Middleman spot trading level</div>
+          </div>
+          <div class="stat-card featured">
+            <div class="lbl">ML Forecasted Price (7d)</div>
+            <div class="val" id="ai-kpi-pred">₹30.80/kg</div>
+            <div class="sub" id="ai-kpi-trend">→ Stable Trend</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Recommended Ask Rate</div>
+            <div class="val" style="color:var(--gold-deep);" id="ai-kpi-rec">₹31.00/kg</div>
+            <div class="sub">Optimal farmer realization</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">95% Prediction Interval</div>
+            <div class="val" style="font-size:16px;" id="ai-kpi-ci">₹29.5 – ₹32.8</div>
+            <div class="sub" id="ai-kpi-model">Model: RandomForest</div>
+          </div>
+        </div>
+
+        <!-- CANVAS HISTORICAL + FORECAST CHART -->
+        <div class="card">
+          <div class="card-title">
+            <span>Price Trajectory — 30-Day Historical + 7-Day ML Forecast</span>
+            <div style="display:flex; gap:10px; font-size:12px; font-family:'Inter';">
+              <span style="display:inline-flex; align-items:center; gap:4px;"><span style="width:12px; height:3px; background:#4F6B44; display:inline-block;"></span> Historical Modal</span>
+              <span style="display:inline-flex; align-items:center; gap:4px;"><span style="width:12px; height:3px; background:#D9A441; border-top:1px dashed #D9A441; display:inline-block;"></span> 7-Day ML Forecast</span>
+            </div>
+          </div>
+
+          <div class="chart-canvas-wrap">
+            <canvas id="ai-price-canvas"></canvas>
+          </div>
+
+          <div style="margin-top:18px; padding:14px; background:var(--creme); border-radius:10px; font-size:13px; line-height:1.6; color:var(--soil);" id="ai-price-narrative">
+            Loading AI price explanation...
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 11. DEMAND PREDICTION ================= -->
+      <div class="app-view" id="view-demand">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Agricultural Demand &amp; Consumption Forecasts</h2>
+            <p class="view-subtitle">Anticipate commodity demand surges across major urban aggregation corridors.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Commodity</th>
+                  <th>Current Demand Index</th>
+                  <th>7-Day Projected Index</th>
+                  <th>Expected Shift</th>
+                  <th>Trend Signal</th>
+                  <th>Market Driver</th>
+                </tr>
+              </thead>
+              <tbody id="demand-table-tbody">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 12. ROUTE OPTIMISATION (WITH LEAFLET & OSRM) ================= -->
+      <div class="app-view" id="view-logistics">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Logistics &amp; Route Optimisation</h2>
+            <p class="view-subtitle">Multi-stop corridor routing powered by Open Source Routing Machine (OSRM) &amp; Leaflet.js.</p>
+          </div>
+          <button class="btn-primary" onclick="recalculateRoute()">⚡ Recalculate Optimal Route</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card featured">
+            <div class="lbl">Optimised Distance</div>
+            <div class="val" id="route-stat-distance">72.4 km</div>
+            <div class="sub">Bundled pickup &amp; delivery</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Travel Time (Road Network)</div>
+            <div class="val" id="route-stat-duration">2 hr 14 min</div>
+            <div class="sub" id="route-stat-normal-dur">Average Speed: 42 km/h</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Diesel Fuel Savings</div>
+            <div class="val" style="color:var(--olive-deep);" id="route-stat-fuel">₹2,410</div>
+            <div class="sub">vs individual farmer trips</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Stops &amp; Routing Engine</div>
+            <div class="val" style="font-size:17px;" id="route-stat-source">OSRM Routing</div>
+            <div class="sub" id="route-stat-stops-count">4 Stops Planned</div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <div style="padding:16px 20px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-family:'Fraunces',serif; font-size:17px;">Interactive Leaflet &amp; OSRM Road Route</strong>
+            <span class="badge-status in_transit" id="route-live-badge">OSRM LIVE ROUTING</span>
+          </div>
+
+          <!-- MAP CONTAINER -->
+          <div class="map-box-container tall" id="logistics-map-box">
+            <div id="logistics-map-canvas" class="map-canvas"></div>
+          </div>
+
+          <!-- ROUTE STOPS TIMELINE -->
+          <div style="padding:20px;">
+            <h4 style="margin:0 0 12px; font-family:'Fraunces',serif;">Sequence of Scheduled Stops &amp; Road Legs</h4>
+            <div id="route-stops-timeline-container" style="display:flex; flex-direction:column; gap:10px;">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 13. DEDICATED ORDER TRACKING (LIST & DETAIL WITH REAL GOOGLE MAP) ================= -->
+      <div class="app-view" id="view-tracking">
+        
+        <!-- SUBVIEW A: ALL ORDERS LIST VIEW -->
+        <div id="tracking-orders-list-view">
+          <div class="view-header">
+            <div>
+              <h2 class="view-title" id="tracking-list-title">Order &amp; Delivery Tracking</h2>
+              <p class="view-subtitle" id="tracking-list-subtitle">Live GPS checkpoints, OpenStreetMap road corridors, and 9-stage fulfillment verification.</p>
+            </div>
+            
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <button class="btn-ghost" style="font-size:12.5px; padding:7px 14px;" onclick="loadTrackingOrdersList()">🔄 Refresh Orders</button>
+            </div>
+          </div>
+
+          <!-- FILTERS & SEARCH -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+            <div class="tag-buttons" id="tracking-filter-tabs">
+              <button class="tag-btn active" onclick="filterTrackingOrders('ALL', this)">All Orders</button>
+              <button class="tag-btn" onclick="filterTrackingOrders('IN_TRANSIT', this)">🚚 In Transit</button>
+              <button class="tag-btn" onclick="filterTrackingOrders('READY_FOR_PICKUP', this)">🚜 Ready / Picked Up</button>
+              <button class="tag-btn" onclick="filterTrackingOrders('DELIVERED', this)">🎉 Delivered &amp; Settled</button>
+            </div>
+            <div style="max-width:320px; width:100%;">
+              <input type="text" class="form-control" id="tracking-search-input" placeholder="🔍 Search Order ID, Crop, Farmer..." oninput="searchTrackingOrders(this.value)">
+            </div>
+          </div>
+
+          <!-- ORDERS GRID -->
+          <div id="tracking-orders-grid" class="tracking-grid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:18px;">
+            <!-- Rendered by JS -->
+          </div>
+          <div id="tracking-empty-state" style="display:none; text-align:center; padding:60px 20px; background:var(--paper); border:1px solid var(--line); border-radius:16px;">
+            <div style="font-size:44px; margin-bottom:12px;">📦</div>
+            <h3 style="font-family:'Fraunces',serif; font-size:20px; margin:0 0 8px;">No matching orders found</h3>
+            <p style="font-size:13.5px; color:var(--soil-soft); margin:0;">Place an order from the marketplace or wait for incoming buyer orders.</p>
+          </div>
+        </div>
+
+        <!-- SUBVIEW B: DETAILED TRACK ORDER PAGE (WITH LEAFLET & OSRM ROAD MAP) -->
+        <div id="tracking-order-detail-view" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px;">
+            <button class="btn-ghost" style="padding:7px 14px; font-size:12.5px; display:inline-flex; align-items:center; gap:6px;" onclick="closeTrackingDetail()">
+              ← Back to All Orders
+            </button>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="badge-status" id="td-status-badge">IN TRANSIT</span>
+              <button class="btn-ghost" style="padding:7px 12px; font-size:12px;" onclick="refreshCurrentTrackingDetail()">🔄 Refresh Live Data</button>
+            </div>
+          </div>
+
+          <!-- HEADER CARD -->
+          <div class="card" style="margin-bottom:20px; padding:20px 24px; background:linear-gradient(135deg, var(--paper) 0%, var(--creme-deep) 100%);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+              <div>
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:var(--gold-deep); background:var(--paper); padding:3px 8px; border-radius:6px; border:1px solid var(--line);" id="td-order-code">ORDER #KS-1024</span>
+                  <span style="font-size:14px; font-weight:600; color:var(--soil);" id="td-crop-title">Tomato (Roma)</span>
+                </div>
+                <h2 style="font-family:'Fraunces',serif; font-size:26px; margin:0 0 4px; color:var(--soil);" id="td-headline-qty">420 kg • ₹13,020.00</h2>
+                <div style="font-size:12.5px; color:var(--soil-soft);" id="td-rate-sub">Rate: ₹31.00 / kg · Direct Contract</div>
+              </div>
+
+              <div style="text-align:right;">
+                <div style="font-size:11px; font-weight:700; color:var(--soil-soft); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">Estimated Arrival</div>
+                <div style="font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:var(--olive-deep);" id="td-eta-val">Today, 4:35 PM</div>
+                <div style="font-size:11px; color:var(--olive); font-weight:600;" id="td-traffic-aware-tag">✓ OSRM Road-Aware ETA</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REAL INTERACTIVE LEAFLET MAP CONTAINER -->
+          <div class="card" style="padding:0; overflow:hidden; margin-bottom:20px;">
+            <div style="padding:14px 20px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; background:var(--creme);">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <strong style="font-family:'Fraunces',serif; font-size:16px;">Live OpenStreetMap Corridor Track</strong>
+                <span class="badge-status in_transit" id="td-map-provider-badge">LEAFLET &amp; OPENSTREETMAP</span>
+              </div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="tag-btn" onclick="focusMapMarker('pickup')" title="Focus Farmer Farm Gate">📍 Farm Gate</button>
+                <button class="tag-btn" onclick="focusMapMarker('truck')" title="Focus Last Known Vehicle Location">🚚 Vehicle Checkpoint</button>
+                <button class="tag-btn" onclick="focusMapMarker('delivery')" title="Focus Buyer Destination">🏁 Buyer Drop</button>
+                <button class="tag-btn active" onclick="recenterTrackingMap()" title="Fit Full Highway Route">🔍 Recenter Full Route</button>
+              </div>
+            </div>
+
+            <!-- MAP CANVAS WITH EXPLICIT HEIGHT -->
+            <div class="map-box-container tall" id="tracking-detail-map-box" style="height:420px; min-height:420px;">
+              <div id="tracking-detail-map-canvas" class="map-canvas"></div>
+            </div>
+
+            <!-- TRUTHFUL LOCATION STATUS BAR -->
+            <div style="padding:12px 20px; background:var(--paper); border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-size:12.5px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:16px;">🚚</span>
+                <div>
+                  <strong>Last known location:</strong> <span id="td-last-known-loc-name">Near Igatpuri Ghats, NH-160</span>
+                  <span style="color:var(--soil-soft); margin-left:6px;" id="td-last-known-time-ago">(Updated 12 min ago)</span>
+                </div>
+              </div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--soil-soft);">
+                Route Distance: <strong id="td-route-distance" style="color:var(--soil);">167.3 km</strong> · Travel Time: <strong id="td-route-duration" style="color:var(--soil);">2 hr 45 min</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- DRIVER / LOGISTICS DISPATCH ACTION BAR (REAL WORKFLOW TRANSITIONS) -->
+          <div class="card" style="padding:18px 20px; margin-bottom:20px; background:var(--paper); border:1.5px solid var(--olive);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:18px;">⚡</span>
+                <strong style="font-family:'Fraunces',serif; font-size:16px; color:var(--olive-deep);">Driver Dispatch &amp; Lifecycle Controls</strong>
+                <span style="font-size:11px; background:var(--pistachio-pale); color:var(--olive-deep); padding:2px 8px; border-radius:4px; font-weight:600;">Interactive Simulation</span>
+              </div>
+              <button class="btn-ghost" style="padding:5px 12px; font-size:12px;" onclick="openCheckpointUpdateModalFromCurrent()">📍 Log GPS Checkpoint</button>
+            </div>
+            
+            <div style="font-size:12px; color:var(--soil-soft); margin-bottom:12px;">Advance the shipment milestone to trigger database updates, real-time map marker movement, and in-app notifications:</div>
+            
+            <div style="display:flex; gap:8px; flex-wrap:wrap;" id="td-action-buttons-container">
+              <!-- Dynamically populated buttons -->
+            </div>
+          </div>
+
+          <!-- DELIVERY PROOF BANNER (WHEN DELIVERED) -->
+          <div id="td-delivery-proof-card" class="card" style="display:none; padding:20px 24px; background:linear-gradient(135deg, var(--paper) 0%, var(--pistachio-pale) 100%); border:1.5px solid var(--pistachio); margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px;">
+              <div style="display:flex; align-items:flex-start; gap:14px;">
+                <div style="width:44px; height:44px; border-radius:50%; background:var(--olive); color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;">✓</div>
+                <div>
+                  <div style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; color:var(--olive-deep); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:2px;">DELIVERY VERIFIED &amp; ACCEPTED</div>
+                  <h3 style="font-family:'Fraunces',serif; font-size:20px; margin:0 0 6px; color:var(--soil);">Delivered to <span id="td-proof-receiver-name">Amit Sharma</span></h3>
+                  <p style="font-size:13px; color:var(--soil); margin:0 0 6px;" id="td-proof-notes">All produce crates inspected, weighed, and verified in excellent Grade-A condition.</p>
+                  <div style="display:flex; gap:12px; font-size:11.5px; color:var(--soil-soft); font-family:'JetBrains Mono',monospace; flex-wrap:wrap;">
+                    <span>📅 Delivered: <strong id="td-proof-timestamp" style="color:var(--soil);">27 Aug 2026, 4:31 PM</strong></span>
+                    <span>🔒 Status: <strong style="color:var(--olive-deep);">Payout Settled to Farmer</strong></span>
+                  </div>
+                </div>
+              </div>
+              <div style="background:var(--paper); border:1px solid var(--pistachio); padding:8px 14px; border-radius:8px; text-align:right;">
+                <div style="font-size:10.5px; color:var(--soil-soft); font-weight:700; text-transform:uppercase;">Tamper Security Tag</div>
+                <div style="font-size:12px; font-weight:600; color:var(--olive-deep);" id="td-proof-tag">📦 Crate Seal #CF-8821</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9-STAGE VISUAL TIMELINE STEPPER -->
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-title">
+              <span>9-Stage Trade &amp; Fulfillment Timeline</span>
+              <span style="font-size:12px; font-weight:500; color:var(--soil-soft);">Cryptographic Custody Traceability</span>
+            </div>
+
+            <div id="td-timeline-9-container" style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Dynamically populated 9 stages with timestamps -->
+            </div>
+          </div>
+
+          <!-- 3-COLUMN DETAILS GRID -->
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; margin-bottom:24px;">
+            <!-- FARMER / PICKUP -->
+            <div class="card" style="margin-bottom:0; padding:20px; display:flex; flex-direction:column;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                <span style="font-size:20px;">🧑‍🌾</span>
+                <strong style="font-family:'Fraunces',serif; font-size:16px;">Farmer / Origin Gate</strong>
+              </div>
+              <div style="font-size:13px; display:flex; flex-direction:column; gap:6px; flex:1;">
+                <div>Farm Name: <strong id="td-farmer-farm">Ramesh Organic Farms</strong></div>
+                <div>Contact: <span id="td-farmer-name">Ramesh Kumar</span></div>
+                <div>Location: <span id="td-farmer-loc" style="color:var(--soil-soft);">Dindori Road, Nashik, Maharashtra</span></div>
+                <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--olive-deep);">GPS: <span id="td-farmer-coords">19.9975, 73.7898</span></div>
+              </div>
+              <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--line);">
+                <button class="btn-ghost" style="width:100%; justify-content:center; font-size:12px; padding:7px;" onclick="contactParticipant('farmer')">📞 Contact Farmer</button>
+              </div>
+            </div>
+
+            <!-- BUYER / DESTINATION -->
+            <div class="card" style="margin-bottom:0; padding:20px; display:flex; flex-direction:column;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                <span style="font-size:20px;">🛒</span>
+                <strong style="font-family:'Fraunces',serif; font-size:16px;">Buyer / Destination</strong>
+              </div>
+              <div style="font-size:13px; display:flex; flex-direction:column; gap:6px; flex:1;">
+                <div>Business: <strong id="td-buyer-biz">City Fresh Retail Chain</strong></div>
+                <div>Contact: <span id="td-buyer-name">Procurement Desk</span></div>
+                <div>Delivery At: <span id="td-buyer-loc" style="color:var(--soil-soft);">Shop 14-16, Dadar Wholesale Market, Mumbai</span></div>
+                <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--gold-deep);">GPS: <span id="td-buyer-coords">19.0178, 72.8478</span></div>
+              </div>
+              <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--line);">
+                <button class="btn-ghost" style="width:100%; justify-content:center; font-size:12px; padding:7px;" onclick="contactParticipant('buyer')">📞 Contact Buyer</button>
+              </div>
+            </div>
+
+            <!-- FLEET / DRIVER -->
+            <div class="card" style="margin-bottom:0; padding:20px; display:flex; flex-direction:column;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                <span style="font-size:20px;">🚚</span>
+                <strong style="font-family:'Fraunces',serif; font-size:16px;">Assigned Fleet Carrier</strong>
+              </div>
+              <div style="font-size:13px; display:flex; flex-direction:column; gap:6px; flex:1;">
+                <div>Vehicle No: <strong id="td-vehicle-num">MH-15-EG-4482</strong></div>
+                <div>Type: <span id="td-vehicle-type">Mini Truck (14ft) · 1,500 kg Cap</span></div>
+                <div>Driver: <strong id="td-driver-name">Suresh Patil</strong></div>
+                <div>License: <span id="td-driver-license" style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--soil-soft);">MH15-2018-0091823</span></div>
+              </div>
+              <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--line);">
+                <button class="btn-ghost" style="width:100%; justify-content:center; font-size:12px; padding:7px;" onclick="contactParticipant('driver')">📞 Contact Driver</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- EVENT LOG HISTORY -->
+          <div class="card">
+            <div class="card-title">
+              <span>Custody Verification Audit Log</span>
+              <span style="font-size:12px; font-weight:500; color:var(--soil-soft);">Immutable Time-Stamped Events</span>
+            </div>
+            <div id="td-audit-logs-container" style="display:flex; flex-direction:column; gap:8px;"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= 14. MY PROFILE (WITH OPENSTREETMAP) ================= -->
+      <div class="app-view" id="view-profile">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">User Profile &amp; Location Settings</h2>
+            <p class="view-subtitle">Manage your registered details, contact info, and OpenStreetMap coordinates.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <form id="form-edit-profile" onsubmit="handleUpdateProfile(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" class="form-control" id="p-name" required>
+              </div>
+              <div class="form-group">
+                <label>Email (Account Login)</label>
+                <input type="email" class="form-control" id="p-email" disabled style="background:var(--creme);">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Mobile Number *</label>
+                <input type="tel" class="form-control" id="p-phone" required>
+              </div>
+              <div class="form-group">
+                <label>User Role</label>
+                <input type="text" class="form-control" id="p-role-display" disabled style="background:var(--creme); font-weight:700;">
+              </div>
+            </div>
+
+            <!-- Role-specific profile inputs -->
+            <div id="p-farmer-specific">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Farm / FPO Name</label>
+                  <input type="text" class="form-control" id="p-farm-name">
+                </div>
+                <div class="form-group">
+                  <label>Farm Size (Acres)</label>
+                  <input type="number" step="0.5" class="form-control" id="p-farm-size">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Crops Grown</label>
+                <input type="text" class="form-control" id="p-crops-grown">
+              </div>
+            </div>
+
+            <div id="p-buyer-specific" style="display:none;">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Business / Entity Name</label>
+                  <input type="text" class="form-control" id="p-business-name">
+                </div>
+                <div class="form-group">
+                  <label>Buyer Type</label>
+                  <select class="form-control" id="p-buyer-type">
+                    <option value="Retailer">Retailer / Supermarket</option>
+                    <option value="Wholesaler">Wholesaler / APMC Trader</option>
+                    <option value="Restaurant">Restaurant / Cloud Kitchen</option>
+                    <option value="Food processor">Food Processor / Mill</option>
+                    <option value="Individual consumer">Individual Consumer</option>
+                    <option value="Other">Other Institutional Buyer</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- OPENSTREETMAP ADDRESS SEARCH SECTION -->
+            <div class="form-group" style="margin-top:12px;">
+              <label id="p-search-label" style="font-weight:600; color:var(--soil); display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span id="p-address-lbl">Search registered address / mandi hub *</span>
+                <span style="font-size:11px; font-weight:600; color:var(--olive-deep);">OpenStreetMap Geocoding</span>
+              </label>
+              
+              <div class="places-search-box">
+                <div style="display:flex; gap:8px; align-items:stretch; flex-wrap:wrap;">
+                  <div style="position:relative; flex:1; min-width:260px;">
+                    <input type="text" class="form-control" id="p-address-search" placeholder="Search farm, village, city or address (e.g. KIIT University, Bhubaneswar)" autocomplete="off" style="padding-left:34px;" oninput="handleAddressInput('p')" onkeydown="handleAddressKeydown(event, 'p')">
+                    <span style="position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:14px; pointer-events:none;">📍</span>
+                  </div>
+                  <button type="button" class="btn-ghost" style="padding:0 14px; font-size:12.5px; white-space:nowrap;" onclick="triggerManualAddressSearch('p')">🔍 Search Location</button>
+                  <button type="button" class="btn-primary" style="padding:0 14px; font-size:12.5px; white-space:nowrap;" onclick="getUserCurrentLocation('p')">🎯 Use My Current Location</button>
+                </div>
+                
+                <!-- Dynamic Autocomplete Suggestions Container -->
+                <div id="p-places-dropdown" class="places-dropdown" style="display:none;"></div>
+              </div>
+            </div>
+
+            <!-- SELECTED LOCATION INFO CARD -->
+            <div class="selected-loc-card" id="p-selected-loc-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+                <div class="loc-badge" id="p-loc-badge">
+                  <span>📍</span> <span id="p-loc-badge-text">Registered Location</span>
+                </div>
+                <span class="loc-coords" id="p-coords-display">19.9975, 73.7898</span>
+              </div>
+              <div class="loc-address" id="p-address-display">Dindori Road, Nashik, Maharashtra</div>
+              <div class="loc-meta" id="p-meta-display">
+                <span>State: <strong id="p-state-display">Maharashtra</strong></span>
+                <span>•</span>
+                <span>District: <strong id="p-district-display">Nashik</strong></span>
+                <span>•</span>
+                <span>City: <strong id="p-city-display">Nashik</strong></span>
+                <span>•</span>
+                <span>Pincode: <strong id="p-pincode-display">422004</strong></span>
+              </div>
+            </div>
+
+            <!-- PROFILE REAL LEAFLET MAP -->
+            <div class="form-group" style="margin-top:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <label style="margin-bottom:0; font-size:12px; color:var(--soil-soft);">🗺️ Interactive Leaflet Map (Drag marker or click to refine coordinates)</label>
+              </div>
+              <div class="map-box-container" style="height:420px; min-height:420px;" id="profile-map-box">
+                <div id="p-map-canvas" class="map-canvas"></div>
+              </div>
+            </div>
+
+            <!-- EXTRACTED LOCATION FIELDS ACCORDION -->
+            <details style="background:var(--creme); border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin-bottom:18px; font-size:12.5px;" id="p-details-accordion">
+              <summary style="cursor:pointer; font-weight:600; color:var(--olive-deep); user-select:none;">
+                ⚙️ View &amp; Edit Extracted Location Details (State, District, Pincode, Address)
+              </summary>
+              <div style="margin-top:12px;">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>State *</label>
+                    <input type="text" class="form-control" id="p-state" required oninput="updateSelectedLocationDisplay('p')">
+                  </div>
+                  <div class="form-group">
+                    <label>District *</label>
+                    <input type="text" class="form-control" id="p-district" required oninput="updateSelectedLocationDisplay('p')">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>City / Town</label>
+                    <input type="text" class="form-control" id="p-city" oninput="updateSelectedLocationDisplay('p')">
+                  </div>
+                  <div class="form-group">
+                    <label>Pincode</label>
+                    <input type="text" class="form-control" id="p-pincode" oninput="updateSelectedLocationDisplay('p')">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Full Formatted Address *</label>
+                  <input type="text" class="form-control" id="p-address" required oninput="updateSelectedLocationDisplay('p')">
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Latitude</label>
+                    <input type="text" class="form-control" id="p-lat" value="19.9975" readonly style="background:var(--paper);">
+                  </div>
+                  <div class="form-group">
+                    <label>Longitude</label>
+                    <input type="text" class="form-control" id="p-lon" value="73.7898" readonly style="background:var(--paper);">
+                  </div>
+                </div>
+                <input type="hidden" id="p-place-id" value="">
+              </div>
+            </details>
+
+            <button type="submit" class="btn-primary" style="padding:12px 24px;">Save Profile Changes →</button>
+          </form>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ==========================================
+     ORDER PLACEMENT MODAL (FOR BUYERS)
+     ========================================== -->
+<div class="auth-overlay" id="order-modal">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeOrderModal()">✕</button>
+    <div class="logo" style="margin-bottom:14px;">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 6 6 6 12C6 16.4 8.7 20 12 22C15.3 20 18 16.4 18 12C18 6 12 2 12 2Z" fill="#F6F2E7"/></svg></span>
+      Direct Farm Purchase
+    </div>
+
+    <h2 style="font-family:'Fraunces',serif; font-size:22px; margin:0 0 6px;" id="order-modal-title">Place Order</h2>
+    <p style="font-size:13px; color:var(--soil-soft); margin:0 0 16px;" id="order-modal-farmer">Farmer: Ramesh Kumar · Nashik</p>
+
+    <form onsubmit="handleConfirmOrder(event)">
+      <input type="hidden" id="order-listing-id">
+
+      <div style="background:var(--creme); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:16px; font-size:13px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <span>Asking Price:</span>
+          <strong style="font-family:'JetBrains Mono'; color:var(--olive-deep);" id="order-modal-price">₹31.00 / kg</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <span>Available Stock:</span>
+          <strong id="order-modal-avail">840 kg</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span>Estimated Distance:</span>
+          <strong id="order-modal-dist">167 km</strong>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Quantity to Order (kg) *</label>
+        <input type="number" class="form-control" id="order-modal-qty" min="1" step="any" required oninput="recalcOrderTotal()">
+        <div class="tag-buttons" id="order-modal-qty-tags"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Delivery Address Location *</label>
+        <input type="text" class="form-control" id="order-modal-address" placeholder="Dadar Wholesale Market, Mumbai" required>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:14px; margin:16px 0; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-weight:600;">Total Purchase Value:</span>
+        <strong style="font-family:'JetBrains Mono'; font-size:22px; color:var(--olive-deep);" id="order-modal-total">₹0.00</strong>
+      </div>
+
+      <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:13px;" id="order-modal-submit-btn">Confirm Purchase &amp; Schedule Pickup →</button>
+    </form>
+  </div>
+</div>
+
+<!-- TOAST MESSAGE CONTAINER -->
+<div id="toast"></div>
+
+<!-- =======================================================
+     APPLICATION LOGIC, AUTH & REAL GOOGLE MAPS
+     ======================================================= -->
+<!-- Kisan Setu Application & Leaflet Logic -->
+<script src="js/app.js"></script>
+</body>
+</html>

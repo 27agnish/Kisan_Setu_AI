@@ -78,6 +78,68 @@ GOOGLE_MAPS_API_KEY=AIzaSyYourActualGoogleMapsAPIKeyHere
 
 ---
 
+---
+
+## 📁 Project Architecture & Directory Structure
+
+```text
+SIH_2026/
+├── frontend/                   # Client-side presentation layer
+│   ├── index.html              # Clean semantic HTML layout & app containers
+│   ├── css/
+│   │   └── style.css           # Modular styles (colors, layout, leaflet pins)
+│   ├── js/
+│   │   └── app.js              # Interactive client application & Leaflet logic
+│   └── assets/                 # Icons and media assets
+│
+├── backend/                    # Core FastAPI web service
+│   ├── main.py                 # Application lifecycle, routing & static mounts
+│   ├── database.py             # SQLAlchemy session management & engine
+│   ├── routes/                 # Endpoint routers (auth, maps, orders, etc.)
+│   ├── models/                 # SQLAlchemy ORM models package
+│   ├── schemas/                # Pydantic request/response validation schemas
+│   ├── services/               # Business logic (security, maps, routing)
+│   ├── config.py               # Re-export compatibility shim
+│   ├── security.py             # Re-export compatibility shim
+│   └── seed_data.py            # Re-export compatibility shim
+│
+├── database/                   # Data layer
+│   ├── kisan_setu.db           # SQLite persistent database file
+│   ├── migrations/             # Schema migration documentation
+│   └── seed/                   # Database seeder & demo records
+│       └── seed_data.py
+│
+├── ml/                         # Machine Learning engine
+│   ├── models/                 # Serialized production models (.joblib, metrics.json)
+│   ├── data/                   # Historical AGMARKNET mandi price series (.csv)
+│   ├── training/               # Chronological training & evaluation pipeline
+│   │   ├── train_model.py
+│   │   ├── preprocess.py
+│   │   ├── generate_dataset.py
+│   │   └── evaluate.py
+│   └── prediction/             # Inference & recommendation engine
+│       └── predict.py
+│
+├── tests/                      # Automated test suite
+│   └── test_backend_api.py     # 20-step end-to-end integration tests
+│
+├── scripts/                    # CLI & operations scripts
+│   └── run_app.py              # Master application runner
+│
+├── config/                     # Configuration management
+│   └── settings.py             # Root-anchored settings loader
+│
+├── .env                        # Local environment configuration
+├── .env.example                # Example environment template
+├── .gitignore                  # Git exclusion rules
+├── requirements.txt            # Python dependencies
+├── README.md                   # Project documentation
+├── run_app.py                  # Root runner entrypoint wrapper
+└── test_backend_api.py         # Root test suite entrypoint wrapper
+```
+
+---
+
 ## 🚀 Quick Start Guide
 
 ### 1. Installation & Environment Setup
@@ -91,6 +153,10 @@ pip install -r requirements.txt
 
 ### 2. Start Application Server
 ```bash
+# Using scripts runner:
+.venv/bin/python scripts/run_app.py --port 8000
+
+# Or using root wrapper:
 .venv/bin/python run_app.py --port 8000
 ```
 Visit the application in your browser:
@@ -108,7 +174,7 @@ For rapid evaluation, the database is pre-seeded with authentic accounts (Passwo
 | Persona | Email | Password | Role | Features Accessible |
 | :--- | :--- | :--- | :--- | :--- |
 | **Ramesh Kumar** | `ramesh@kisansetu.in` | `secret123` | `FARMER_FPO` | Farmer Dashboard, Produce Listing, Orders Received, 9-Stage Tracking, Settled Earnings |
-| **City Fresh Retailers** | `cityfresh@kisansetu.in` | `secret123` | `BUYER_CONSUMER` | Buyer Dashboard, Marketplace, My Orders, 9-Stage Google Map Delivery Tracking |
+| **City Fresh Retailers** | `cityfresh@kisansetu.in` | `secret123` | `BUYER_CONSUMER` | Buyer Dashboard, Marketplace, My Orders, 9-Stage Delivery Tracking |
 | **Sunita Patil** | `sunita@kisansetu.in` | `secret123` | `FARMER_FPO` | Sangamner cluster farm, Onion inventory, Payouts |
 | **Sahakari Bulk Buyer** | `sahakari@kisansetu.in` | `secret123` | `BUYER_CONSUMER` | Vashi APMC bulk procurement, Route coordination |
 
@@ -118,13 +184,17 @@ For rapid evaluation, the database is pre-seeded with authentic accounts (Passwo
 
 ## 🧪 Automated Integration Testing Suite
 
-Run the full end-to-end integration test suite verifying authentication, bcrypt hashing, JWT validation, profile setups, AI price predictions, order placement, stock decrement, Google routes, 9-stage tracking progression, delivery proofs, and farmer payouts:
+Run the full end-to-end integration test suite verifying authentication, bcrypt hashing, JWT validation, profile setups, AI price predictions, order placement, stock decrement, OSRM road routes, OpenStreetMap geocoding, 9-stage tracking progression, delivery proofs, and farmer payouts:
+```bash
+.venv/bin/python tests/test_backend_api.py
+```
+or
 ```bash
 .venv/bin/python test_backend_api.py
 ```
 or
 ```bash
-.venv/bin/python run_app.py --test
+.venv/bin/python scripts/run_app.py --test
 ```
 
 ---
@@ -133,5 +203,10 @@ or
 
 To retrain the ML price prediction models with new AGMARKNET mandi CSV dumps:
 ```bash
+.venv/bin/python ml/training/train_model.py
+```
+or
+```bash
 .venv/bin/python ml/train_model.py
 ```
+

@@ -1,6 +1,5 @@
 """
-ML Predict re-export shim.
-Canonical implementation is in ml.prediction.predict.
+ML Prediction subpackage for Kisan Setu.
 """
 from ml.prediction.predict import AgriculturalPricePredictor, predictor
 
