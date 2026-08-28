@@ -369,6 +369,7 @@
       btn.disabled = false;
       btn.innerText = "Sign In to Dashboard →";
     }
+    console.log(`[AUTH] Quick Fill Demo Selected: ${email}`);
     showToast(`Filled credentials for ${email}`);
   }
 
@@ -407,6 +408,7 @@
     }
 
     try {
+      console.log(`[AUTH] Submitting signup for: ${payload.email} (${payload.role})`);
       const res = await fetch(`${API_BASE}/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -415,6 +417,7 @@
 
       const data = await res.json();
       if (!res.ok) {
+        console.warn(`[AUTH] Signup failed: ${data.detail}`);
         showToast(`❌ ${data.detail || 'Signup failed'}`);
         return;
       }
@@ -427,10 +430,11 @@
       if (confirmPassInput) confirmPassInput.value = '';
 
       updateUserUI();
+      console.log(`[AUTH] Signup success! New user: ${currentUser.name}`);
       showToast(`✓ Account created! Please set your ${currentUser.role === 'FARMER_FPO' ? 'farm' : 'delivery'} location.`);
       prepareProfileSetupWizard();
     } catch(err) {
-      console.error("Signup error:", err);
+      console.error("[AUTH] Signup network error:", err);
       showToast("❌ Server connection error.");
     } finally {
       if (btn) {
@@ -456,6 +460,8 @@
       password: passwordInput ? passwordInput.value : ''
     };
 
+    console.log(`[AUTH] Login initiated for: "${payload.email}"`);
+
     try {
       const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
@@ -464,7 +470,10 @@
       });
 
       const data = await res.json();
+      console.log(`[AUTH] Login response status: ${res.status}`);
+
       if (!res.ok) {
+        console.warn(`[AUTH] Login rejected: ${data.detail}`);
         showToast(`❌ ${data.detail || 'Invalid email or password'}`);
         return;
       }
@@ -473,6 +482,8 @@
       localStorage.setItem('kisan_auth_token', authToken);
       currentUser = data.user;
 
+      console.log(`[AUTH] Login successful! User: ${currentUser.name}, Role: ${currentUser.role}`);
+
       if (passwordInput) passwordInput.value = '';
 
       updateUserUI();
@@ -480,19 +491,18 @@
       showToast(`✓ Welcome back, ${currentUser.name}!`);
 
       // Open appropriate dashboard
-      if (currentUser.role === 'FARMER_FPO') {
-        openApp('farmer-dashboard');
-      } else {
-        openApp('buyer-dashboard');
-      }
+      const targetTab = currentUser.role === 'FARMER_FPO' ? 'farmer-dashboard' : 'buyer-dashboard';
+      console.log(`[AUTH] Opening application portal view: ${targetTab}`);
+      openApp(targetTab);
     } catch(err) {
-      console.error("Login error:", err);
+      console.error("[AUTH] Login network/runtime error:", err);
       showToast("❌ Server error during sign in.");
     } finally {
       if (btn) {
         btn.disabled = false;
         btn.innerText = "Sign In to Dashboard →";
       }
+      console.log("[AUTH] Login handler completed, button unlocked.");
     }
   }
 
@@ -1122,6 +1132,7 @@
 
   // --- Logout Action ---
   function logout() {
+    console.log("[AUTH] Logout initiated. Purging tokens, in-memory caches, and modal states.");
     authToken = null;
     currentUser = null;
     localStorage.removeItem('kisan_auth_token');
@@ -1159,6 +1170,7 @@
     if (notifDropdown) notifDropdown.classList.remove('open');
 
     updateUserUI();
+    console.log("[AUTH] Logout completed. Opening login modal in pristine state.");
     showToast("✓ Logged out successfully.");
     openAuthModal('login');
   }
