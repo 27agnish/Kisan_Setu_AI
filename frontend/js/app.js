@@ -202,23 +202,49 @@
 
   function updateUserUI() {
     updateLandingNavState();
-    if (!currentUser) return;
+    if (!currentUser) {
+      const roleTag = document.getElementById('portal-user-role-tag');
+      if (roleTag) roleTag.innerText = 'DoCA Platform';
+      const userAvatar = document.getElementById('app-user-avatar');
+      if (userAvatar) userAvatar.innerText = '👤';
+      const userName = document.getElementById('app-user-name');
+      if (userName) userName.innerText = 'Guest';
+      const roleBadge = document.getElementById('app-user-role-badge');
+      if (roleBadge) {
+        roleBadge.innerText = 'GUEST';
+        roleBadge.className = 'u-role';
+      }
+      const fNav = document.getElementById('sidebar-farmer-nav');
+      if (fNav) fNav.style.display = 'none';
+      const bNav = document.getElementById('sidebar-buyer-nav');
+      if (bNav) bNav.style.display = 'none';
+      return;
+    }
 
     const isFarmer = currentUser.role === 'FARMER_FPO';
-    document.getElementById('portal-user-role-tag').innerText = isFarmer ? 'DoCA Farmer Portal' : 'DoCA Buyer Marketplace';
-    document.getElementById('app-user-avatar').innerText = isFarmer ? '🧑‍🌾' : '🛒';
-    document.getElementById('app-user-name').innerText = currentUser.name;
+    const roleTag = document.getElementById('portal-user-role-tag');
+    if (roleTag) roleTag.innerText = isFarmer ? 'DoCA Farmer Portal' : 'DoCA Buyer Marketplace';
+    const userAvatar = document.getElementById('app-user-avatar');
+    if (userAvatar) userAvatar.innerText = isFarmer ? '🧑‍🌾' : '🛒';
+    const userName = document.getElementById('app-user-name');
+    if (userName) userName.innerText = currentUser.name;
     
     const roleBadge = document.getElementById('app-user-role-badge');
-    roleBadge.innerText = isFarmer ? 'FARMER / FPO' : 'BUYER / CONSUMER';
-    roleBadge.className = isFarmer ? 'u-role farmer' : 'u-role buyer';
+    if (roleBadge) {
+      roleBadge.innerText = isFarmer ? 'FARMER / FPO' : 'BUYER / CONSUMER';
+      roleBadge.className = isFarmer ? 'u-role farmer' : 'u-role buyer';
+    }
 
-    document.getElementById('wallet-label').innerText = isFarmer ? 'Settled Earnings:' : 'Procurement Spend:';
-    document.getElementById('wallet-amount').innerText = `₹${(currentUser.wallet_balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+    const wLbl = document.getElementById('wallet-label');
+    if (wLbl) wLbl.innerText = isFarmer ? 'Settled Earnings:' : 'Procurement Spend:';
+    const wAmt = document.getElementById('wallet-amount');
+    if (wAmt) wAmt.innerText = `₹${(currentUser.wallet_balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
 
     // Toggle Sidebars
-    document.getElementById('sidebar-farmer-nav').style.display = isFarmer ? 'block' : 'none';
-    document.getElementById('sidebar-buyer-nav').style.display = isFarmer ? 'none' : 'block';
+    const fNav = document.getElementById('sidebar-farmer-nav');
+    if (fNav) fNav.style.display = isFarmer ? 'block' : 'none';
+    const bNav = document.getElementById('sidebar-buyer-nav');
+    if (bNav) bNav.style.display = isFarmer ? 'none' : 'block';
 
     // Update notifications
     loadNotifications();
@@ -247,6 +273,23 @@
 
   // --- Auth Modal Controls ---
   function openAuthModal(view = 'login', defaultRole = 'FARMER_FPO') {
+    // Reset all auth form submit buttons to default active state
+    const loginBtn = document.getElementById('login-submit-btn');
+    if (loginBtn) {
+      loginBtn.disabled = false;
+      loginBtn.innerText = "Sign In to Dashboard →";
+    }
+    const signupBtn = document.getElementById('signup-submit-btn');
+    if (signupBtn) {
+      signupBtn.disabled = false;
+      signupBtn.innerText = "Create Account & Setup Profile →";
+    }
+    const setupBtn = document.getElementById('setup-save-btn');
+    if (setupBtn) {
+      setupBtn.disabled = false;
+      setupBtn.innerText = "Save Profile & Open Portal →";
+    }
+
     document.getElementById('auth-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
     switchAuthView(view);
@@ -258,6 +301,18 @@
   function closeAuthModal() {
     document.getElementById('auth-modal').classList.remove('open');
     document.body.style.overflow = 'auto';
+
+    // Reset button states on modal close
+    const loginBtn = document.getElementById('login-submit-btn');
+    if (loginBtn) {
+      loginBtn.disabled = false;
+      loginBtn.innerText = "Sign In to Dashboard →";
+    }
+    const signupBtn = document.getElementById('signup-submit-btn');
+    if (signupBtn) {
+      signupBtn.disabled = false;
+      signupBtn.innerText = "Create Account & Setup Profile →";
+    }
   }
 
   function switchAuthView(view) {
@@ -265,6 +320,21 @@
     document.getElementById('auth-view-signup').style.display = view === 'signup' ? 'block' : 'none';
     document.getElementById('auth-view-forgot').style.display = view === 'forgot' ? 'block' : 'none';
     document.getElementById('auth-view-profile-setup').style.display = view === 'setup' ? 'block' : 'none';
+
+    // Reset buttons when switching views
+    if (view === 'login') {
+      const loginBtn = document.getElementById('login-submit-btn');
+      if (loginBtn) {
+        loginBtn.disabled = false;
+        loginBtn.innerText = "Sign In to Dashboard →";
+      }
+    } else if (view === 'signup') {
+      const signupBtn = document.getElementById('signup-submit-btn');
+      if (signupBtn) {
+        signupBtn.disabled = false;
+        signupBtn.innerText = "Create Account & Setup Profile →";
+      }
+    }
 
     const box = document.getElementById('auth-box-container');
     if (view === 'setup') {
@@ -289,8 +359,16 @@
   }
 
   function fillDemoCreds(email, password) {
-    document.getElementById('login-email').value = email;
-    document.getElementById('login-password').value = password;
+    const emailInput = document.getElementById('login-email');
+    const passInput = document.getElementById('login-password');
+    if (emailInput) emailInput.value = email;
+    if (passInput) passInput.value = password;
+
+    const btn = document.getElementById('login-submit-btn');
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = "Sign In to Dashboard →";
+    }
     showToast(`Filled credentials for ${email}`);
   }
 
@@ -298,22 +376,33 @@
   async function handleSignup(e) {
     if (e && e.preventDefault) e.preventDefault();
     const btn = document.getElementById('signup-submit-btn');
-    btn.disabled = true;
-    btn.innerText = "Creating Account...";
+    if (btn) {
+      btn.disabled = true;
+      btn.innerText = "Creating Account...";
+    }
+
+    const nameInput = document.getElementById('signup-name');
+    const emailInput = document.getElementById('signup-email');
+    const phoneInput = document.getElementById('signup-phone');
+    const passInput = document.getElementById('signup-password');
+    const confirmPassInput = document.getElementById('signup-confirm-password');
+    const roleInput = document.getElementById('signup-role');
 
     const payload = {
-      name: document.getElementById('signup-name').value.trim(),
-      email: document.getElementById('signup-email').value.trim(),
-      phone: document.getElementById('signup-phone').value.trim(),
-      password: document.getElementById('signup-password').value,
-      confirm_password: document.getElementById('signup-confirm-password').value,
-      role: document.getElementById('signup-role').value
+      name: nameInput ? nameInput.value.trim() : '',
+      email: emailInput ? emailInput.value.trim() : '',
+      phone: phoneInput ? phoneInput.value.trim() : '',
+      password: passInput ? passInput.value : '',
+      confirm_password: confirmPassInput ? confirmPassInput.value : '',
+      role: roleInput ? roleInput.value : 'FARMER_FPO'
     };
 
     if (payload.password !== payload.confirm_password) {
       showToast("❌ Passwords do not match!");
-      btn.disabled = false;
-      btn.innerText = "Create Account & Setup Profile →";
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = "Create Account & Setup Profile →";
+      }
       return;
     }
 
@@ -327,22 +416,27 @@
       const data = await res.json();
       if (!res.ok) {
         showToast(`❌ ${data.detail || 'Signup failed'}`);
-        btn.disabled = false;
-        btn.innerText = "Create Account & Setup Profile →";
         return;
       }
 
       authToken = data.access_token;
       localStorage.setItem('kisan_auth_token', authToken);
       currentUser = data.user;
-      updateUserUI();
 
+      if (passInput) passInput.value = '';
+      if (confirmPassInput) confirmPassInput.value = '';
+
+      updateUserUI();
       showToast(`✓ Account created! Please set your ${currentUser.role === 'FARMER_FPO' ? 'farm' : 'delivery'} location.`);
       prepareProfileSetupWizard();
     } catch(err) {
+      console.error("Signup error:", err);
       showToast("❌ Server connection error.");
-      btn.disabled = false;
-      btn.innerText = "Create Account & Setup Profile →";
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = "Create Account & Setup Profile →";
+      }
     }
   }
 
@@ -350,12 +444,16 @@
   async function handleLogin(e) {
     if (e && e.preventDefault) e.preventDefault();
     const btn = document.getElementById('login-submit-btn');
-    btn.disabled = true;
-    btn.innerText = "Authenticating...";
+    if (btn) {
+      btn.disabled = true;
+      btn.innerText = "Authenticating...";
+    }
 
+    const emailInput = document.getElementById('login-email');
+    const passwordInput = document.getElementById('login-password');
     const payload = {
-      email: document.getElementById('login-email').value.trim(),
-      password: document.getElementById('login-password').value
+      email: emailInput ? emailInput.value.trim() : '',
+      password: passwordInput ? passwordInput.value : ''
     };
 
     try {
@@ -368,16 +466,16 @@
       const data = await res.json();
       if (!res.ok) {
         showToast(`❌ ${data.detail || 'Invalid email or password'}`);
-        btn.disabled = false;
-        btn.innerText = "Sign In to Dashboard →";
         return;
       }
 
       authToken = data.access_token;
       localStorage.setItem('kisan_auth_token', authToken);
       currentUser = data.user;
-      updateUserUI();
 
+      if (passwordInput) passwordInput.value = '';
+
+      updateUserUI();
       closeAuthModal();
       showToast(`✓ Welcome back, ${currentUser.name}!`);
 
@@ -388,9 +486,13 @@
         openApp('buyer-dashboard');
       }
     } catch(err) {
+      console.error("Login error:", err);
       showToast("❌ Server error during sign in.");
-      btn.disabled = false;
-      btn.innerText = "Sign In to Dashboard →";
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = "Sign In to Dashboard →";
+      }
     }
   }
 
@@ -468,8 +570,10 @@
   async function handleProfileSetup(e) {
     if (e && e.preventDefault) e.preventDefault();
     const btn = document.getElementById('setup-save-btn');
-    btn.disabled = true;
-    btn.innerText = "Saving Profile...";
+    if (btn) {
+      btn.disabled = true;
+      btn.innerText = "Saving Profile...";
+    }
 
     const isFarmer = (currentUser && currentUser.role === 'FARMER_FPO');
     const stateVal = document.getElementById('setup-state').value.trim();
@@ -514,8 +618,6 @@
       const updated = await res.json();
       if (!res.ok) {
         showToast(`❌ Error: ${updated.detail || 'Profile setup failed'}`);
-        btn.disabled = false;
-        btn.innerText = "Save Profile & Open Portal →";
         return;
       }
 
@@ -530,9 +632,13 @@
         openApp('buyer-dashboard');
       }
     } catch(err) {
+      console.error("Profile setup error:", err);
       showToast("❌ Server error saving profile.");
-      btn.disabled = false;
-      btn.innerText = "Save Profile & Open Portal →";
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = "Save Profile & Open Portal →";
+      }
     }
   }
 
@@ -1019,8 +1125,40 @@
     authToken = null;
     currentUser = null;
     localStorage.removeItem('kisan_auth_token');
+
+    // Reset session caches and active selection state
+    currentListingForOrder = null;
+    currentTrackingOrderId = null;
+    currentTrackingDetail = null;
+    activeListingsData = [];
+    trackingOrdersCache = [];
+
+    // Clear login form fields
+    const emailInput = document.getElementById('login-email');
+    const passInput = document.getElementById('login-password');
+    if (emailInput) emailInput.value = '';
+    if (passInput) passInput.value = '';
+
+    // Reset login button state
+    const loginBtn = document.getElementById('login-submit-btn');
+    if (loginBtn) {
+      loginBtn.disabled = false;
+      loginBtn.innerText = "Sign In to Dashboard →";
+    }
+
+    // Close app and modal overlays
     closeApp();
-    updateLandingNavState();
+    closeAuthModal();
+    const orderModal = document.getElementById('order-modal');
+    if (orderModal) orderModal.classList.remove('open');
+    const proofModal = document.getElementById('delivery-proof-modal');
+    if (proofModal) proofModal.classList.remove('open');
+    const cpModal = document.getElementById('checkpoint-update-modal');
+    if (cpModal) cpModal.classList.remove('open');
+    const notifDropdown = document.getElementById('notif-dropdown');
+    if (notifDropdown) notifDropdown.classList.remove('open');
+
+    updateUserUI();
     showToast("✓ Logged out successfully.");
     openAuthModal('login');
   }
@@ -1555,6 +1693,11 @@
     `).join('');
 
     recalcOrderTotal();
+    const submitBtn = document.getElementById('order-modal-submit-btn');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Confirm Purchase & Schedule Pickup →";
+    }
     document.getElementById('order-modal').classList.add('open');
   }
 
@@ -1579,8 +1722,10 @@
   async function handleConfirmOrder(e) {
     if (e && e.preventDefault) e.preventDefault();
     const btn = document.getElementById('order-modal-submit-btn');
-    btn.disabled = true;
-    btn.innerText = "Placing Order in Blockchain Dispatch...";
+    if (btn) {
+      btn.disabled = true;
+      btn.innerText = "Placing Order in Blockchain Dispatch...";
+    }
 
     const payload = {
       listing_id: parseInt(document.getElementById('order-listing-id').value),
@@ -1598,8 +1743,6 @@
       const order = await res.json();
       if (!res.ok) {
         showToast(`❌ Error: ${order.detail || 'Could not place order'}`);
-        btn.disabled = false;
-        btn.innerText = "Confirm Purchase & Schedule Pickup →";
         return;
       }
 
@@ -1608,9 +1751,13 @@
       loadMarketplaceListings();
       switchAppTab('orders');
     } catch(err) {
+      console.error("Order error:", err);
       showToast("❌ Server error processing order.");
-      btn.disabled = false;
-      btn.innerText = "Confirm Purchase & Schedule Pickup →";
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = "Confirm Purchase & Schedule Pickup →";
+      }
     }
   }
 

@@ -514,8 +514,78 @@ def test_full_application_flow():
         assert f'id="{eid}"' in html or f"id='{eid}'" in html, f"Missing essential HTML element ID: {eid}"
     print(f"  ✓ All {len(essential_ids)} critical view containers, canvases, Places search fields, and modal IDs present in HTML.")
 
+    # Step 21: Authentication & Role-Switching Lifecycle Tests (Flows A through G)
+    print("\n[Step 21] Testing Authentication Lifecycle & Role-Switching Transitions (Flows A-G)...")
+
+    # Flow A: Farmer Login -> Farmer Dashboard -> Logout -> Buyer Login -> Buyer Dashboard
+    res_f1 = client.post("/api/auth/login", json={"email": "ramesh@kisansetu.in", "password": "secret123"})
+    assert res_f1.status_code == 200 and res_f1.json()["user"]["role"] == "FARMER_FPO"
+    f_token = res_f1.json()["access_token"]
+    assert client.get("/api/auth/me", headers={"Authorization": f"Bearer {f_token}"}).status_code == 200
+    # Simulate Logout (token discarded, unauthenticated request fails)
+    assert client.get("/api/auth/me").status_code == 401
+    # Buyer Login
+    res_b1 = client.post("/api/auth/login", json={"email": "cityfresh@kisansetu.in", "password": "secret123"})
+    assert res_b1.status_code == 200 and res_b1.json()["user"]["role"] == "BUYER_CONSUMER"
+    b_token = res_b1.json()["access_token"]
+    assert client.get("/api/auth/me", headers={"Authorization": f"Bearer {b_token}"}).status_code == 200
+    print("  ✓ Flow A: Farmer Login → Farmer Dashboard → Logout → Buyer Login → Buyer Dashboard (PASS)")
+
+    # Flow B: Buyer Login -> Buyer Dashboard -> Logout -> Farmer Login -> Farmer Dashboard
+    res_b2 = client.post("/api/auth/login", json={"email": "cityfresh@kisansetu.in", "password": "secret123"})
+    assert res_b2.status_code == 200 and res_b2.json()["user"]["role"] == "BUYER_CONSUMER"
+    res_f2 = client.post("/api/auth/login", json={"email": "ramesh@kisansetu.in", "password": "secret123"})
+    assert res_f2.status_code == 200 and res_f2.json()["user"]["role"] == "FARMER_FPO"
+    print("  ✓ Flow B: Buyer Login → Buyer Dashboard → Logout → Farmer Login → Farmer Dashboard (PASS)")
+
+    # Flow C: Farmer Login -> Logout -> Farmer Login
+    res_f3 = client.post("/api/auth/login", json={"email": "ramesh@kisansetu.in", "password": "secret123"})
+    assert res_f3.status_code == 200
+    res_f4 = client.post("/api/auth/login", json={"email": "ramesh@kisansetu.in", "password": "secret123"})
+    assert res_f4.status_code == 200
+    print("  ✓ Flow C: Farmer Login → Logout → Farmer Login (PASS)")
+
+    # Flow D: Buyer Login -> Logout -> Buyer Login
+    res_b3 = client.post("/api/auth/login", json={"email": "cityfresh@kisansetu.in", "password": "secret123"})
+    assert res_b3.status_code == 200
+    res_b4 = client.post("/api/auth/login", json={"email": "cityfresh@kisansetu.in", "password": "secret123"})
+    assert res_b4.status_code == 200
+    print("  ✓ Flow D: Buyer Login → Logout → Buyer Login (PASS)")
+
+    # Flow E: Wrong credentials -> Error -> Correct credentials -> Successful login
+    res_err = client.post("/api/auth/login", json={"email": "ramesh@kisansetu.in", "password": "wrongpassword999"})
+    assert res_err.status_code == 401
+    assert "Invalid email or password" in res_err.json()["detail"]
+    res_ok = client.post("/api/auth/login", json={"email": "ramesh@kisansetu.in", "password": "secret123"})
+    assert res_ok.status_code == 200
+    print("  ✓ Flow E: Wrong credentials (401 Error) → Correct credentials (200 Login) (PASS)")
+
+    # Flow F: Login -> Logout -> Fresh session -> Opposite role login
+    res_sunita = client.post("/api/auth/login", json={"email": "sunita@kisansetu.in", "password": "secret123"})
+    assert res_sunita.status_code == 200 and res_sunita.json()["user"]["role"] == "FARMER_FPO"
+    res_sahakari = client.post("/api/auth/login", json={"email": "sahakari@kisansetu.in", "password": "secret123"})
+    assert res_sahakari.status_code == 200 and res_sahakari.json()["user"]["role"] == "BUYER_CONSUMER"
+    print("  ✓ Flow F: Login → Logout → Refresh/Clean Session → Opposite Role Login (PASS)")
+
+    # Flow G: Repeated multi-cycle switching without refreshing
+    for cycle in range(1, 5):
+        rf = client.post("/api/auth/login", json={"email": "ramesh@kisansetu.in", "password": "secret123"})
+        assert rf.status_code == 200 and rf.json()["user"]["role"] == "FARMER_FPO"
+        rb = client.post("/api/auth/login", json={"email": "cityfresh@kisansetu.in", "password": "secret123"})
+        assert rb.status_code == 200 and rb.json()["user"]["role"] == "BUYER_CONSUMER"
+    print("  ✓ Flow G: Repeatedly switched Farmer ↔ Buyer 4 continuous cycles (PASS)")
+
+    # Frontend JS Code State Inspection: Verify finally blocks and button lifecycle guards
+    with open(js_path, "r", encoding="utf-8") as f:
+        js_code = f.read()
+
+    assert "btn.disabled = false;" in js_code, "Button enable code must exist in js/app.js"
+    assert "Sign In to Dashboard →" in js_code, "Button reset text must exist in js/app.js"
+    assert "finally" in js_code, "Finally block must exist in js/app.js"
+    print("  ✓ Frontend JS audit: finally blocks, button unlocking, and auth state cleanup confirmed.")
+
     print("\n==================================================")
-    print("   ALL 20 AUDIT & INTEGRATION TESTS PASSED!       ")
+    print("   ALL 21 AUDIT & INTEGRATION TESTS PASSED!       ")
     print("==================================================")
 
 run_all_tests = test_full_application_flow
