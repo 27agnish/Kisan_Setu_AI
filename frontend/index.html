@@ -1416,88 +1416,285 @@
     <!-- MAIN VIEWS CONTAINER -->
     <main class="app-main">
       
-      <!-- ================= 1. FARMER DASHBOARD ================= -->
-      <div class="app-view active" id="view-farmer-dashboard">
-        <div class="view-header">
-          <div>
-            <h2 class="view-title">Farmer Operations Dashboard</h2>
-            <p class="view-subtitle">Real-time market rates, active dispatches, and genuine transaction earnings.</p>
-          </div>
-          <button class="btn-primary" onclick="switchAppTab('farmer-portal')">+ Add Produce Listing</button>
-        </div>
+      <!-- ================= 1. FARMER DASHBOARD (STITCH REDESIGN) ================= -->
+      <div class="app-view active flex flex-col gap-6" id="view-farmer-dashboard">
 
-        <div class="stats-grid">
-          <div class="stat-card featured">
-            <div class="lbl">Total Settled Earnings</div>
-            <div class="val" id="f-dash-earnings">₹0.00</div>
-            <div class="sub">▲ Real transaction balance</div>
+        <!-- 1. FARMER PROFILE HERO & ESCROW BALANCE -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <!-- Farmer Profile Card -->
+          <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-center sm:items-start justify-between gap-5 relative overflow-hidden">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left z-10">
+              <div class="relative">
+                <div class="w-16 h-16 rounded-2xl bg-emerald-50 text-[#137547] flex items-center justify-center text-3xl font-bold ring-2 ring-emerald-600/30 shadow-xs" id="f-hero-avatar">
+                  🧑‍🌾
+                </div>
+                <span class="absolute -bottom-1 -right-1 w-5 h-5 bg-[#137547] text-white rounded-full flex items-center justify-center text-[10px] ring-2 ring-white font-bold">✓</span>
+              </div>
+              <div class="flex flex-col gap-1">
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                  <h2 class="text-xl font-bold text-slate-900" id="f-hero-name">Ramesh Kumar</h2>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-[#137547] border border-emerald-200">
+                    <span class="material-symbols-outlined text-[14px] text-[#137547]">verified</span>
+                    ✓ Verified Farmer (SFAC &amp; Aadhaar linked)
+                  </span>
+                </div>
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs text-slate-600 mt-1">
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px] text-slate-400">location_on</span>
+                    <span id="f-hero-location">Dindori Road, Nashik, Maharashtra</span>
+                  </span>
+                  <span class="text-slate-300">•</span>
+                  <span class="font-medium text-slate-700" id="f-hero-crops">🌾 8.5 Acres (Tomato, Potato)</span>
+                  <span class="text-slate-300">•</span>
+                  <span class="inline-flex items-center gap-1 text-amber-800 font-semibold bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded">
+                    ⭐ Trust Score 4.8/5 (100% on-time delivery)
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="z-10 flex-shrink-0 self-center sm:self-auto">
+              <button onclick="switchAppTab('profile')" class="px-3.5 py-2 text-xs font-semibold text-[#137547] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-colors flex items-center gap-1.5" type="button">
+                <span class="material-symbols-outlined text-[16px]">badge</span>
+                <span>View Profile</span>
+              </button>
+            </div>
           </div>
-          <div class="stat-card">
-            <div class="lbl">Active Listings</div>
-            <div class="val" id="f-dash-listings-count">0</div>
-            <div class="sub">Live in Buyer Marketplace</div>
-          </div>
-          <div class="stat-card">
-            <div class="lbl">Pending / In-Transit Orders</div>
-            <div class="val" id="f-dash-orders-count">0</div>
-            <div class="sub">Queued for fulfillment</div>
-          </div>
-          <div class="stat-card">
-            <div class="lbl">Active ML Model</div>
-            <div class="val" style="font-size:18px;" id="f-dash-model">RandomForest</div>
-            <div class="sub">Calibrated on AGMARKNET</div>
-          </div>
-        </div>
 
-        <div class="card">
-          <div class="card-title">
-            <span>Direct Agricultural Market Pulse</span>
-            <span class="badge-status active">LIVE APMC AGMARKNET FEED</span>
+          <!-- Escrow Balance Card -->
+          <div class="bg-gradient-to-br from-amber-50/90 via-white to-amber-50/40 p-5 rounded-2xl border border-amber-300 shadow-xs flex flex-col justify-between gap-3 relative">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[18px]">shield</span>
+                </div>
+                <div>
+                  <span class="text-[11px] font-bold text-amber-900 uppercase tracking-wider block">ESCROW BALANCE / सुरक्षित एस्क्रो</span>
+                  <span class="text-[11px] text-slate-500 font-medium">ICICI Bank Custody Vault</span>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded">100% Secure</span>
+            </div>
+            <div>
+              <div class="text-2xl sm:text-3xl font-extrabold text-emerald-950 tracking-tight" id="f-dash-escrow-amount">₹0.00</div>
+              <p class="text-xs text-slate-600 mt-0.5 leading-normal">Funds secured for active delivery orders (ICICI Bank Custody)</p>
+            </div>
+            <div class="pt-2 border-t border-amber-200/60 flex items-center justify-between">
+              <span class="text-[11px] text-amber-900 font-medium" id="f-dash-escrow-count">0 Orders in Escrow Protection</span>
+              <button onclick="switchAppTab('orders')" class="text-xs font-bold text-amber-800 hover:text-amber-900 hover:underline flex items-center gap-1" type="button">
+                <span>View Orders</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </button>
+            </div>
           </div>
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Commodity</th>
-                  <th>Mandi / APMC</th>
-                  <th>Middleman Mandi Rate</th>
-                  <th>AI Predicted Modal</th>
-                  <th>Kisan Setu Recommended Rate</th>
-                  <th>Farmer Direct Advantage</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="dash-market-tbody">
-                <!-- Injected dynamically -->
-              </tbody>
-            </table>
-          </div>
-        </div>
+        </section>
 
-        <div class="card">
-          <div class="card-title">
-            <span>Recent Orders Received</span>
-            <button class="tag-btn" onclick="switchAppTab('orders')">View All Orders →</button>
+        <!-- 2. FOUR METRIC KPI CARDS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <!-- TOTAL REVENUE -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between gap-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">TOTAL REVENUE / कुल आय</span>
+              <span class="w-8 h-8 rounded-xl bg-emerald-50 text-[#137547] flex items-center justify-center border border-emerald-100">
+                <span class="material-symbols-outlined text-[18px]">currency_rupee</span>
+              </span>
+            </div>
+            <div>
+              <div class="text-2xl font-extrabold text-slate-900" id="f-dash-earnings">₹0.00</div>
+              <div class="flex items-center gap-1.5 mt-1.5">
+                <span class="inline-flex items-center gap-0.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
+                  <span class="material-symbols-outlined text-[12px]">trending_up</span> +100%
+                </span>
+                <span class="text-xs text-slate-500">Direct settlement</span>
+              </div>
+            </div>
           </div>
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Order Code</th>
-                  <th>Buyer Name</th>
-                  <th>Commodity</th>
-                  <th>Quantity</th>
-                  <th>Total Amount</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="f-dash-recent-orders-tbody">
-                <tr><td colspan="7" style="text-align:center; padding:20px; color:var(--soil-soft);">Loading orders...</td></tr>
-              </tbody>
-            </table>
+
+          <!-- ACTIVE PRODUCE -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between gap-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">ACTIVE PRODUCE / सक्रिय फसल</span>
+              <span class="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100">
+                <span class="material-symbols-outlined text-[18px]">storefront</span>
+              </span>
+            </div>
+            <div>
+              <div class="text-2xl font-extrabold text-slate-900"><span id="f-dash-listings-count">0</span> Batches</div>
+              <p class="text-xs text-slate-500 mt-1.5" id="f-dash-listings-sub">Live in Buyer Marketplace</p>
+            </div>
           </div>
-        </div>
+
+          <!-- PENDING ORDERS -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between gap-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">PENDING ORDERS / लंबित ऑर्डर</span>
+              <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-100">
+                <span class="material-symbols-outlined text-[18px]">local_shipping</span>
+              </span>
+            </div>
+            <div>
+              <div class="text-2xl font-extrabold text-slate-900"><span id="f-dash-orders-count">0</span> Orders</div>
+              <p class="text-xs text-slate-500 mt-1.5" id="f-dash-orders-sub">Queued for fulfillment &amp; dispatch</p>
+            </div>
+          </div>
+
+          <!-- WAREHOUSE STOCK -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between gap-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">WAREHOUSE STOCK / उपलब्ध भंडार</span>
+              <span class="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center border border-purple-100">
+                <span class="material-symbols-outlined text-[18px]">warehouse</span>
+              </span>
+            </div>
+            <div>
+              <div class="text-2xl font-extrabold text-slate-900" id="f-dash-stock-amount">0 Qtl</div>
+              <p class="text-xs text-slate-500 mt-1.5"><span id="f-dash-model" class="font-bold text-slate-700">RandomForest</span> ML Calibrated</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. AI FAIR PRICE INTELLIGENCE (EMERALD PANEL) -->
+        <section class="bg-gradient-to-br from-[#005b34] via-[#137547] to-[#0A3D26] text-white rounded-2xl p-6 lg:p-7 shadow-sm relative overflow-hidden border border-emerald-700/60">
+          <div class="absolute -right-20 -top-20 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div class="flex-1 space-y-3">
+              <div class="inline-flex items-center gap-2 bg-emerald-950/60 border border-emerald-400/30 px-3 py-1 rounded-full text-xs font-bold text-emerald-200">
+                <span class="text-sm">🤖</span>
+                <span>AI FAIR PRICE INTELLIGENCE (कृषि मूल्य बुद्धिमत्ता)</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+              </div>
+              <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight" id="f-ai-headline">
+                Your produce has a strong market opportunity.
+              </h2>
+              <p class="text-xs sm:text-sm text-emerald-100/90 max-w-2xl leading-relaxed" id="f-ai-description">
+                AI expects prices to rise based on recent demand and market arrivals. Direct B2B buyers are actively procuring NABL-certified lots.
+              </p>
+              <!-- Badges -->
+              <div class="pt-1 flex flex-wrap items-center gap-2" id="f-ai-badges">
+                <span class="px-2.5 py-1 rounded-lg bg-emerald-900/80 border border-emerald-600/40 text-xs font-bold text-amber-300" id="f-ai-crop-tag">
+                  TOMATO (ROMA) · GRADE A
+                </span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/10 text-xs text-emerald-200">📈 Demand +24%</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/10 text-xs text-emerald-200">🌾 Grade A Assayed</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/10 text-xs text-emerald-200">📍 Nashik APMC Corridor</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/10 text-xs text-emerald-200">🚚 OSRM Route Ready</span>
+              </div>
+            </div>
+
+            <!-- Price Highlight Box -->
+            <div class="w-full lg:w-auto bg-black/25 backdrop-blur-md border border-white/15 p-4 sm:p-5 rounded-2xl flex flex-col gap-3 min-w-[290px]">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <span class="text-[11px] text-emerald-200/80 uppercase font-semibold block">AI Recommended Price</span>
+                  <span class="text-2xl sm:text-3xl font-extrabold text-amber-300 tracking-tight" id="f-ai-price">₹31.00 <span class="text-sm font-medium text-emerald-200">/ kg</span></span>
+                </div>
+                <div class="text-right">
+                  <span class="text-[11px] text-emerald-200/80 uppercase font-semibold block">Mandi Benchmark</span>
+                  <span class="text-base font-bold text-slate-300" id="f-ai-mandi-benchmark">₹23.00 / kg</span>
+                </div>
+              </div>
+              <!-- Potential Gain Chip -->
+              <div class="p-2 rounded-lg bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-between text-xs">
+                <span class="text-emerald-200 font-medium">Farmer Direct Advantage:</span>
+                <span class="font-extrabold text-amber-300" id="f-ai-gain">+₹8.00/kg (+34.8%)</span>
+              </div>
+              <!-- Mini Sparkline Graph -->
+              <div class="h-10 w-full relative flex items-end pt-1">
+                <svg class="w-full h-full" fill="none" viewBox="0 0 200 40">
+                  <path d="M 0 30 Q 50 28, 100 25 T 200 22" fill="none" stroke="#94A3B8" stroke-dasharray="3 3" stroke-width="2"></path>
+                  <path d="M 0 32 Q 50 25, 100 15 T 200 6" fill="none" stroke="#FBBF24" stroke-linecap="round" stroke-width="2.5"></path>
+                  <circle cx="200" cy="6" fill="#FBBF24" r="3.5"></circle>
+                </svg>
+              </div>
+              <div class="flex justify-between text-[10px] text-emerald-200/70">
+                <span>Local Mandi Rate</span>
+                <span class="text-amber-300 font-semibold">AI Recommended</span>
+              </div>
+              <!-- Action Buttons -->
+              <div class="grid grid-cols-2 gap-2 mt-1">
+                <button onclick="switchAppTab('farmer-portal')" class="w-full py-2.5 px-3 bg-amber-400 hover:bg-amber-300 text-gray-950 font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1" type="button">
+                  <span class="material-symbols-outlined text-[16px]">add_circle</span>
+                  <span>+ List Produce</span>
+                </button>
+                <button onclick="openApp('ai-pricing')" class="w-full py-2.5 px-3 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs rounded-xl border border-white/20 transition-all flex items-center justify-center gap-1" type="button">
+                  <span>Explore AI</span>
+                  <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. ACTIVE PRODUCE LISTINGS TABLE & BUYER BIDS/OFFERS -->
+        <section class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          <!-- Left: Active Produce Listings Table (8 cols) -->
+          <div class="xl:col-span-8 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                <div>
+                  <h3 class="text-base font-bold text-slate-900">Active Produce Listings (मेरी सक्रिय फसलें)</h3>
+                  <p class="text-xs text-slate-500">Real-time verified lots published and available for buyer orders</p>
+                </div>
+                <button onclick="switchAppTab('farmer-portal')" class="text-xs font-bold text-[#137547] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">add</span>
+                  <span>New Listing</span>
+                </button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider font-semibold border-b border-slate-200/80">
+                      <th class="py-2.5 px-3 rounded-l-lg">Crop &amp; Variety</th>
+                      <th class="py-2.5 px-3">Grade / Quality</th>
+                      <th class="py-2.5 px-3">Available</th>
+                      <th class="py-2.5 px-3">Asking / AI Fair Price</th>
+                      <th class="py-2.5 px-3">Market Status</th>
+                      <th class="py-2.5 px-2 text-right rounded-r-lg">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 text-xs" id="f-dash-produce-tbody">
+                    <tr><td colspan="6" class="text-center py-6 text-slate-400">Loading your produce listings...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+              <span id="f-dash-produce-footer-note">Showing your published produce lots</span>
+              <button onclick="switchAppTab('farmer-listings')" class="text-[#137547] font-bold hover:underline flex items-center gap-1">
+                <span>View All Listings</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Buyer Bids & Offers (4 cols) -->
+          <div class="xl:col-span-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-amber-700 text-[20px]">gavel</span>
+                  <h3 class="text-base font-bold text-slate-900">Buyer Bids &amp; Orders</h3>
+                </div>
+                <span class="text-xs font-bold bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full" id="f-dash-bids-count">
+                  0 Active
+                </span>
+              </div>
+              <div class="flex flex-col gap-3" id="f-dash-bids-container">
+                <div class="text-center py-6 text-slate-400 text-xs">Loading orders &amp; offers...</div>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+              <span>Direct B2B Contracts</span>
+              <button onclick="switchAppTab('orders')" class="text-[#137547] font-bold hover:underline flex items-center gap-1">
+                <span>View All Orders</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Hidden legacy tables / containers preserved for full backward-compatibility -->
+        <table style="display:none;"><tbody id="dash-market-tbody"></tbody><tbody id="f-dash-recent-orders-tbody"></tbody></table>
+
       </div>
 
       <!-- ================= 2. BUYER DASHBOARD ================= -->

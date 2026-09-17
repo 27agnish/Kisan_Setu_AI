@@ -1175,55 +1175,220 @@
     openAuthModal('login');
   }
 
-  // --- Farmer Dashboard Loader ---
+  // --- Farmer Dashboard Loader (Stitch Integrated) ---
   async function loadFarmerDashboard() {
     try {
+      // 1. Fetch current user and profile data
       const res = await fetch(`${API_BASE}/auth/me`, { headers: getAuthHeaders() });
       if (res.ok) {
         currentUser = await res.json();
-        document.getElementById('f-dash-earnings').innerText = `₹${(currentUser.wallet_balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-        document.getElementById('wallet-amount').innerText = `₹${(currentUser.wallet_balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+        
+        // Update profile hero
+        const heroName = document.getElementById('f-hero-name');
+        if (heroName) heroName.innerText = currentUser.name || "Ramesh Kumar";
+        
+        const heroAvatar = document.getElementById('f-hero-avatar');
+        if (heroAvatar) heroAvatar.innerText = currentUser.farmer_profile?.profile_photo || '🧑‍🌾';
+        
+        const heroLocation = document.getElementById('f-hero-location');
+        if (heroLocation) {
+          const fp = currentUser.farmer_profile;
+          heroLocation.innerText = fp?.farm_location || (fp ? `${fp.district || ''}, ${fp.state || 'Maharashtra'}` : "Nashik, Maharashtra");
+        }
+        
+        const heroCrops = document.getElementById('f-hero-crops');
+        if (heroCrops) {
+          const fp = currentUser.farmer_profile;
+          const acres = fp?.farm_size_acres || 5.0;
+          const crops = fp?.crops_grown || "Vegetables, Grains";
+          heroCrops.innerText = `🌾 ${acres} Acres (${crops})`;
+        }
+
+        // Settled Earnings KPI & Header Wallet
+        const earningsEl = document.getElementById('f-dash-earnings');
+        if (earningsEl) earningsEl.innerText = `₹${(currentUser.wallet_balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+        const walletEl = document.getElementById('wallet-amount');
+        if (walletEl) walletEl.innerText = `₹${(currentUser.wallet_balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       }
 
-      // Load Listings count
+      // 2. Fetch Farmer Listings
+      let listings = [];
       const listRes = await fetch(`${API_BASE}/listings?status=ACTIVE`, { headers: getAuthHeaders() });
       if (listRes.ok) {
         const rawListings = await listRes.json();
-        const listings = Array.isArray(rawListings) ? rawListings : [];
+        listings = Array.isArray(rawListings) ? rawListings : [];
+        
+        // KPI: Active Produce Batches
         const countEl = document.getElementById('f-dash-listings-count');
         if (countEl) countEl.innerText = listings.length;
+        
+        // KPI: Warehouse Stock Total (Available Qtl / kg)
+        const totalAvailKg = listings.reduce((sum, l) => sum + (l.available_kg || 0), 0);
+        const stockEl = document.getElementById('f-dash-stock-amount');
+        if (stockEl) stockEl.innerText = `${(totalAvailKg / 100).toFixed(1)} Qtl`;
+
+        // Render Active Produce Table
+        const produceTbody = document.getElementById('f-dash-produce-tbody');
+        if (produceTbody) {
+          if (listings.length === 0) {
+            produceTbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">No active produce lots listed yet. Click <strong>+ New Listing</strong> to publish your harvest.</td></tr>`;
+          } else {
+            produceTbody.innerHTML = listings.map(l => {
+              const cropEmoji = l.photo_url || (CROP_EMOJIS[l.crop] || '🌾');
+              const gain = (l.asking_price || 0) - (l.base_mandi_price || 0);
+              const gainBadge = gain > 0 ? `<span class="text-[10px] text-[#005b34] font-bold block">+₹${gain.toFixed(2)}/kg vs mandi</span>` : '';
+              return `
+                <tr class="hover:bg-slate-50/70 transition-colors">
+                  <td class="py-3 px-3">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-xl shrink-0">
+                        ${cropEmoji}
+                      </div>
+                      <div>
+                        <span class="font-bold text-slate-900 block text-xs">${l.crop} (${l.variety || 'Standard'})</span>
+                        <span class="text-[11px] text-slate-500">Lot #KS-LOT-${l.id} • ${l.farm_location || 'Farm Gate'}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3 px-3">
+                    <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
+                      <span class="material-symbols-outlined text-[12px] text-emerald-600">verified</span>
+                      ${l.quality_grade || 'Grade A'}
+                    </span>
+                  </td>
+                  <td class="py-3 px-3">
+                    <span class="font-extrabold text-slate-900 block">${(l.available_kg || 0).toLocaleString()} kg</span>
+                    <span class="text-[11px] text-slate-500">${((l.available_kg || 0)/100).toFixed(1)} Qtl avail</span>
+                  </td>
+                  <td class="py-3 px-3">
+                    <span class="font-extrabold text-emerald-700 block">₹${(l.asking_price || 0).toFixed(2)} / kg</span>
+                    ${gainBadge}
+                  </td>
+                  <td class="py-3 px-3">
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100/70 px-2.5 py-0.5 rounded-full">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                      ${l.status === 'ACTIVE' ? 'Live in Market' : l.status}
+                    </span>
+                  </td>
+                  <td class="py-3 px-2 text-right">
+                    <button class="px-2.5 py-1 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg border border-red-200 transition-colors" onclick="deleteListing(${l.id})">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              `;
+            }).join('');
+          }
+        }
+
+        // Bind AI Fair Price Card to Primary Lot or Default
+        const primaryLot = listings.length > 0 ? listings[0] : {
+          crop: "Tomato",
+          variety: "Roma",
+          quality_grade: "Grade A",
+          asking_price: 31.0,
+          base_mandi_price: 23.0,
+          ai_predicted_price: 30.8,
+          district: "Nashik"
+        };
+        const askP = primaryLot.asking_price || primaryLot.ai_predicted_price || 31.0;
+        const mandiP = primaryLot.base_mandi_price || 23.0;
+        const deltaP = askP - mandiP;
+        const deltaPct = mandiP > 0 ? Math.round((deltaP / mandiP) * 100) : 35;
+        
+        const elCropTag = document.getElementById('f-ai-crop-tag');
+        if (elCropTag) elCropTag.innerText = `${primaryLot.crop.toUpperCase()} (${primaryLot.variety || 'Standard'}) · ${(primaryLot.quality_grade || 'Grade A').toUpperCase()}`;
+        const elHeadline = document.getElementById('f-ai-headline');
+        if (elHeadline) elHeadline.innerText = `Your ${primaryLot.crop} has a strong market opportunity.`;
+        const elPrice = document.getElementById('f-ai-price');
+        if (elPrice) elPrice.innerHTML = `₹${askP.toFixed(2)} <span class="text-sm font-medium text-emerald-200">/ kg</span>`;
+        const elMandi = document.getElementById('f-ai-mandi-benchmark');
+        if (elMandi) elMandi.innerText = `₹${mandiP.toFixed(2)} / kg`;
+        const elGain = document.getElementById('f-ai-gain');
+        if (elGain) elGain.innerText = `+₹${deltaP.toFixed(2)}/kg (+${deltaPct}%)`;
       }
 
-      // Load Orders count
+      // 3. Fetch Orders (For Escrow, KPIs, and Buyer Bids & Offers)
       const orderRes = await fetch(`${API_BASE}/orders`, { headers: getAuthHeaders() });
       if (orderRes.ok) {
         const rawOrders = await orderRes.json();
         const orders = Array.isArray(rawOrders) ? rawOrders : [];
-        const pending = orders.filter(o => o.status !== 'DELIVERED' && o.status !== 'CANCELLED').length;
+        
+        // Active orders for Escrow & KPI
+        const activeOrders = orders.filter(o => o.status !== 'DELIVERED' && o.status !== 'CANCELLED');
         const oCountEl = document.getElementById('f-dash-orders-count');
-        if (oCountEl) oCountEl.innerText = pending;
+        if (oCountEl) oCountEl.innerText = activeOrders.length;
+        
+        // Calculate real Escrow Amount
+        const escrowTotal = activeOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+        const escrowAmountEl = document.getElementById('f-dash-escrow-amount');
+        if (escrowAmountEl) escrowAmountEl.innerText = `₹${escrowTotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+        const escrowCountEl = document.getElementById('f-dash-escrow-count');
+        if (escrowCountEl) escrowCountEl.innerText = `${activeOrders.length} Order${activeOrders.length === 1 ? '' : 's'} in Escrow Protection`;
 
-        const tbody = document.getElementById('f-dash-recent-orders-tbody');
-        if (tbody) {
+        // Render Buyer Bids & Offers Boxy Cards
+        const bidsContainer = document.getElementById('f-dash-bids-container');
+        const bidsCountEl = document.getElementById('f-dash-bids-count');
+        if (bidsCountEl) bidsCountEl.innerText = `${orders.length} Active`;
+        if (bidsContainer) {
           if (orders.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--soil-soft);">No orders received yet. Active listings will receive orders from buyers.</td></tr>`;
+            bidsContainer.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs">No buyer orders received yet. Active listings will receive direct purchase orders from verified buyers.</div>`;
           } else {
-            tbody.innerHTML = orders.slice(0, 5).map(o => `
-              <tr>
-                <td><strong>#${o.order_code}</strong></td>
-                <td>${o.buyer_name}</td>
-                <td>${o.crop} (${o.variety})</td>
-                <td>${(o.quantity_kg || 0).toLocaleString()} kg</td>
-                <td><strong style="color:var(--olive-deep);">₹${(o.total_amount || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</strong></td>
-                <td><span class="badge-status ${(o.status || 'active').toLowerCase()}">${o.status}</span></td>
-                <td><button class="tag-btn" onclick="openApp('tracking', '${o.id}')">Track →</button></td>
-              </tr>
+            bidsContainer.innerHTML = orders.slice(0, 3).map(o => `
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-emerald-300 transition-colors flex flex-col gap-2">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-sm font-bold text-slate-900">${o.buyer_name}</span>
+                      <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">✓ Verified</span>
+                    </div>
+                    <span class="text-xs text-slate-500">${o.crop} (${o.variety || 'Standard'}) • ${(o.quantity_kg || 0).toLocaleString()} kg</span>
+                  </div>
+                  <span class="text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">#${o.order_code}</span>
+                </div>
+                <div class="flex items-baseline justify-between bg-white p-2.5 rounded-lg border border-slate-200/70">
+                  <div>
+                    <span class="text-[11px] text-slate-500 block">Buyer Rate</span>
+                    <span class="text-xs font-extrabold text-slate-900">₹${(o.price_per_kg || 0).toFixed(2)} / kg</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-[11px] text-slate-500 block">Total Deal Value</span>
+                    <span class="text-xs font-bold text-emerald-800">₹${(o.total_amount || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between pt-1">
+                  <span class="text-[11px] font-semibold text-slate-600 flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full ${o.status === 'DELIVERED' ? 'bg-emerald-500' : 'bg-amber-500'}"></span>
+                    ${o.status_label || o.status}
+                  </span>
+                  <button onclick="openApp('tracking', '${o.id}')" class="py-1 px-3 bg-[#005b34] hover:bg-emerald-800 text-white font-bold text-xs rounded-lg transition-colors shadow-2xs flex items-center gap-1" type="button">
+                    <span>Track</span>
+                    <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                  </button>
+                </div>
+              </div>
             `).join('');
           }
         }
+
+        // Legacy table preservation
+        const tbody = document.getElementById('f-dash-recent-orders-tbody');
+        if (tbody) {
+          tbody.innerHTML = orders.slice(0, 5).map(o => `
+            <tr>
+              <td><strong>#${o.order_code}</strong></td>
+              <td>${o.buyer_name}</td>
+              <td>${o.crop} (${o.variety})</td>
+              <td>${(o.quantity_kg || 0).toLocaleString()} kg</td>
+              <td><strong style="color:var(--olive-deep);">₹${(o.total_amount || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</strong></td>
+              <td><span class="badge-status ${(o.status || 'active').toLowerCase()}">${o.status}</span></td>
+              <td><button class="tag-btn" onclick="openApp('tracking', '${o.id}')">Track →</button></td>
+            </tr>
+          `).join('');
+        }
       }
 
-      // Market rate pulse
+      // Legacy pulse preservation
       loadActivePrices();
     } catch(err) {
       console.error("Dashboard error:", err);
