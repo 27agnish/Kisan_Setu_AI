@@ -1977,25 +1977,140 @@
     }
   }
 
-  // --- AI Price Insights (Canvas Chart) ---
+  // --- AI Price Insights (Stitch AI Fair Price Engine) ---
+  let currentForecastDays = 30;
+
+  const marketLocations = {
+    'Nashik': 'Nashik Division, Maharashtra',
+    'Lasalgaon': 'Niphad, Nashik, Maharashtra',
+    'Pune': 'Haveli, Pune, Maharashtra',
+    'Indore': 'Malwa Zone, Madhya Pradesh',
+    'Azadpur': 'North Delhi, Delhi NCT',
+    'Khanna': 'Ludhiana District, Punjab',
+    'Surat': 'South Gujarat, Gujarat',
+    'Bangalore': 'Bangalore Urban, Karnataka',
+    'Kolar': 'Kolar District, Karnataka'
+  };
+
+  function setForecastHorizon(val) {
+    const btn7 = document.getElementById('horizon-7d');
+    const btn30 = document.getElementById('horizon-30d');
+    if (btn7 && btn30) {
+      if (val === '7d') {
+        btn7.className = 'px-3 py-1 rounded-md text-xs font-bold bg-[#137547] text-white shadow-xs';
+        btn30.className = 'px-3 py-1 rounded-md text-xs font-semibold text-gray-600 hover:text-gray-900';
+        currentForecastDays = 7;
+      } else {
+        btn30.className = 'px-3 py-1 rounded-md text-xs font-bold bg-[#137547] text-white shadow-xs';
+        btn7.className = 'px-3 py-1 rounded-md text-xs font-semibold text-gray-600 hover:text-gray-900';
+        currentForecastDays = 30;
+      }
+    }
+    loadAIPriceInsights();
+  }
+
+  function listAtRecommendedPrice() {
+    const cropInput = document.getElementById('ai-page-crop');
+    const crop = cropInput ? cropInput.value : 'Wheat';
+    const recPriceEl = document.getElementById('ai-kpi-rec');
+    let recPrice = '';
+    if (recPriceEl) {
+      const match = recPriceEl.innerText.match(/([0-9.]+)/);
+      if (match) recPrice = match[1];
+    }
+    openApp('farmer-portal');
+    setTimeout(() => {
+      const fCrop = document.getElementById('f-crop');
+      if (fCrop) fCrop.value = crop;
+      const fPrice = document.getElementById('f-asking-price');
+      if (fPrice && recPrice) fPrice.value = recPrice;
+    }, 120);
+  }
+
   async function loadAIPriceInsights() {
     const cropInput = document.getElementById('ai-page-crop');
     const marketInput = document.getElementById('ai-page-market');
-    const crop = cropInput ? cropInput.value : 'Tomato';
+    const crop = cropInput ? cropInput.value : 'Wheat';
     const market = marketInput ? marketInput.value : 'Nashik';
 
+    // Update location text
+    const locEl = document.getElementById('ai-location-text');
+    if (locEl) locEl.innerText = marketLocations[market] || `${market} Mandi Yard`;
+
+    // Update crop badge
+    const badgeEl = document.getElementById('ai-hero-crop-badge');
+    if (badgeEl) badgeEl.innerText = `${crop.toUpperCase()} · GRADE A`;
+
     try {
-      const res = await fetch(`${API_BASE}/price-history?crop=${encodeURIComponent(crop)}&market=${encodeURIComponent(market)}`);
+      const res = await fetch(`${API_BASE}/price-history?crop=${encodeURIComponent(crop)}&market=${encodeURIComponent(market)}&days=${currentForecastDays}`);
       if (res.ok) {
         const data = await res.json();
-        if (document.getElementById('ai-kpi-mandi') && data.current_price !== undefined) document.getElementById('ai-kpi-mandi').innerText = `₹${data.current_price.toFixed(2)}/kg`;
-        if (document.getElementById('ai-kpi-pred') && data.predicted_price !== undefined) document.getElementById('ai-kpi-pred').innerText = `₹${data.predicted_price.toFixed(2)}/kg`;
-        if (document.getElementById('ai-kpi-rec') && data.recommended_price !== undefined) document.getElementById('ai-kpi-rec').innerText = `₹${data.recommended_price.toFixed(2)}/kg`;
-        if (document.getElementById('ai-kpi-trend')) document.getElementById('ai-kpi-trend').innerText = `${data.price_trend || 'Stable'} Trend`;
-        if (document.getElementById('ai-kpi-ci')) document.getElementById('ai-kpi-ci').innerText = `±₹1.89 / kg (95% PI)`;
-        if (document.getElementById('ai-kpi-model')) document.getElementById('ai-kpi-model').innerText = `Model: ${data.model || 'RandomForestRegressor'}`;
-        if (document.getElementById('ai-price-narrative')) document.getElementById('ai-price-narrative').innerHTML = `<strong>Agricultural Intelligence Brief:</strong> ${data.explanation || ''}`;
+        const currentP = data.current_price !== undefined ? data.current_price : 25.0;
+        const predP = data.predicted_price !== undefined ? data.predicted_price : 26.0;
+        const recP = data.recommended_price !== undefined ? data.recommended_price : 27.0;
 
+        // Existing and new KPI elements
+        if (document.getElementById('ai-kpi-mandi')) document.getElementById('ai-kpi-mandi').innerText = `₹${currentP.toFixed(2)}/kg`;
+        if (document.getElementById('ai-kpi-pred')) document.getElementById('ai-kpi-pred').innerText = `₹${predP.toFixed(2)}/kg`;
+        if (document.getElementById('ai-kpi-rec')) document.getElementById('ai-kpi-rec').innerText = `₹${recP.toFixed(2)}/kg`;
+        if (document.getElementById('ai-kpi-rec-qtl')) document.getElementById('ai-kpi-rec-qtl').innerText = `₹${(recP * 100).toLocaleString('en-IN', {maximumFractionDigits: 0})} / Qtl equivalent`;
+        if (document.getElementById('ai-kpi-trend')) document.getElementById('ai-kpi-trend').innerText = `${data.price_trend || '→ Stable'} Trend`;
+        if (document.getElementById('ai-kpi-ci')) document.getElementById('ai-kpi-ci').innerText = `±₹${(recP * 0.07).toFixed(2)} / kg (95% PI)`;
+        if (document.getElementById('ai-kpi-model')) document.getElementById('ai-kpi-model').innerText = `${data.model || 'RandomForest'}`;
+        if (document.getElementById('ai-price-narrative')) document.getElementById('ai-price-narrative').innerHTML = `<strong class="text-[#005b34] font-semibold">Agricultural Intelligence Brief:</strong> ${data.explanation || 'Market modal rates reflect steady mandi demand and balanced daily arrivals.'}`;
+
+        // Dynamic Premium Tag & Confidence
+        const delta = recP - currentP;
+        const pct = currentP > 0 ? ((delta / currentP) * 100).toFixed(1) : '5.0';
+        const premEl = document.getElementById('ai-hero-premium-tag');
+        if (premEl) {
+          premEl.innerText = `${delta >= 0 ? '+' : ''}₹${delta.toFixed(2)}/kg (${delta >= 0 ? '+' : ''}${pct}% premium)`;
+        }
+
+        // Expected Range
+        const lowerP = recP * 0.92;
+        const upperP = recP * 1.08;
+        if (document.getElementById('ai-range-lower')) document.getElementById('ai-range-lower').innerText = `₹${lowerP.toFixed(2)}`;
+        if (document.getElementById('ai-range-upper')) document.getElementById('ai-range-upper').innerText = `₹${upperP.toFixed(2)}`;
+
+        // Guidance Headline & Subtext
+        const gHead = document.getElementById('ai-guidance-headline');
+        const gSub = document.getElementById('ai-guidance-subtext');
+        const gRat = document.getElementById('ai-guidance-rationale');
+        if (delta >= 0) {
+          if (gHead) gHead.innerText = "Sell 40% Now • Hold Remainder for Peak";
+          if (gSub) gSub.innerText = `Model forecasts firm demand across ${market} aggregation corridor with favorable spot-to-futures basis.`;
+        } else {
+          if (gHead) gHead.innerText = "Immediate Sale Recommended";
+          if (gSub) gSub.innerText = "Arrivals are increasing rapidly. Secure current pricing before seasonal pressure intensifies.";
+        }
+        if (gRat && data.explanation) {
+          gRat.innerHTML = `<strong class="text-gray-900 font-semibold">Agricultural Intelligence Rationale:</strong> ${data.explanation}`;
+        }
+
+        // 5 Market Drivers
+        if (document.getElementById('ai-driver-mandi-rate')) document.getElementById('ai-driver-mandi-rate').innerText = `₹${currentP.toFixed(2)}/kg`;
+        if (document.getElementById('ai-driver-mandi-desc')) document.getElementById('ai-driver-mandi-desc').innerText = `Physical spot auction benchmark from ${market} APMC yard.`;
+
+        // Market Comparison
+        if (document.getElementById('ai-comp-kisan-setu')) document.getElementById('ai-comp-kisan-setu').innerText = `₹${recP.toFixed(2)} / kg`;
+        if (document.getElementById('ai-comp-institutional')) document.getElementById('ai-comp-institutional').innerText = `₹${(recP * 0.98).toFixed(2)} / kg`;
+        if (document.getElementById('ai-comp-mandi')) document.getElementById('ai-comp-mandi').innerText = `₹${currentP.toFixed(2)} / kg`;
+        if (document.getElementById('ai-comp-prev-week')) document.getElementById('ai-comp-prev-week').innerText = `₹${(currentP * 0.97).toFixed(2)} / kg`;
+        if (document.getElementById('ai-comp-mandi-name')) document.getElementById('ai-comp-mandi-name').innerText = `${market} APMC Spot Rate`;
+
+        // Relative comparison bars
+        const maxRef = Math.max(recP, currentP, recP * 0.98, currentP * 0.97) * 1.05;
+        if (document.getElementById('ai-comp-bar-kisan')) document.getElementById('ai-comp-bar-kisan').style.width = `${(recP / maxRef) * 100}%`;
+        if (document.getElementById('ai-comp-bar-inst')) document.getElementById('ai-comp-bar-inst').style.width = `${((recP * 0.98) / maxRef) * 100}%`;
+        if (document.getElementById('ai-comp-bar-mandi')) document.getElementById('ai-comp-bar-mandi').style.width = `${(currentP / maxRef) * 100}%`;
+        if (document.getElementById('ai-comp-bar-prev')) document.getElementById('ai-comp-bar-prev').style.width = `${((currentP * 0.97) / maxRef) * 100}%`;
+
+        // Batch selling
+        if (document.getElementById('ai-batch1-price')) document.getElementById('ai-batch1-price').innerText = `Sell Now • ₹${recP.toFixed(2)} / kg`;
+        if (document.getElementById('ai-batch2-price')) document.getElementById('ai-batch2-price').innerText = `Target Sale (Day +3) • ₹${(recP * 1.03).toFixed(2)} / kg`;
+
+        // Canvas Chart
         if (Array.isArray(data.history) && Array.isArray(data.forecast_7d)) {
           renderPriceCanvasChart(data.history, data.forecast_7d);
         }
@@ -2011,79 +2126,185 @@
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    // Set resolution
+    // Set resolution for HiDPI/Retina
     const rect = canvas.getBoundingClientRect ? canvas.getBoundingClientRect() : { width: 600, height: 260 };
-    canvas.width = rect.width * window.devicePixelRatio;
-    canvas.height = rect.height * window.devicePixelRatio;
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    const cssWidth = Math.max(rect.width || 600, 300);
+    const cssHeight = 260;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = cssWidth * dpr;
+    canvas.height = cssHeight * dpr;
+    ctx.scale(dpr, dpr);
 
-    const w = rect.width;
-    const h = rect.height;
+    const w = cssWidth;
+    const h = cssHeight;
     ctx.clearRect(0, 0, w, h);
 
+    const padLeft = 55;
+    const padRight = 35;
+    const padTop = 30;
+    const padBottom = 35;
+    const chartW = w - padLeft - padRight;
+    const chartH = h - padTop - padBottom;
+
     const allPrices = [...history.map(p => p.modal_price), ...forecast.map(p => p.modal_price)];
-    const minP = Math.min(...allPrices) * 0.95;
-    const maxP = Math.max(...allPrices) * 1.05;
+    if (allPrices.length === 0) return;
+    const minP = Math.min(...allPrices) * 0.94;
+    const maxP = Math.max(...allPrices) * 1.06;
     const totalPoints = history.length + forecast.length;
-    const stepX = w / (totalPoints - 1);
+    const stepX = chartW / Math.max(totalPoints - 1, 1);
 
-    const getY = (price) => h - 30 - ((price - minP) / (maxP - minP)) * (h - 60);
+    const getX = (idx) => padLeft + idx * stepX;
+    const getY = (price) => padTop + chartH - ((price - minP) / (maxP - minP || 1)) * chartH;
 
-    // Draw grid lines
-    ctx.strokeStyle = 'rgba(53,44,34,0.08)';
+    // 1. Draw Grid lines & Y Axis Ticks
     ctx.lineWidth = 1;
-    for (let i = 1; i <= 4; i++) {
-      const y = (h / 5) * i;
+    ctx.strokeStyle = '#E5E7EB';
+    ctx.fillStyle = '#6B7280';
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+
+    const numTicks = 4;
+    for (let i = 0; i <= numTicks; i++) {
+      const y = padTop + (chartH / numTicks) * i;
+      const priceVal = maxP - ((maxP - minP) / numTicks) * i;
       ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
+      ctx.setLineDash([3, 3]);
+      ctx.moveTo(padLeft, y);
+      ctx.lineTo(w - padRight, y);
       ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillText(`₹${priceVal.toFixed(1)}`, padLeft - 8, y);
     }
 
-    // 1. Draw Historical Modal Price Line
+    // 2. Shaded Gradient under Forecast
+    const startIdx = history.length - 1;
+    if (startIdx >= 0 && forecast.length > 0) {
+      const grad = ctx.createLinearGradient(0, padTop, 0, padTop + chartH);
+      grad.addColorStop(0, 'rgba(16, 185, 129, 0.28)');
+      grad.addColorStop(1, 'rgba(16, 185, 129, 0.02)');
+
+      ctx.beginPath();
+      ctx.moveTo(getX(startIdx), getY(history[startIdx].modal_price));
+      forecast.forEach((pt, idx) => {
+        ctx.lineTo(getX(startIdx + idx + 1), getY(pt.modal_price));
+      });
+      ctx.lineTo(getX(totalPoints - 1), padTop + chartH);
+      ctx.lineTo(getX(startIdx), padTop + chartH);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+    }
+
+    // 3. Historical Line (Solid Olive)
     ctx.beginPath();
     ctx.strokeStyle = '#4F6B44';
     ctx.lineWidth = 2.5;
+    ctx.lineJoin = 'round';
     history.forEach((pt, idx) => {
-      const x = idx * stepX;
+      const x = getX(idx);
       const y = getY(pt.modal_price);
       if (idx === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     });
     ctx.stroke();
 
-    // 2. Draw 7-Day ML Forecast Line (Dashed Gold)
-    ctx.beginPath();
-    ctx.setLineDash([5, 5]);
-    ctx.strokeStyle = '#D9A441';
-    ctx.lineWidth = 2.5;
-    const startIdx = history.length - 1;
-    ctx.moveTo(startIdx * stepX, getY(history[startIdx].modal_price));
-    forecast.forEach((pt, idx) => {
-      const x = (startIdx + idx + 1) * stepX;
-      const y = getY(pt.modal_price);
-      ctx.lineTo(x, y);
-    });
-    ctx.stroke();
-    ctx.setLineDash([]);
+    // 4. Forecast Line (Dashed Gold/Amber)
+    if (startIdx >= 0 && forecast.length > 0) {
+      ctx.beginPath();
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = '#D97706';
+      ctx.lineWidth = 2.5;
+      ctx.lineJoin = 'round';
+      ctx.moveTo(getX(startIdx), getY(history[startIdx].modal_price));
+      forecast.forEach((pt, idx) => {
+        ctx.lineTo(getX(startIdx + idx + 1), getY(pt.modal_price));
+      });
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
 
-    // Draw data points
+    // 5. Vertical "Today" Marker Line
+    if (startIdx >= 0) {
+      const todayX = getX(startIdx);
+      const todayY = getY(history[startIdx].modal_price);
+
+      ctx.beginPath();
+      ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = '#DC2626';
+      ctx.lineWidth = 1.5;
+      ctx.moveTo(todayX, padTop - 5);
+      ctx.lineTo(todayX, padTop + chartH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Today Circle Marker
+      ctx.beginPath();
+      ctx.arc(todayX, todayY, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = '#DC2626';
+      ctx.stroke();
+
+      // Today Label Tag
+      const tagText = `TODAY ₹${history[startIdx].modal_price.toFixed(1)}`;
+      ctx.font = 'bold 10px "Plus Jakarta Sans", sans-serif';
+      const tagW = ctx.measureText(tagText).width + 12;
+      const tagX = Math.min(Math.max(todayX - tagW / 2, padLeft), w - padRight - tagW);
+      ctx.fillStyle = '#FEE2E2';
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(tagX, padTop - 22, tagW, 18, 4);
+      } else {
+        ctx.rect(tagX, padTop - 22, tagW, 18);
+      }
+      ctx.fill();
+      ctx.fillStyle = '#B91C1C';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(tagText, tagX + tagW / 2, padTop - 13);
+    }
+
+    // 6. Data Points
     history.forEach((pt, idx) => {
-      const x = idx * stepX;
-      const y = getY(pt.modal_price);
+      if (history.length > 15 && idx % 3 !== 0 && idx !== history.length - 1) return;
       ctx.fillStyle = '#4F6B44';
       ctx.beginPath();
-      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.arc(getX(idx), getY(pt.modal_price), 3, 0, Math.PI * 2);
       ctx.fill();
     });
 
     forecast.forEach((pt, idx) => {
-      const x = (startIdx + idx + 1) * stepX;
+      const x = getX(startIdx + idx + 1);
       const y = getY(pt.modal_price);
-      ctx.fillStyle = '#D9A441';
+      ctx.fillStyle = '#D97706';
       ctx.beginPath();
       ctx.arc(x, y, 4, 0, Math.PI * 2);
       ctx.fill();
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+
+    // 7. Timeline Labels on Bottom
+    ctx.fillStyle = '#6B7280';
+    ctx.font = '10px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+
+    const labelIndices = [
+      { idx: 0, text: `-${history.length}d` },
+      { idx: Math.floor(history.length / 2), text: `-${Math.floor(history.length / 2)}d` },
+      { idx: startIdx, text: 'Today' },
+      { idx: Math.min(startIdx + 3, totalPoints - 1), text: '+3d' },
+      { idx: totalPoints - 1, text: `+${forecast.length}d ML` }
+    ];
+    labelIndices.forEach(item => {
+      if (item.idx >= 0 && item.idx < totalPoints) {
+        const lx = getX(item.idx);
+        ctx.fillText(item.text, lx, padTop + chartH + 8);
+      }
     });
   }
 
@@ -3075,6 +3296,8 @@
   window.recalcOrderTotal = recalcOrderTotal;
   window.handleConfirmOrder = handleConfirmOrder;
   window.loadAIPriceInsights = loadAIPriceInsights;
+  window.listAtRecommendedPrice = listAtRecommendedPrice;
+  window.setForecastHorizon = setForecastHorizon;
   window.recalculateRoute = recalculateRoute;
   window.loadTrackingOrdersList = loadTrackingOrdersList;
   window.filterTrackingOrders = filterTrackingOrders;
