@@ -1197,47 +1197,93 @@
      APPLICATION PORTAL (AUTHENTICATED & ROLE-BASED)
      ======================================================= -->
 <div id="app-portal">
+  <!-- STITCH B2B TERMINAL HEADER -->
   <header class="app-header">
-    <div class="app-brand">
-      <div class="logo" onclick="closeApp()">
-        <span class="mark">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 6 6 6 12C6 16.4 8.7 20 12 22C15.3 20 18 16.4 18 12C18 6 12 2 12 2Z" fill="#F6F2E7"/></svg>
-        </span>
-        Kisan Setu
+    <!-- Left: Brand + Role Badge + Live Mandi Ticker -->
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3 cursor-pointer group" onclick="closeApp()" title="Return to Landing Page">
+        <div class="h-9 w-9 rounded-xl bg-emerald-50 text-[#137547] flex items-center justify-center font-bold text-lg border border-emerald-200 shadow-xs group-hover:bg-[#137547] group-hover:text-white transition-colors">
+          🌾
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-sm sm:text-base text-slate-900 leading-tight">Kisan Setu</span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-[#137547] border border-emerald-200" id="portal-user-role-tag">
+              Farmer Portal
+            </span>
+          </div>
+          <span class="text-[10.5px] text-slate-500 font-medium">B2B Agri Terminal • APMC Live Stream</span>
+        </div>
       </div>
-      <span class="badge-gov" id="portal-user-role-tag">Farmer Portal</span>
+
+      <!-- Mandi Ticker (Stitch Reference) -->
+      <div class="hidden xl:flex items-center gap-2 bg-[#f0f3ff] px-3 py-1 rounded-full border border-slate-200/70 text-xs shadow-xs">
+        <span class="material-symbols-outlined text-[#16A34A] text-[17px]">trending_up</span>
+        <span class="font-semibold text-slate-700">Indore Mandi:</span>
+        <span class="font-bold text-[#137547]">Soybean ₹4,850 ▲</span>
+        <span class="text-slate-300">|</span>
+        <span class="font-semibold text-slate-700">Dewas:</span>
+        <span class="font-bold text-[#137547]">Sharbati ₹2,780 ▲</span>
+        <span class="text-slate-300">|</span>
+        <span class="font-semibold text-slate-700">Kota:</span>
+        <span class="font-bold text-[#793f00]">Mustard ₹5,420 ▼</span>
+      </div>
     </div>
 
-    <div class="app-user-bar">
-      <!-- User Profile Pill -->
-      <div class="user-badge-pill">
-        <span class="u-avatar" id="app-user-avatar">🧑‍🌾</span>
-        <span style="font-weight:600;" id="app-user-name">Ramesh Kumar</span>
-        <span class="u-role farmer" id="app-user-role-badge">FARMER</span>
+    <!-- Center: Search Bar (Stitch Reference) -->
+    <div class="flex-1 max-w-md mx-6 hidden md:block">
+      <div class="relative flex items-center">
+        <span class="material-symbols-outlined absolute left-3 text-slate-400 text-[18px] pointer-events-none">search</span>
+        <input class="w-full bg-slate-50 hover:bg-white border border-slate-200 focus:border-[#137547] focus:bg-white text-slate-800 pl-9 pr-20 py-1.5 rounded-lg text-xs transition-all focus:outline-none focus:ring-2 focus:ring-[#137547]/20" placeholder="Search mandi lots, commodities (गेहूं, चना, सोयाबीन)..." type="text">
+        <span class="absolute right-2 px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-500 bg-white border border-slate-200 rounded">APMC Live</span>
       </div>
+    </div>
 
+    <!-- Right Controls: Wallet + Notifs + User Profile + Close/Logout -->
+    <div class="app-user-bar flex items-center gap-2 sm:gap-3">
       <!-- Wallet / Spend Balance -->
-      <div class="wallet-pill">
-        <span id="wallet-label">Settled Earnings:</span>
-        <span class="bal" id="wallet-amount">₹0.00</span>
+      <div class="wallet-pill flex items-center gap-1.5 bg-emerald-50/80 border border-emerald-200/80 px-3 py-1.5 rounded-xl text-xs font-semibold">
+        <span class="material-symbols-outlined text-[#137547] text-[16px]">account_balance_wallet</span>
+        <span id="wallet-label" class="text-slate-600 hidden sm:inline">Settled Earnings:</span>
+        <span class="bal text-[#137547] font-bold font-mono" id="wallet-amount">₹0.00</span>
       </div>
 
       <!-- Notifications -->
-      <button class="notif-btn" onclick="toggleNotifications()" title="Notifications">
-        🔔
-        <span class="notif-badge" id="notif-count" style="display:none;">0</span>
+      <button class="notif-btn relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors border border-slate-200/60 bg-white" onclick="toggleNotifications()" title="Notifications">
+        <span class="material-symbols-outlined text-[20px]">notifications</span>
+        <span class="notif-badge absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-white" id="notif-count" style="display:none;">0</span>
       </button>
 
-      <button class="btn-ghost" style="padding:6px 14px; font-size:12px;" onclick="logout()">🚪 Logout</button>
-      <button class="btn-close-app" style="background:transparent; border:none; cursor:pointer; font-size:13px;" onclick="closeApp()" title="Minimize to landing">✕</button>
+      <!-- User Profile Pill (Dynamic) -->
+      <div class="user-badge-pill flex items-center gap-2 pl-1.5 py-1 pr-2.5 rounded-xl bg-white border border-slate-200/80 hover:border-[#137547]/40 transition-colors cursor-pointer" onclick="switchAppTab('profile')">
+        <span class="u-avatar w-7 h-7 rounded-full bg-emerald-100 text-[#137547] flex items-center justify-center text-sm font-bold ring-2 ring-emerald-500/20" id="app-user-avatar">🧑‍🌾</span>
+        <div class="hidden sm:flex flex-col text-left leading-tight">
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs font-bold text-slate-900 truncate max-w-[120px]" id="app-user-name">Ramesh Kumar</span>
+            <span class="u-role farmer text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800" id="app-user-role-badge">FARMER</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-5 w-px bg-slate-200 mx-0.5 hidden sm:block"></div>
+
+      <!-- Minimize to landing -->
+      <button class="p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors" onclick="closeApp()" title="Minimize to landing">
+        <span class="material-symbols-outlined text-[20px]">close_fullscreen</span>
+      </button>
+
+      <!-- Logout -->
+      <button class="p-2 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors" onclick="logout()" title="Logout">
+        <span class="material-symbols-outlined text-[20px]">logout</span>
+      </button>
     </div>
   </header>
 
   <!-- Notifications Dropdown -->
   <div class="notif-dropdown" id="notif-dropdown">
-    <div class="notif-header">
-      <span>Platform Notifications</span>
-      <span style="font-size:11px; cursor:pointer; color:var(--olive);" onclick="clearAllNotifications()">Mark all read</span>
+    <div class="notif-header flex items-center justify-between">
+      <span class="font-bold text-xs text-slate-900">Platform Notifications</span>
+      <span style="font-size:11px; cursor:pointer; color:#005b34;" onclick="clearAllNotifications()">Mark all read</span>
     </div>
     <div class="notif-list" id="notif-list-container">
       <div style="padding:16px; text-align:center; color:var(--soil-soft); font-size:12px;">No new notifications</div>
@@ -1245,45 +1291,125 @@
   </div>
 
   <div class="app-layout">
-    <!-- DYNAMIC ROLE-BASED SIDEBAR -->
+    <!-- STITCH LEFT NAVIGATION (DYNAMIC ROLE-BASED SIDEBAR) -->
     <aside class="app-sidebar">
-      
+      <!-- TOP: Verified Badge Banner (Stitch Reference) -->
+      <div class="mb-3 p-2.5 rounded-xl bg-emerald-50/90 border border-emerald-200 flex items-center gap-2.5 shadow-2xs">
+        <div class="w-8 h-8 rounded-lg bg-[#137547] text-white flex items-center justify-center shrink-0 shadow-xs">
+          <span class="material-symbols-outlined text-[18px]">verified_user</span>
+        </div>
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1">
+            <span class="text-xs font-bold text-slate-900 leading-tight">Govt / NABL Verified</span>
+          </div>
+          <span class="text-[10px] font-semibold text-[#137547] leading-tight truncate">Grade A Trade Node • सत्यापित</span>
+        </div>
+      </div>
+
       <!-- FARMER NAVIGATION MENU -->
-      <div id="sidebar-farmer-nav">
+      <div id="sidebar-farmer-nav" class="flex flex-col gap-1">
         <div class="sidebar-section-lbl">Overview</div>
-        <button class="app-nav-item active" onclick="switchAppTab('farmer-dashboard', this)"><span class="ic">📊</span> <span>Dashboard</span></button>
-        
+        <button class="app-nav-item active" onclick="switchAppTab('farmer-dashboard', this)">
+          <span class="ic material-symbols-outlined">space_dashboard</span>
+          <span>Dashboard</span>
+        </button>
+
         <div class="sidebar-section-lbl">Produce &amp; Sales</div>
-        <button class="app-nav-item" onclick="switchAppTab('farmer-portal', this)"><span class="ic">🧑‍🌾</span> <span>List Produce &amp; AI</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('farmer-listings', this)"><span class="ic">📋</span> <span>My Listings</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('orders', this)"><span class="ic">📦</span> <span>Orders &amp; Dispatches</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('farmer-earnings', this)"><span class="ic">💵</span> <span>Settled Earnings</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('farmer-portal', this)">
+          <span class="ic material-symbols-outlined">add_box</span>
+          <span>List Produce &amp; AI</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('farmer-listings', this)">
+          <span class="ic material-symbols-outlined">inventory_2</span>
+          <span>My Listings</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('orders', this)">
+          <span class="ic material-symbols-outlined">receipt_long</span>
+          <span>Orders &amp; Dispatches</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('farmer-earnings', this)">
+          <span class="ic material-symbols-outlined">payments</span>
+          <span>Settled Earnings</span>
+        </button>
 
         <div class="sidebar-section-lbl">Intelligence &amp; Maps</div>
-        <button class="app-nav-item" onclick="switchAppTab('ai-pricing', this)"><span class="ic">💰</span> <span>AI Price Insights</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('demand', this)"><span class="ic">📈</span> <span>Demand Prediction</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('logistics', this)"><span class="ic">🗺️</span> <span>Route Optimisation</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('tracking', this)"><span class="ic">🚚</span> <span>Order Tracking</span></button>
+        <button class="app-nav-item flex items-center justify-between" onclick="switchAppTab('ai-pricing', this)">
+          <div class="flex items-center gap-2.5">
+            <span class="ic material-symbols-outlined">auto_graph</span>
+            <span>AI Price Insights</span>
+          </div>
+          <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">AI</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('demand', this)">
+          <span class="ic material-symbols-outlined">trending_up</span>
+          <span>Demand Prediction</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('logistics', this)">
+          <span class="ic material-symbols-outlined">route</span>
+          <span>Route Optimisation</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('tracking', this)">
+          <span class="ic material-symbols-outlined">local_shipping</span>
+          <span>Order Tracking</span>
+        </button>
       </div>
 
       <!-- BUYER NAVIGATION MENU -->
-      <div id="sidebar-buyer-nav" style="display:none;">
+      <div id="sidebar-buyer-nav" class="flex flex-col gap-1" style="display:none;">
         <div class="sidebar-section-lbl">Procurement</div>
-        <button class="app-nav-item active" onclick="switchAppTab('buyer-dashboard', this)"><span class="ic">📊</span> <span>Dashboard</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('marketplace', this)"><span class="ic">🛒</span> <span>Marketplace</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('buyer-search', this)"><span class="ic">🔍</span> <span>Search Produce</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('buyer-saved', this)"><span class="ic">❤️</span> <span>Saved Listings</span></button>
-        
+        <button class="app-nav-item active" onclick="switchAppTab('buyer-dashboard', this)">
+          <span class="ic material-symbols-outlined">space_dashboard</span>
+          <span>Dashboard</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('marketplace', this)">
+          <span class="ic material-symbols-outlined">storefront</span>
+          <span>Marketplace</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('buyer-search', this)">
+          <span class="ic material-symbols-outlined">search</span>
+          <span>Search Produce</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('buyer-saved', this)">
+          <span class="ic material-symbols-outlined">favorite</span>
+          <span>Saved Listings</span>
+        </button>
+
         <div class="sidebar-section-lbl">Orders &amp; Deliveries</div>
-        <button class="app-nav-item" onclick="switchAppTab('orders', this)"><span class="ic">📦</span> <span>My Orders</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('tracking', this)"><span class="ic">🚚</span> <span>Delivery Tracking</span></button>
-        <button class="app-nav-item" onclick="switchAppTab('ai-pricing', this)"><span class="ic">💰</span> <span>Market Price Trends</span></button>
+        <button class="app-nav-item" onclick="switchAppTab('orders', this)">
+          <span class="ic material-symbols-outlined">receipt_long</span>
+          <span>My Orders</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('tracking', this)">
+          <span class="ic material-symbols-outlined">local_shipping</span>
+          <span>Delivery Tracking</span>
+        </button>
+        <button class="app-nav-item" onclick="switchAppTab('ai-pricing', this)">
+          <span class="ic material-symbols-outlined">auto_graph</span>
+          <span>Market Price Trends</span>
+        </button>
       </div>
 
-      <!-- SHARED FOOTER -->
+      <!-- BOTTOM: Helpline Card (Stitch Reference) + Shared Footer -->
       <div class="sidebar-footer">
-        <button class="app-nav-item" onclick="switchAppTab('profile', this)"><span class="ic">👤</span> <span>My Profile</span></button>
-        <button class="app-nav-item" onclick="logout()" style="color:var(--alert);"><span class="ic">🚪</span> <span>Logout</span></button>
+        <!-- Helpline Card -->
+        <div class="p-2.5 rounded-xl bg-amber-50/90 border border-amber-200 flex flex-col gap-1 mb-2">
+          <div class="flex items-center gap-1.5 text-amber-900 text-xs font-bold">
+            <span class="material-symbols-outlined text-[16px] text-amber-700">support_agent</span>
+            <span>APMC 24/7 Helpline</span>
+          </div>
+          <div class="font-mono text-xs text-slate-900 font-bold">1800-180-1551</div>
+          <span class="text-[9.5px] text-amber-800">Kisan Call Centre • निःशुल्क सहायता</span>
+        </div>
+
+        <button class="app-nav-item" onclick="switchAppTab('profile', this)">
+          <span class="ic material-symbols-outlined">badge</span>
+          <span>My Profile</span>
+        </button>
+        <button class="app-nav-item text-red-700 hover:text-red-800 hover:bg-red-50" onclick="logout()">
+          <span class="ic material-symbols-outlined text-red-600">logout</span>
+          <span>Logout</span>
+        </button>
+        <div class="text-center text-[10px] text-slate-400 font-medium pt-1.5">Kisan Setu Agri-OS v2.4 • DoCA</div>
       </div>
     </aside>
 
