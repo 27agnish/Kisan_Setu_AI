@@ -750,3 +750,80 @@
   .notif-item.unread{background:var(--pistachio-pale);}
   .notif-item .n-title{font-weight:600; margin-bottom:3px; color:var(--soil);}
   .notif-item .n-msg{color:var(--soil-soft); line-height:1.4;}
+
+/* ============================================================
+   TAILWIND PREFLIGHT IMMUNITY GUARDS
+   These rules MUST appear at the end of style.css (after
+   Tailwind loads) to override Preflight resets that would
+   otherwise break Leaflet maps, canvas gauges, and modals.
+   ============================================================ */
+
+/* ── Leaflet Map & Tile Rendering ──
+   Tailwind Preflight sets: img { max-width:100%; height:auto; display:block; }
+   This corrupts Leaflet tile images. Override unconditionally. */
+.leaflet-container img,
+.leaflet-tile,
+.leaflet-tile-container img,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-overlay-pane img,
+.leaflet-shadow-pane img {
+  max-width: none !important;
+  max-height: none !important;
+  height: auto !important;
+  display: inline !important;
+  box-sizing: content-box !important;
+}
+/* Ensure Leaflet popup and control fonts aren't overridden */
+.leaflet-container {
+  font-family: inherit !important;
+}
+/* Leaflet zoom/layer control buttons */
+.leaflet-control a,
+.leaflet-control button {
+  background-color: unset;
+  border: unset;
+  line-height: unset;
+}
+
+/* ── Canvas & Chart Preservation ──
+   Tailwind Preflight resets canvas display. Protect gauges and charts. */
+canvas {
+  display: block;
+}
+#fairness-gauge-canvas,
+canvas.chartjs-render-monitor {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* ── Body & Font Baseline ──
+   Keep existing body background/font. Tailwind's preflight resets
+   body font to sans-serif; we preserve the existing custom value. */
+body {
+  background: var(--creme);
+  color: var(--soil);
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Form Elements ──
+   Tailwind Forms plugin resets input/select/textarea globally.
+   Preserve existing styled form controls inside modals & panels. */
+.modal input,
+.modal select,
+.modal textarea,
+.app-panel input,
+.app-panel select,
+.app-panel textarea,
+.filter-bar input,
+.filter-bar select {
+  box-sizing: border-box;
+}
+
+/* ── Scrollbar (preserve existing custom scrollbar) ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: var(--pistachio-soft); border-radius: 9999px; }
+::-webkit-scrollbar-track { background: transparent; }
+
