@@ -23,7 +23,7 @@ class Settings:
     app_name: str = os.getenv("APP_NAME", "Kisan Setu API")
     app_env: str = os.getenv("APP_ENV", "development")
     host: str = os.getenv("HOST", "0.0.0.0")
-    port: int = int(os.getenv("PORT", "8000"))
+    port: int = int(os.getenv("PORT") or "8000")
     
     # Database URL: default to database/kisan_setu.db under project root (or /tmp on Vercel)
     is_vercel: bool = os.getenv("VERCEL") == "1" or os.getenv("VERCEL_ENV") is not None
@@ -40,7 +40,7 @@ class Settings:
     # Security / Auth
     secret_key: str = os.getenv("SECRET_KEY", "kisan_setu_secret_key_2026_super_secure_jwt")
     jwt_algorithm: str = os.getenv("JWT_ALGORITHM", "HS256")
-    access_token_expire_minutes: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "1440")) # 24 hours
+    access_token_expire_minutes: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES") or "1440") # 24 hours
     cors_origins: str = os.getenv("CORS_ORIGINS", "*")
     
     # Maps
