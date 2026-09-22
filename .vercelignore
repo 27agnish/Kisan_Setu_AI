@@ -1,0 +1,36 @@
+# Development and scratch artifacts
+scratch_chrome_img_test/
+Kisan_Setu_AI/
+*.docx
+*.pma
+*.tflite
+
+# Test suites & development runner scripts
+tests/
+test_backend_api.py
+scripts/
+run_app.py
+
+# Offline ML training pipelines & redundant model weights
+ml/training/
+ml/train_model.py
+ml/generate_dataset.py
+ml/evaluate.py
+ml/models/rf_price_model.joblib
+ml/models/xgboost_price_model.joblib
+
+# Requirements and documentation not needed in runtime bundle
+requirements-train.txt
+README.md
+
+# Virtual environments and caches
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+.git/
+.gitignore
+.env*

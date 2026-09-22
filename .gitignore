@@ -36,3 +36,15 @@ ENV/
 .DS_Store
 .vscode/
 .idea/
+
+# Scratch, Browser Testing Profiles & Bloat
+scratch_chrome_img_test/
+*.pma
+*.tflite
+
+# Word Documents & Specifications
+*.docx
+
+# Redundant offline ML training model checkpoints
+ml/models/rf_price_model.joblib
+ml/models/xgboost_price_model.joblib

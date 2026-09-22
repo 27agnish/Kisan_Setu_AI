@@ -26,8 +26,13 @@ async def lifespan(app: FastAPI):
     
     # Check ML Predictor
     if not predictor.is_ready:
-        is_serverless = os.getenv("VERCEL") == "1" or os.getenv("VERCEL_ENV") is not None
-        if not is_serverless:
+        is_production = (
+            os.getenv("VERCEL") == "1"
+            or os.getenv("VERCEL_ENV") is not None
+            or os.getenv("APP_ENV", "").lower() == "production"
+        )
+        auto_train_enabled = os.getenv("AUTO_TRAIN_ON_STARTUP", "0") == "1"
+        if not is_production and auto_train_enabled:
             print("⚠️ ML model artifacts not found. Initiating on-the-fly training...")
             try:
                 from ml.train_model import train_pipeline
@@ -36,7 +41,10 @@ async def lifespan(app: FastAPI):
             except Exception as e:
                 print(f"Error auto-training ML model on startup: {e}")
         else:
-            print("ℹ️ Serverless runtime detected; skipping on-the-fly training. Fallback heuristic pricing active.")
+            if is_production:
+                print("ℹ️ Production/serverless runtime detected; skipping on-the-fly training. Trained model artifacts or fallback heuristic pricing active.")
+            else:
+                print("ℹ️ ML model artifacts not found. Startup auto-training disabled. Run 'python ml/train_model.py' to train offline, or fallback heuristic active.")
             
     yield
     print("🛑 Shutting down Kisan Setu backend.")

@@ -1,7 +1,10 @@
 """
 ML Training subpackage for Kisan Setu.
 """
-from ml.training.train_model import train_pipeline
+try:
+    from ml.training.train_model import train_pipeline
+except ImportError:
+    train_pipeline = None
 from ml.training.preprocess import engineer_features, build_preprocessor, determine_season
 from ml.training.generate_dataset import generate_agricultural_dataset
 from ml.training.evaluate import calculate_metrics, print_metrics_comparison

@@ -19,7 +19,10 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 from sklearn.ensemble import RandomForestRegressor
-from xgboost import XGBRegressor
+try:
+    from xgboost import XGBRegressor
+except ImportError:
+    XGBRegressor = None
 
 from ml.training.preprocess import (
     engineer_features,
@@ -104,6 +107,8 @@ def train_pipeline(data_path=None, model_dir=None):
     rf_metrics = calculate_metrics(y_test, rf_test_pred, model_name="RandomForestRegressor")
     
     # 6. Train Primary Model (XGBoost Regressor)
+    if XGBRegressor is None:
+        raise ImportError("xgboost is required for offline training. Install it with: pip install -r requirements-train.txt")
     print("Training Primary Model: XGBoostRegressor (n_estimators=300, lr=0.04, max_depth=6)...")
     xgb_model = XGBRegressor(
         n_estimators=300,
