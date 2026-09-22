@@ -49,6 +49,25 @@
           "border-earth":             "#E2E8F0",
           "border-subtle":            "#E2E8F0",
           "error":                    "#ba1a1a",
+          // Stitch Design System Palette
+          "brand": {
+            DEFAULT: "#137547",
+            deep: "#0B4F30",
+            emerald: "#065F46",
+            light: "#E8F5E9",
+            border: "#137547",
+          },
+          "accent": {
+            leaf: "#10B981",
+            vibrant: "#22C55E",
+            amber: "#F59E0B",
+            amberDark: "#D97706",
+            cream: "#FAF9F5",
+            warm: "#FDFBF7",
+            wheat: "#FEF3C7",
+            aiBlue: "#2563EB",
+            aiLight: "#EFF6FF",
+          },
           // Alias existing palette for smooth bridge
           "agri-olive":               "#4F6B44",
           "agri-gold":                "#D9A441",
@@ -86,73 +105,60 @@
      ========================================== -->
 <div id="landing-page">
 
-  <!-- ── NAVBAR ── -->
-  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#137547]/12 transition-all" style="box-shadow:rgba(19,80,50,0.05) 0 4px 20px -4px;">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4" style="height:72px;">
-
-      <!-- Brand Logo (Stitch SVG) -->
-      <a class="flex items-center gap-3 flex-shrink-0 focus:outline-none" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
-        <svg class="h-10 w-auto" fill="none" viewBox="0 0 260 68" xmlns="http://www.w3.org/2000/svg">
-          <g transform="translate(4,6)">
-            <rect fill="#137547" height="56" rx="14" width="56"></rect>
-            <path d="M14 42C20 32 36 32 42 42" stroke="#FEF3C7" stroke-linecap="round" stroke-width="3.5"></path>
-            <path d="M28 36V18M28 18C24 22 20 23 18 23M28 18C32 22 36 23 38 23" stroke="#F59E0B" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
-            <circle cx="28" cy="15" fill="#10B981" r="2.5"></circle>
-            <path d="M22 42V45M34 42V45" stroke="#FEF3C7" stroke-linecap="round" stroke-width="2.5"></path>
-          </g>
-          <text fill="#0F172A" font-family="Plus Jakarta Sans, sans-serif" font-size="22" font-weight="800" letter-spacing="-0.5" x="70" y="34">Kisan Setu AI</text>
-          <text fill="#137547" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600" letter-spacing="0.2" x="70" y="52">किसान से बाजार तक • सीधा और स्मार्ट</text>
-        </svg>
+  <!-- 1. NAVBAR -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-[#FAF9F5]/90 border-b border-[#137547]/10 transition-all duration-300" style="background-color: rgba(244, 248, 245, 0.92); border-bottom: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(19, 80, 50, 0.05) 0px 4px 20px -4px;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <!-- Logo + Brand Identification -->
+      <a class="flex items-center gap-3 group focus:outline-none" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
+        <div class="h-11 w-auto flex-shrink-0">
+          <svg class="h-11 w-auto" fill="none" viewBox="0 0 280 72" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(4, 8)">
+              <rect fill="#137547" height="56" rx="16" width="56"></rect>
+              <path d="M14 42C20 32 36 32 42 42" stroke="#FEF3C7" stroke-linecap="round" stroke-width="3.5"></path>
+              <path d="M28 36V18M28 18C24 22 20 23 18 23M28 18C32 22 36 23 38 23" stroke="#F59E0B" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+              <circle cx="28" cy="15" fill="#10B981" r="2.5"></circle>
+              <path d="M22 42V45M34 42V45" stroke="#FEF3C7" stroke-linecap="round" stroke-width="2.5"></path>
+            </g>
+            <text fill="#0F172A" font-family="Plus Jakarta Sans, sans-serif" font-size="24" font-weight="800" letter-spacing="-0.5" x="72" y="38">Kisan Setu AI</text>
+            <text fill="#137547" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="600" letter-spacing="0.2" x="72" y="55">किसान से बाजार तक • सीधा और स्मार्ट</text>
+          </svg>
+        </div>
       </a>
-
       <!-- Center Nav Links -->
-      <nav class="hidden md:flex items-center gap-7">
-        <a class="text-sm font-semibold text-[#137547]" href="#home">Home</a>
+      <nav class="hidden md:flex items-center gap-8">
+        <a class="text-sm font-semibold text-[#137547] hover:text-[#0B4F30] transition-colors" href="#home">Home</a>
         <a class="text-sm font-medium text-slate-600 hover:text-[#137547] transition-colors" href="#how-it-works">How It Works</a>
-        <a class="text-sm font-medium text-slate-600 hover:text-[#137547] transition-colors flex items-center gap-1" href="#fair-price">
+        <a class="text-sm font-medium text-slate-600 hover:text-[#137547] transition-colors flex items-center gap-1.5" href="#fair-price">
           Fair Price AI
           <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-blue-100 text-[#2563EB]">AI</span>
         </a>
-        <a class="text-sm font-medium text-slate-600 hover:text-[#137547] transition-colors" href="#marketplace-preview">Marketplace</a>
+        <a class="text-sm font-medium text-slate-600 hover:text-[#137547] transition-colors" href="#marketplace">Marketplace</a>
         <a class="text-sm font-medium text-slate-600 hover:text-[#137547] transition-colors" href="#for-buyers">For Buyers</a>
       </nav>
-
-      <!-- Right: Auth Buttons (IDs preserved for JS state management) -->
-      <div class="flex items-center gap-3" id="landing-nav-right">
-        <!-- Status pill (shown when logged out) -->
-        <span class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-[#E8F5E9] border border-[#137547]/20 text-[#2c6a48]" id="nav-status-pill">
-          <span class="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
-          Live ML · APMC
-        </span>
-
-        <!-- Logged-OUT buttons (shown by updateLandingNavState) -->
-        <button class="text-sm font-semibold text-slate-700 hover:text-[#0B4F30] transition-colors px-2 hidden sm:inline-flex items-center"
-                id="nav-btn-open-app" onclick="handleOpenAppNav()">Open App</button>
-
-        <button class="text-sm font-semibold text-slate-700 hover:text-[#0B4F30] transition-colors px-2 hidden sm:inline-flex items-center"
-                id="nav-btn-login" onclick="openAuthModal('login')">Sign In</button>
-
-        <button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0B4F30] hover:bg-[#137547] text-white text-sm font-bold shadow-md transition-all"
-                id="nav-btn-signup" onclick="openAuthModal('signup')">
-          Get Started
-          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      <!-- Right Actions: Language, Login, Primary CTA -->
+      <div class="flex items-center gap-3 sm:gap-4" id="landing-nav-right">
+        <button class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-slate-200 hover:border-[#137547]/30 text-slate-700 shadow-sm transition-all" type="button" onclick="showToast('Language: English / हिन्दी (Default)')">
+          <span class="material-symbols-outlined text-[16px] text-[#137547]">translate</span>
+          <span>EN / हिंदी</span>
         </button>
 
-        <!-- Logged-IN buttons (shown by updateLandingNavState) -->
-        <button class="text-sm font-semibold text-slate-700 hover:text-[#0B4F30] transition-colors px-2 hidden items-center gap-1"
-                id="nav-btn-profile" style="display:none;" onclick="openApp('profile')">
+        <!-- Dynamic Auth State Elements (managed by updateLandingNavState) -->
+        <button class="text-sm font-semibold text-slate-700 hover:text-[#0B4F30] transition-colors px-2 hidden sm:inline-flex items-center" id="nav-btn-open-app" onclick="handleOpenAppNav()">Open App</button>
+        <button class="text-sm font-semibold text-slate-700 hover:text-[#0B4F30] transition-colors px-2 hidden sm:inline-flex items-center" id="nav-btn-login" onclick="openAuthModal('login')">Login</button>
+        <button class="sheen-btn inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0B4F30] hover:bg-[#137547] text-white text-sm font-bold shadow-md shadow-[#0B4F30]/20 hover:shadow-lg transition-all duration-200" id="nav-btn-signup" onclick="openAuthModal('signup')">
+          <span>Get Started</span>
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </button>
+
+        <button class="text-sm font-semibold text-slate-700 hover:text-[#0B4F30] transition-colors px-2 hidden items-center gap-1" id="nav-btn-profile" style="display:none;" onclick="openApp('profile')">
           <span class="material-symbols-outlined text-[18px]">account_circle</span>
           Profile
         </button>
-
-        <button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#137547] hover:bg-[#0B4F30] text-white text-sm font-bold shadow-md transition-all"
-                id="nav-btn-app" style="display:none;" onclick="openApp('dashboard')">
+        <button class="sheen-btn inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#137547] hover:bg-[#0B4F30] text-white text-sm font-bold shadow-md transition-all" id="nav-btn-app" style="display:none;" onclick="openApp('dashboard')">
           <span class="material-symbols-outlined text-[16px]">apps</span>
-          Open App
+          Open Dashboard
         </button>
-
-        <button class="text-sm font-medium text-slate-500 hover:text-red-600 transition-colors px-2 hidden items-center gap-1"
-                id="nav-btn-logout" style="display:none;" onclick="logout()">
+        <button class="text-sm font-medium text-slate-500 hover:text-red-600 transition-colors px-2 hidden items-center gap-1" id="nav-btn-logout" style="display:none;" onclick="logout()">
           <span class="material-symbols-outlined text-[16px]">logout</span>
           Logout
         </button>
@@ -160,643 +166,863 @@
     </div>
   </header>
 
-  <!-- ── HERO SECTION ── -->
-  <section class="relative pt-10 pb-16 lg:pt-16 lg:pb-24 overflow-hidden" id="home" style="background:linear-gradient(rgb(244,248,245) 0%,rgb(237,245,240) 50%,rgb(244,248,245) 100%);">
-    <!-- Atmospheric blur blobs -->
-    <div class="absolute top-0 right-1/4 w-96 h-96 bg-[#FEF3C7]/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
-    <div class="absolute top-20 -left-20 w-[500px] h-[500px] bg-emerald-100/30 rounded-full blur-3xl pointer-events-none -z-10"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-
-        <!-- Left Column: Copy & CTAs -->
-        <div class="lg:col-span-6 flex flex-col items-start gap-6">
-          <!-- Eyebrow badge -->
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FEF3C7] border border-[#F59E0B]/30 text-slate-800 text-xs font-bold tracking-wide shadow-sm">
-            <span>🌾</span>
-            <span>AI-Powered Agricultural Marketplace • NABL & APMC Connected</span>
-          </div>
-
-          <!-- Headline -->
-          <h1 class="text-4xl sm:text-5xl lg:text-[52px] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
-            किसान से बाजार तक,<br>
-            <span class="text-[#137547]">सीधा, पारदर्शी</span> और
-            <span class="bg-gradient-to-r from-[#D97706] to-[#137547] bg-clip-text text-transparent">स्मार्ट</span>
-          </h1>
-
-          <p class="text-lg text-slate-600 max-w-xl font-medium leading-relaxed">
-            Kisan Setu eliminates 5+ middlemen with ML-backed fair price discovery, direct farmgate buying, shared freight optimisation, and real-time shipment tracking.
-          </p>
-
-          <!-- CTAs — handlers preserved from original -->
-          <div class="flex flex-wrap items-center gap-4 pt-1 w-full">
-            <button onclick="handlePrimaryHeroCTA()"
-              class="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#0B4F30] hover:bg-[#137547] text-white font-bold text-base shadow-lg shadow-[#0B4F30]/25 transition-all">
-              <span class="material-symbols-outlined text-[20px] text-[#F59E0B]">storefront</span>
-              List Your Produce / फसल बेचें
-            </button>
-            <button onclick="handleMarketplaceHeroCTA()"
-              class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white border border-[#137547]/30 text-[#0B4F30] hover:bg-[#137547]/5 font-bold text-base shadow-sm hover:border-[#137547] transition-all">
-              <span class="material-symbols-outlined text-[20px] text-[#137547]">explore</span>
-              Browse Marketplace / बाजार देखें
-            </button>
-          </div>
-
-          <!-- Trust checklist -->
-          <div class="flex flex-wrap items-center gap-x-6 gap-y-2 pt-1 text-sm font-semibold text-slate-700">
-            <div class="flex items-center gap-1.5"><span class="text-[#10B981] font-bold">✓</span> Verified Farmers</div>
-            <div class="flex items-center gap-1.5"><span class="text-[#10B981] font-bold">✓</span> AI Fair Pricing</div>
-            <div class="flex items-center gap-1.5"><span class="text-[#10B981] font-bold">✓</span> Secure Escrow</div>
-            <div class="flex items-center gap-1.5"><span class="text-[#10B981] font-bold">✓</span> OSRM Logistics</div>
-          </div>
-
-          <!-- Mini stats (original ledger-mini data preserved) -->
-          <div class="flex gap-6 pt-2">
-            <div class="text-center">
-              <div class="text-2xl font-extrabold text-[#D97706]">+38%</div>
-              <div class="text-xs text-slate-500 font-medium mt-0.5">Avg. Farmer Net Gain</div>
+  <main>
+    <!-- 2. HERO SECTION -->
+    <section class="relative pt-8 pb-16 lg:pt-14 lg:pb-24 overflow-hidden" id="home">
+      <!-- Background subtle atmospheric gradients -->
+      <div class="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[#FEF3C7]/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
+      <div class="absolute top-20 left-[-10%] w-[600px] h-[600px] bg-emerald-100/30 rounded-full blur-3xl pointer-events-none -z-10"></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <!-- Left Column -->
+          <div class="lg:col-span-6 flex flex-col items-start gap-6">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FEF3C7] border border-[#F59E0B]/30 text-slate-800 text-xs font-bold tracking-wide shadow-sm">
+              <span class="text-sm">🌾</span>
+              <span>AI-Powered Agricultural Marketplace • NABL &amp; APMC Connected</span>
             </div>
-            <div class="w-px bg-slate-200"></div>
-            <div class="text-center">
-              <div class="text-2xl font-extrabold text-slate-900">−18%</div>
-              <div class="text-xs text-slate-500 font-medium mt-0.5">Buyer Procurement Cost</div>
+            <!-- Main Headline -->
+            <h1 class="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+              किसान से बाजार तक,<br>
+              <span class="text-[#137547]">सीधा, पारदर्शी</span> और <span class="bg-gradient-to-r from-[#D97706] to-[#137547] bg-clip-text text-transparent">स्मार्ट</span>
+            </h1>
+            <!-- Supporting English copy -->
+            <p class="text-lg text-slate-600 max-w-xl font-medium leading-relaxed">
+              Connect directly with verified buyers, discover AI-powered fair prices, and sell your produce with confidence.
+            </p>
+            <!-- CTAs -->
+            <div class="flex flex-wrap items-center gap-4 pt-1 w-full sm:w-auto">
+              <button onclick="handlePrimaryHeroCTA()" class="sheen-btn inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#0B4F30] hover:bg-[#137547] text-white font-bold text-base shadow-lg shadow-[#0B4F30]/25 transition-all">
+                <span class="material-symbols-outlined text-[20px] text-[#F59E0B]">storefront</span>
+                <span>List Your Produce / फसल बेचें</span>
+              </button>
+              <button onclick="handleMarketplaceHeroCTA()" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white border border-[#137547]/30 text-[#0B4F30] hover:bg-[#137547]/5 font-bold text-base shadow-sm hover:border-[#137547] transition-all">
+                <span class="material-symbols-outlined text-[20px] text-[#137547]">explore</span>
+                <span>Explore Marketplace / बाजार देखें</span>
+              </button>
             </div>
-            <div class="w-px bg-slate-200"></div>
-            <div class="text-center">
-              <div class="text-2xl font-extrabold text-[#137547]" id="hero-mandi-count">10+</div>
-              <div class="text-xs text-slate-500 font-medium mt-0.5">APMC Mandis Linked</div>
+            <!-- Trust Checklist -->
+            <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-y-2 gap-x-6 pt-2 text-xs sm:text-sm font-semibold text-slate-700">
+              <div class="flex items-center gap-1.5"><span class="text-[#10B981] font-bold">✓</span> Verified Farmers</div>
+              <div class="flex items-center gap-1.5"><span class="text-[#10B981] font-bold">✓</span> AI Fair Pricing</div>
+              <div class="flex items-center gap-1.5"><span class="text-[#10B981] font-bold">✓</span> Secure Escrow</div>
+              <div class="flex items-center gap-1.5"><span class="text-[#10B981] font-bold">✓</span> Quality Assured</div>
             </div>
           </div>
-        </div>
-
-        <!-- Right Column: Interactive AI Price Mockup (all original IDs preserved) -->
-        <div class="lg:col-span-6 relative">
-          <div class="relative mx-auto max-w-md lg:max-w-none">
-            <!-- Main Phone-style card -->
-            <div class="bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden" style="border:1px solid rgba(19,117,71,0.14); box-shadow:rgba(19,80,50,0.12) 0 25px 50px -12px;">
-
-              <!-- Card Header -->
-              <div class="flex items-center justify-between px-5 py-4 bg-[#0B4F30]">
-                <div class="flex items-center gap-2 text-white font-bold text-sm">
-                  <span class="material-symbols-outlined text-[20px] text-[#F59E0B]">auto_graph</span>
-                  AI Fair Price Engine
-                </div>
-                <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-white/20 text-white" id="phone-mandi-tag">Nashik APMC</span>
-              </div>
-
-              <!-- Crop selector chips (original onclick handlers preserved) -->
-              <div class="flex gap-2 px-5 pt-4 flex-wrap">
-                <div class="crop-chip active px-3 py-1.5 rounded-full text-xs font-bold cursor-pointer bg-[#137547] text-white border border-[#137547]"
-                     onclick="selectPhoneCrop('Tomato', 31.0, 23.0, '🍅')">🍅 Tomato</div>
-                <div class="crop-chip px-3 py-1.5 rounded-full text-xs font-bold cursor-pointer bg-white text-slate-700 border border-slate-200 hover:border-[#137547]"
-                     onclick="selectPhoneCrop('Onion', 19.0, 14.0, '🧅')">🧅 Onion</div>
-                <div class="crop-chip px-3 py-1.5 rounded-full text-xs font-bold cursor-pointer bg-white text-slate-700 border border-slate-200 hover:border-[#137547]"
-                     onclick="selectPhoneCrop('Wheat', 24.0, 19.0, '🌾')">🌾 Wheat</div>
-                <div class="crop-chip px-3 py-1.5 rounded-full text-xs font-bold cursor-pointer bg-white text-slate-700 border border-slate-200 hover:border-[#137547]"
-                     onclick="selectPhoneCrop('Potato', 15.0, 11.0, '🥔')">🥔 Potato</div>
-              </div>
-
-              <!-- Main price display -->
-              <div class="px-5 py-4">
-                <div class="bg-gradient-to-br from-emerald-50 to-teal-50/50 rounded-2xl p-4 border border-emerald-200">
-                  <div class="text-xs font-bold text-emerald-800 uppercase tracking-wide">Recommended Fair Price</div>
-                  <div class="text-3xl font-extrabold text-[#0B4F30] mt-1" id="phone-price-amt">₹31.00 / kg</div>
-                  <div class="text-xs font-bold text-[#065F46] mt-1" id="phone-price-delta">▲ +₹8.00 vs local middleman</div>
-                </div>
-
-                <!-- Price breakdown rows -->
-                <div class="mt-4 space-y-2.5">
-                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-600">Mandi Spot Modal</span>
-                    <strong class="text-slate-900" id="phone-mandi-amt">₹23.00/kg</strong>
+          <!-- Right Column: Interactive Realistic Visual Scene with Telemetry Cards -->
+          <div class="lg:col-span-6 relative">
+            <div class="relative mx-auto max-w-lg lg:max-w-none">
+              <!-- Main Photo Frame -->
+              <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-100 aspect-[4/3] sm:aspect-[14/11]">
+                <img alt="Modern Indian farmer in golden wheat field" class="w-full h-full object-cover object-center scale-105 transform hover:scale-100 transition-transform duration-700" src="assets/farmer_hero.png" onerror="this.src='https://lh3.googleusercontent.com/aida/AEtjO1VXAnfo7db2W29KlygOWG3fN7mfiNoK-4peBx-an4wag-wjLXIAX1w3a5Svg-xtiVRugm4Hw9Uv928I2ZrvHuKXYcYQN-zSNJVYqearb4fFUaMJkTB6PTzA_fStl8F__QEqIs0iDyZtLZSxL7s1hRncJdxgEWDGM6RPF2GkQua-yi6-2geB4r-63hX8DF91ubOIRCLl84jMPknhrjK4FxBARoWhzgsok1EX7yLzJ1W3xla67qgI-0VSP_k'">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-900/10 to-transparent"></div>
+                <!-- Supply Chain Badge Overlay at bottom of photo -->
+                <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-slate-200/80 shadow-lg flex items-center justify-between text-xs font-bold text-slate-800">
+                  <div class="flex items-center gap-1.5">
+                    <span>🌾 Farmer</span>
+                    <span class="text-slate-400">→</span>
+                    <span class="px-2 py-0.5 rounded bg-emerald-50 text-[#137547] border border-emerald-200">🤖 Kisan Setu AI</span>
+                    <span class="text-slate-400">→</span>
+                    <span>🏢 Verified Buyer</span>
                   </div>
-                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-600">XGBoost ML Forecast</span>
-                    <strong class="text-slate-900" id="phone-ml-amt">₹30.80/kg</strong>
-                  </div>
-                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-600">95% Confidence Band</span>
-                    <strong class="text-[#137547]" id="phone-ci-amt">₹29.5 – ₹32.8</strong>
-                  </div>
+                  <span class="flex items-center gap-1 text-[#137547]">
+                    <span class="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
+                    Live Escrow
+                  </span>
                 </div>
-
-                <!-- CTA inside card (original handler preserved) -->
-                <button onclick="handlePrimaryHeroCTA()"
-                  class="mt-5 w-full py-3 rounded-xl bg-[#0B4F30] hover:bg-[#137547] text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
-                  <span class="material-symbols-outlined text-[18px]">open_in_new</span>
-                  Open Multi-User App →
-                </button>
               </div>
-            </div>
-
-            <!-- Floating badges -->
-            <div class="absolute -top-4 -right-4 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-amber-200/70 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl bg-[#FEF3C7] flex items-center justify-center text-xl">🌾</div>
-              <div>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500">AI Fair Price</div>
-                <div class="text-sm font-extrabold text-slate-900">₹2,780 <span class="text-xs font-semibold text-slate-500">/ Qtl</span></div>
-                <div class="text-[10px] font-bold text-[#065F46] bg-emerald-100 px-1.5 rounded mt-0.5">+₹60/Qtl</div>
+              <!-- Floating Card 1: AI Fair Price (Top Right) -->
+              <div class="absolute -top-6 -right-2 sm:-right-6 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-amber-200/70 flex items-center gap-3 animate-fade-in">
+                <div class="w-10 h-10 rounded-xl bg-[#FEF3C7] text-[#D97706] flex items-center justify-center font-bold text-xl">🌾</div>
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">AI Fair Price</span>
+                    <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-[#065F46]">+₹60/Qtl</span>
+                  </div>
+                  <div class="text-base font-extrabold text-slate-900 leading-tight">₹2,780 <span class="text-xs font-semibold text-slate-500">/ Qtl</span></div>
+                </div>
               </div>
-            </div>
-            <div class="absolute -bottom-4 -left-4 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl border border-emerald-100 flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl bg-emerald-100 text-[#137547] flex items-center justify-center">
-                <span class="material-symbols-outlined text-[20px]">lock</span>
+              <!-- Floating Card 2: Verified Farmer (Top Left) -->
+              <div class="absolute -top-4 -left-2 sm:-left-6 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-emerald-200/70 flex items-center gap-2.5">
+                <img alt="Farmer Avatar" class="w-9 h-9 rounded-full object-cover ring-2 ring-[#10B981]" src="assets/farmer_hero.png" onerror="this.src='https://lh3.googleusercontent.com/aida/AEtjO1VXAnfo7db2W29KlygOWG3fN7mfiNoK-4peBx-an4wag-wjLXIAX1w3a5Svg-xtiVRugm4Hw9Uv928I2ZrvHuKXYcYQN-zSNJVYqearb4fFUaMJkTB6PTzA_fStl8F__QEqIs0iDyZtLZSxL7s1hRncJdxgEWDGM6RPF2GkQua-yi6-2geB4r-63hX8DF91ubOIRCLl84jMPknhrjK4FxBARoWhzgsok1EX7yLzJ1W3xla67qgI-0VSP_k'">
+                <div>
+                  <div class="flex items-center gap-1">
+                    <span class="text-xs font-bold text-slate-900">Malwa Krishi FPO</span>
+                    <span class="material-symbols-outlined text-[15px] text-[#10B981]">verified</span>
+                  </div>
+                  <div class="text-[11px] text-[#065F46] font-semibold">SFAC &amp; Aadhaar Verified</div>
+                </div>
               </div>
-              <div>
-                <div class="text-[10px] uppercase font-bold text-slate-400">Escrow Security</div>
-                <div class="text-xs font-extrabold text-slate-900">₹20,000 Locked <span class="text-[11px] font-normal text-slate-500">• ICICI Node</span></div>
+              <!-- Floating Card 3: Buyer Offer (Right Center/Lower) -->
+              <div class="hidden sm:flex absolute top-1/2 -right-8 -translate-y-1/2 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-blue-100 items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[20px]">apartment</span>
+                </div>
+                <div>
+                  <div class="text-[11px] text-slate-500 font-semibold">ITC Agri Business</div>
+                  <div class="text-xs font-bold text-[#2563EB]">Offer: ₹2,760 / Qtl</div>
+                </div>
+              </div>
+              <!-- Floating Card 4: Secure Escrow (Bottom Left) -->
+              <div class="absolute -bottom-8 -left-2 sm:-left-6 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl border border-emerald-100 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-emerald-100 text-[#137547] flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[20px]">lock</span>
+                </div>
+                <div>
+                  <div class="text-[10px] uppercase font-bold text-slate-400">Escrow Security</div>
+                  <div class="text-xs font-extrabold text-slate-900">₹20,000 Locked <span class="text-[11px] font-normal text-slate-500">• ICICI Node</span></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
+    <!-- 3. TRUST BAR -->
+    <section class="border-y border-slate-200/80 bg-white/80 backdrop-blur-sm py-10" style="background: rgba(255, 255, 255, 0.7); border-top: 1px solid rgba(19, 117, 71, 0.12); border-bottom: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(19, 80, 50, 0.04) 0px 10px 30px -10px;">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-xs font-bold uppercase tracking-wider text-slate-500 mb-6">
+          Built for transparent agricultural trade across India
+        </p>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div class="bg-[#FAF9F5] p-5 rounded-2xl border border-slate-200/70 hover:border-[#137547]/30 transition-all text-center" style="background: rgb(255, 255, 255); border: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(19, 80, 50, 0.06) 0px 10px 25px -5px, rgba(19, 80, 50, 0.03) 0px 4px 10px -2px;">
+            <div class="text-2xl sm:text-3xl font-extrabold text-[#0B4F30]">10,000+</div>
+            <div class="text-xs sm:text-sm font-bold text-slate-700 mt-1">Verified Farmers</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Aadhaar &amp; Bhulekh linked</div>
+          </div>
+          <div class="bg-[#FAF9F5] p-5 rounded-2xl border border-slate-200/70 hover:border-[#137547]/30 transition-all text-center" style="background: rgb(255, 255, 255); border: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(19, 80, 50, 0.06) 0px 10px 25px -5px, rgba(19, 80, 50, 0.03) 0px 4px 10px -2px;">
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-900">500+</div>
+            <div class="text-xs sm:text-sm font-bold text-slate-700 mt-1">Institutional Buyers</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Mills, processors &amp; exporters</div>
+          </div>
+          <div class="bg-[#FAF9F5] p-5 rounded-2xl border border-slate-200/70 hover:border-[#137547]/30 transition-all text-center" style="background: rgb(255, 255, 255); border: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(19, 80, 50, 0.06) 0px 10px 25px -5px, rgba(19, 80, 50, 0.03) 0px 4px 10px -2px;">
+            <div class="text-2xl sm:text-3xl font-extrabold text-[#D97706]">25+</div>
+            <div class="text-xs sm:text-sm font-bold text-slate-700 mt-1">Crop Categories</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Cereals, pulses, oilseeds &amp; GI crops</div>
+          </div>
+          <div class="bg-[#FAF9F5] p-5 rounded-2xl border border-slate-200/70 hover:border-[#137547]/30 transition-all text-center" style="background: rgb(255, 255, 255); border: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(19, 80, 50, 0.06) 0px 10px 25px -5px, rgba(19, 80, 50, 0.03) 0px 4px 10px -2px;">
+            <div class="text-2xl sm:text-3xl font-extrabold text-[#137547]">₹120 Cr+</div>
+            <div class="text-xs sm:text-sm font-bold text-slate-700 mt-1">Digital Escrow Cleared</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">100% zero-default record</div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── TRUST BAR ── -->
-  <section class="border-y bg-white/80 backdrop-blur-sm py-10" id="trust-bar" style="border-top:1px solid rgba(19,117,71,0.12); border-bottom:1px solid rgba(19,117,71,0.12);">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="text-center text-xs font-bold uppercase tracking-wider text-slate-500 mb-6">Built for transparent agricultural trade across India</p>
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div class="p-5 rounded-2xl border text-center" style="background:#fff; border:1px solid rgba(19,117,71,0.12); box-shadow:rgba(19,80,50,0.06) 0 10px 25px -5px;">
-          <div class="text-3xl font-extrabold text-[#0B4F30]">10,000+</div>
-          <div class="text-sm font-bold text-slate-700 mt-1">Verified Farmers</div>
-          <div class="text-xs text-slate-500 mt-0.5">Aadhaar & Bhulekh linked</div>
-        </div>
-        <div class="p-5 rounded-2xl border text-center" style="background:#fff; border:1px solid rgba(19,117,71,0.12); box-shadow:rgba(19,80,50,0.06) 0 10px 25px -5px;">
-          <div class="text-3xl font-extrabold text-slate-900">500+</div>
-          <div class="text-sm font-bold text-slate-700 mt-1">Institutional Buyers</div>
-          <div class="text-xs text-slate-500 mt-0.5">Mills, processors & exporters</div>
-        </div>
-        <div class="p-5 rounded-2xl border text-center" style="background:#fff; border:1px solid rgba(19,117,71,0.12); box-shadow:rgba(19,80,50,0.06) 0 10px 25px -5px;">
-          <div class="text-3xl font-extrabold text-[#D97706]">48K+</div>
-          <div class="text-sm font-bold text-slate-700 mt-1">Mandi Records</div>
-          <div class="text-xs text-slate-500 mt-0.5">AGMARKNET training dataset</div>
-        </div>
-        <div class="p-5 rounded-2xl border text-center" style="background:#fff; border:1px solid rgba(19,117,71,0.12); box-shadow:rgba(19,80,50,0.06) 0 10px 25px -5px;">
-          <div class="text-3xl font-extrabold text-[#137547]">₹120 Cr+</div>
-          <div class="text-sm font-bold text-slate-700 mt-1">Digital Escrow Cleared</div>
-          <div class="text-xs text-slate-500 mt-0.5">100% zero-default record</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── HOW IT WORKS ── -->
-  <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="how-it-works">
-    <div class="text-center max-w-3xl mx-auto mb-14">
-      <span class="inline-block px-3.5 py-1 rounded-full bg-[#FEF3C7] text-[#D97706] font-bold text-xs uppercase tracking-wider mb-3">Simple 4-Step Process / आसान प्रक्रिया</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">From Farm Gate to City Buyer in 4 Steps</h2>
-      <p class="text-base text-slate-600 mt-3 font-medium">Replacing opaque middleman auctions with algorithmic fair pricing, direct buyer contracts, and shared multi-stop transport.</p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Step 01 -->
-      <div class="group bg-white p-6 rounded-2xl border border-slate-200/80 hover:border-[#137547] hover:shadow-lg transition-all duration-300 flex flex-col justify-between" style="box-shadow:rgba(19,80,50,0.06) 0 10px 25px -5px;">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-white border border-[#137547]/20 flex items-center justify-center font-extrabold text-[#137547] text-lg mb-5 shadow-sm group-hover:bg-[#137547] group-hover:text-white transition-colors">01</div>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">Farmer Lists Produce</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Enter crop, harvest date, location & quantity. The ML engine forecasts 7-day modal prices and recommends an optimal farmgate asking price.</p>
-        </div>
-        <div class="pt-6 flex items-center gap-2 text-xs font-bold text-[#137547]">
-          <span class="material-symbols-outlined text-[18px]">add_a_photo</span>
-          <span>1-Minute Photo Ingestion</span>
-        </div>
-      </div>
-      <!-- Step 02 -->
-      <div class="group bg-white p-6 rounded-2xl border border-slate-200/80 hover:border-[#F59E0B] hover:shadow-lg transition-all duration-300 flex flex-col justify-between" style="box-shadow:rgba(19,80,50,0.06) 0 10px 25px -5px;">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-white border border-[#F59E0B]/30 flex items-center justify-center font-extrabold text-[#D97706] text-lg mb-5 shadow-sm group-hover:bg-[#D97706] group-hover:text-white transition-colors">02</div>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">AI Price Discovery</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Trained on 48,000+ AGMARKNET mandi records, incorporating seasonality, arrival elasticity, and quality grade multipliers with confidence bands.</p>
-        </div>
-        <div class="pt-6 flex items-center gap-2 text-xs font-bold text-[#D97706]">
-          <span class="material-symbols-outlined text-[18px]">psychology</span>
-          <span>Dynamic Spot Intelligence</span>
-        </div>
-      </div>
-      <!-- Step 03 -->
-      <div class="group bg-white p-6 rounded-2xl border border-slate-200/80 hover:border-[#2563EB] hover:shadow-lg transition-all duration-300 flex flex-col justify-between" style="box-shadow:rgba(19,80,50,0.06) 0 10px 25px -5px;">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-white border border-blue-200 flex items-center justify-center font-extrabold text-[#2563EB] text-lg mb-5 shadow-sm group-hover:bg-[#2563EB] group-hover:text-white transition-colors">03</div>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">Buyer Direct Order</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Retailers and bulk institutions purchase directly from verified farmer listings at ~15% below retail rates, locking quantities and delivery slots.</p>
-        </div>
-        <div class="pt-6 flex items-center gap-2 text-xs font-bold text-[#2563EB]">
-          <span class="material-symbols-outlined text-[18px]">gavel</span>
-          <span>100% Binding Bids</span>
-        </div>
-      </div>
-      <!-- Step 04 -->
-      <div class="group bg-white p-6 rounded-2xl border border-slate-200/80 hover:border-[#10B981] hover:shadow-lg transition-all duration-300 flex flex-col justify-between" style="box-shadow:rgba(19,80,50,0.06) 0 10px 25px -5px;">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-white border border-emerald-200 flex items-center justify-center font-extrabold text-[#10B981] text-lg mb-5 shadow-sm group-hover:bg-[#10B981] group-hover:text-white transition-colors">04</div>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">OSRM Corridor Logistics</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Shared freight algorithms optimize multi-farm pickups and multi-drop routes with OpenStreetMap road routing, verified by live custody tracking.</p>
-        </div>
-        <div class="pt-6 flex items-center gap-2 text-xs font-bold text-[#065F46]">
-          <span class="material-symbols-outlined text-[18px]">verified_user</span>
-          <span>T+0 Bank Settlement</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── AI FAIR PRICE FEATURE ── -->
-  <section class="py-20 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="fair-price">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-      <!-- Left column -->
-      <div class="lg:col-span-5 flex flex-col items-start gap-4">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-[#2563EB] text-xs font-bold uppercase tracking-wider">
-          <span class="material-symbols-outlined text-[16px]">analytics</span>
-          Proprietary ML Pricing Engine
+    <!-- 4. PROBLEM → SOLUTION SECTION -->
+    <section class="py-20 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-[#065F46] font-bold text-xs uppercase tracking-wider mb-3">
+          Market Architecture / बाजार सुधार
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">Know the Fair Price Before You Sell</h2>
-        <p class="text-base text-slate-600 font-medium leading-relaxed">Data-driven pricing backed by real-time APMC arrivals, remote sensing, and NABL lab parameters. Never settle for distress sale rates again.</p>
-        <div class="grid grid-cols-2 gap-4 w-full pt-2">
-          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-            <div class="text-xs text-slate-500 font-semibold">Average Farmer Gain</div>
-            <div class="text-2xl font-extrabold text-[#137547] mt-1">+14–38%</div>
-            <div class="text-[11px] text-slate-500 mt-0.5">Vs local spot mandis</div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          From Farm to Market, Without the Complexity
+        </h2>
+        <p class="text-base text-slate-600 mt-3 font-medium">
+          Reduce unnecessary intermediaries and give farmers greater visibility into market prices, buyer offers, quality, and logistics.
+        </p>
+      </div>
+      <!-- Horizontal Comparison Component -->
+      <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-xl flex flex-col gap-8" style="border: 1px solid rgba(19, 117, 71, 0.14); box-shadow: rgba(19, 80, 50, 0.09) 0px 20px 40px -15px, rgba(19, 80, 50, 0.04) 0px 4px 16px -2px; background: rgb(255, 255, 255);">
+        <!-- Traditional Flow (Problem) -->
+        <div class="rounded-2xl bg-red-50/50 border border-red-200/70 p-5 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-red-100">
+            <div class="flex items-center gap-2 text-red-800 font-bold text-sm">
+              <span class="material-symbols-outlined text-[20px] text-red-600">cancel</span>
+              Traditional Mandi Model (4–5 Middlemen Deductions)
+            </div>
+            <span class="text-xs font-semibold text-red-700 bg-red-100 px-2.5 py-1 rounded-full">
+              ~20% Value Loss &amp; 30-Day Delayed Payments
+            </span>
           </div>
-          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-            <div class="text-xs text-slate-500 font-semibold">Mandi Records</div>
-            <div class="text-2xl font-extrabold text-[#2563EB] mt-1">48,000+</div>
-            <div class="text-[11px] text-slate-500 mt-0.5">AGMARKNET training set</div>
+          <!-- Horizontal Flow Nodes -->
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
+            <div class="bg-white p-3 rounded-xl border border-red-200 shadow-sm">
+              <div class="text-2xl mb-1">🌾</div>
+              <div class="text-xs font-bold text-slate-900">Farmer</div>
+              <div class="text-[10px] text-slate-500">Low realization</div>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-red-200 shadow-sm relative">
+              <span class="absolute -top-2 -right-2 text-[10px] bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center font-bold">✕</span>
+              <div class="text-2xl mb-1">🤝</div>
+              <div class="text-xs font-bold text-slate-900">Village Kachha Arhatiya</div>
+              <div class="text-[10px] text-red-600 font-semibold">-5% Cut</div>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-red-200 shadow-sm relative">
+              <span class="absolute -top-2 -right-2 text-[10px] bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center font-bold">✕</span>
+              <div class="text-2xl mb-1">🏬</div>
+              <div class="text-xs font-bold text-slate-900">APMC Trader Cartel</div>
+              <div class="text-[10px] text-red-600 font-semibold">-6% Mandi Fee</div>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-red-200 shadow-sm relative">
+              <span class="absolute -top-2 -right-2 text-[10px] bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center font-bold">✕</span>
+              <div class="text-2xl mb-1">🚛</div>
+              <div class="text-xs font-bold text-slate-900">Regional Broker</div>
+              <div class="text-[10px] text-red-600 font-semibold">-4% Overhead</div>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-red-200 shadow-sm col-span-2 sm:col-span-1">
+              <div class="text-2xl mb-1">🏢</div>
+              <div class="text-xs font-bold text-slate-900">Processor / Mill</div>
+              <div class="text-[10px] text-slate-500">Inflated purchase cost</div>
+            </div>
           </div>
         </div>
-        <button onclick="handleScreensCTA('ai-pricing')"
-          class="mt-2 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-md transition-all">
-          <span class="material-symbols-outlined text-[18px]">query_stats</span>
-          Explore Fair Price AI
+        <!-- Kisan Setu AI Flow (Solution) -->
+        <div class="rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50/40 to-emerald-50 border border-emerald-300 p-5 sm:p-6 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-emerald-200/80">
+            <div class="flex items-center gap-2 text-[#065F46] font-bold text-sm">
+              <span class="material-symbols-outlined text-[20px] text-[#10B981]">check_circle</span>
+              Kisan Setu AI Direct Exchange (Zero Intermediaries)
+            </div>
+            <span class="text-xs font-bold text-emerald-800 bg-emerald-200/70 px-3 py-1 rounded-full">
+              0% Middleman Fees • Instant T+0 Regulated Escrow
+            </span>
+          </div>
+          <!-- Direct 3-Step Node Architecture -->
+          <div class="grid grid-cols-1 md:grid-cols-11 gap-3 items-center text-center">
+            <!-- Left: Farmer -->
+            <div class="md:col-span-3 bg-white p-4 rounded-xl border border-emerald-300 shadow-sm flex flex-col items-center">
+              <div class="text-3xl mb-1">🌾</div>
+              <div class="text-sm font-extrabold text-slate-900">Producer / FPO</div>
+              <p class="text-xs text-[#137547] font-semibold mt-1">+18.4% Realization</p>
+              <span class="mt-2 text-[10px] bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded font-bold">NABL Lab Tested</span>
+            </div>
+            <!-- Arrow 1 -->
+            <div class="hidden md:flex md:col-span-1 justify-center text-[#10B981] font-bold text-xl">➔</div>
+            <!-- Center: Kisan Setu AI Engine -->
+            <div class="md:col-span-3 bg-[#0B4F30] text-white p-4 rounded-xl shadow-md flex flex-col items-center relative overflow-hidden">
+              <div class="absolute -right-6 -bottom-6 w-20 h-20 bg-[#10B981]/20 rounded-full blur-xl"></div>
+              <div class="text-3xl mb-1">🤖</div>
+              <div class="text-sm font-extrabold tracking-wide">Kisan Setu AI Engine</div>
+              <p class="text-xs text-[#FEF3C7] font-medium mt-1">Price Discovery + Escrow Lock</p>
+              <span class="mt-2 text-[10px] bg-white/15 text-white px-2 py-0.5 rounded font-bold">Pooled Freight Logistics</span>
+            </div>
+            <!-- Arrow 2 -->
+            <div class="hidden md:flex md:col-span-1 justify-center text-[#10B981] font-bold text-xl">➔</div>
+            <!-- Right: Verified Buyer -->
+            <div class="md:col-span-3 bg-white p-4 rounded-xl border border-emerald-300 shadow-sm flex flex-col items-center">
+              <div class="text-3xl mb-1">🏢</div>
+              <div class="text-sm font-extrabold text-slate-900">Verified Institutional Buyer</div>
+              <p class="text-xs text-blue-700 font-semibold mt-1">-12.6% Lower Sourcing Cost</p>
+              <span class="mt-2 text-[10px] bg-blue-50 text-blue-800 px-2 py-0.5 rounded font-bold">Direct Contract Delivery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. HOW KISAN SETU WORKS -->
+    <section class="py-20 bg-white border-y border-slate-200/80" id="how-it-works" style="background: linear-gradient(rgba(244, 248, 245, 0.7) 0%, rgba(237, 245, 240, 0.6) 100%); border-top: 1px solid rgba(19, 117, 71, 0.12); border-bottom: 1px solid rgba(19, 117, 71, 0.12);">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="inline-block px-3.5 py-1 rounded-full bg-[#FEF3C7] text-[#D97706] font-bold text-xs uppercase tracking-wider mb-3">
+            Simple 4-Step Process / आसान प्रक्रिया
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            One Platform. Every Step.
+          </h2>
+          <p class="text-base text-slate-600 mt-3 font-medium">
+            A transparent digital highway connecting harvest to settlement.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+          <!-- Step 01 -->
+          <div class="group bg-[#FAF9F5] p-6 rounded-2xl border border-slate-200/80 hover:border-[#137547] hover:shadow-lg transition-all duration-300 flex flex-col justify-between cursor-pointer" onclick="handlePrimaryHeroCTA()" style="background: rgb(255, 255, 255); border: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(19, 80, 50, 0.06) 0px 10px 25px -5px, rgba(19, 80, 50, 0.03) 0px 4px 10px -2px;">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-white border border-[#137547]/20 flex items-center justify-center font-extrabold text-[#137547] text-lg mb-5 shadow-sm group-hover:bg-[#137547] group-hover:text-white transition-colors">
+                01
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mb-2">List Your Produce</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Add crop, quantity, location and quality details with simple photo upload from your farm or aggregation center.
+              </p>
+            </div>
+            <div class="pt-6 flex items-center gap-2 text-xs font-bold text-[#137547]">
+              <span class="material-symbols-outlined text-[18px]">add_a_photo</span>
+              <span>1-Minute Photo Ingestion</span>
+            </div>
+          </div>
+          <!-- Step 02 -->
+          <div class="group bg-[#FAF9F5] p-6 rounded-2xl border border-slate-200/80 hover:border-[#F59E0B] hover:shadow-lg transition-all duration-300 flex flex-col justify-between cursor-pointer" onclick="handleScreensCTA('ai-pricing')" style="background: rgb(255, 255, 255); border: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(19, 80, 50, 0.06) 0px 10px 25px -5px, rgba(19, 80, 50, 0.03) 0px 4px 10px -2px;">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-white border border-[#F59E0B]/30 flex items-center justify-center font-extrabold text-[#D97706] text-lg mb-5 shadow-sm group-hover:bg-[#D97706] group-hover:text-white transition-colors">
+                02
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mb-2">Get an AI Fair Price</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Our AI analyzes market signals, moisture assays, and pan-India mandi spot prices to provide a transparent benchmark.
+              </p>
+            </div>
+            <div class="pt-6 flex items-center gap-2 text-xs font-bold text-[#D97706]">
+              <span class="material-symbols-outlined text-[18px]">psychology</span>
+              <span>Dynamic Spot Intelligence</span>
+            </div>
+          </div>
+          <!-- Step 03 -->
+          <div class="group bg-[#FAF9F5] p-6 rounded-2xl border border-slate-200/80 hover:border-[#2563EB] hover:shadow-lg transition-all duration-300 flex flex-col justify-between cursor-pointer" onclick="handleMarketplaceHeroCTA()" style="background: rgb(255, 255, 255); border: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(19, 80, 50, 0.06) 0px 10px 25px -5px, rgba(19, 80, 50, 0.03) 0px 4px 10px -2px;">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-white border border-blue-200 flex items-center justify-center font-extrabold text-[#2563EB] text-lg mb-5 shadow-sm group-hover:bg-[#2563EB] group-hover:text-white transition-colors">
+                03
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mb-2">Connect With Verified Buyers</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Discover institutional buyers, corporate FMCGs, and compare binding contract bids without paying broker commissions.
+              </p>
+            </div>
+            <div class="pt-6 flex items-center gap-2 text-xs font-bold text-[#2563EB]">
+              <span class="material-symbols-outlined text-[18px]">gavel</span>
+              <span>100% Binding Bids</span>
+            </div>
+          </div>
+          <!-- Step 04 -->
+          <div class="group bg-[#FAF9F5] p-6 rounded-2xl border border-slate-200/80 hover:border-[#10B981] hover:shadow-lg transition-all duration-300 flex flex-col justify-between cursor-pointer" onclick="handleScreensCTA('tracking')" style="background: rgb(255, 255, 255); border: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(19, 80, 50, 0.06) 0px 10px 25px -5px, rgba(19, 80, 50, 0.03) 0px 4px 10px -2px;">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-white border border-emerald-200 flex items-center justify-center font-extrabold text-[#10B981] text-lg mb-5 shadow-sm group-hover:bg-[#10B981] group-hover:text-white transition-colors">
+                04
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mb-2">Secure Delivery &amp; Payment</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Track pooled logistics and protect payouts through tripartite digital escrow settled straight to your bank account.
+              </p>
+            </div>
+            <div class="pt-6 flex items-center gap-2 text-xs font-bold text-[#065F46]">
+              <span class="material-symbols-outlined text-[18px]">verified_user</span>
+              <span>T+0 Bank Settlement</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. AI FAIR PRICE FEATURE -->
+    <section class="py-20 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="fair-price">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Left Explanatory Column -->
+        <div class="lg:col-span-5 flex flex-col items-start gap-4">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-[#2563EB] text-xs font-bold uppercase tracking-wider">
+            <span class="material-symbols-outlined text-[16px]">analytics</span>
+            Proprietary ML Pricing Engine
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Know the Fair Price Before You Sell
+          </h2>
+          <p class="text-base text-slate-600 font-medium leading-relaxed">
+            Data-driven pricing intelligence backed by real-time APMC arrivals, remote sensing, and NABL lab parameters. Never settle for distress sale rates again.
+          </p>
+          <!-- Metrics summary -->
+          <div class="grid grid-cols-2 gap-4 w-full pt-2">
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+              <div class="text-xs text-slate-500 font-semibold">Average Farmer Gain</div>
+              <div class="text-2xl font-extrabold text-[#137547] mt-1">+14–22%</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">Vs local spot mandis</div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+              <div class="text-xs text-slate-500 font-semibold">Data Points Analyzed</div>
+              <div class="text-2xl font-extrabold text-[#2563EB] mt-1">14,000+</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">Updated continuously</div>
+            </div>
+          </div>
+          <button onclick="handleScreensCTA('ai-pricing')" class="mt-2 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-md transition-all">
+            <span class="material-symbols-outlined text-[18px]">query_stats</span>
+            <span>Explore Fair Price AI</span>
+          </button>
+        </div>
+        <!-- Right: Large Interactive-style AI Price Card -->
+        <div class="lg:col-span-7">
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xl relative overflow-hidden" style="border: 1px solid rgba(19, 117, 71, 0.14); box-shadow: rgba(19, 80, 50, 0.12) 0px 25px 50px -12px, rgba(19, 80, 50, 0.05) 0px 4px 16px -2px;">
+            <!-- Subtle blue aura accent for AI -->
+            <div class="absolute -top-16 -right-16 w-60 h-60 bg-blue-100/50 rounded-full blur-2xl pointer-events-none"></div>
+            <!-- Crop Header -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-slate-100">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-[#2563EB] bg-blue-50 px-2.5 py-1 rounded-md">Live AI Appraisal</span>
+                <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">SHARBATI WHEAT · GRADE A</h3>
+                <p class="text-xs text-slate-500 font-medium">📍 Dewas, Madhya Pradesh • Assayed Lot #DW-782</p>
+              </div>
+              <div class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#2563EB] text-xs font-bold">
+                <span class="w-2 h-2 rounded-full bg-[#2563EB] animate-ping"></span>
+                <span>87% High Confidence</span>
+              </div>
+            </div>
+            <!-- Price Comparison Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+              <!-- AI Fair Price -->
+              <div class="bg-gradient-to-br from-emerald-50 to-teal-50/50 p-4 rounded-2xl border border-emerald-200">
+                <div class="text-xs font-bold text-emerald-800 uppercase tracking-wide">AI Recommended Fair Spot</div>
+                <div class="text-3xl font-extrabold text-[#0B4F30] mt-1">
+                  ₹2,780 <span class="text-sm font-semibold text-slate-600">/ Qtl</span>
+                </div>
+                <div class="inline-flex items-center gap-1 mt-2 text-xs font-bold text-[#065F46] bg-white px-2 py-0.5 rounded-md shadow-xs">
+                  <span>+₹60 / Qtl (+2.2%) over local mandi</span>
+                </div>
+              </div>
+              <!-- Market Average -->
+              <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                <div class="text-xs font-bold text-slate-500 uppercase tracking-wide">Local APMC Mandi Avg.</div>
+                <div class="text-3xl font-extrabold text-slate-700 mt-1">
+                  ₹2,720 <span class="text-sm font-semibold text-slate-500">/ Qtl</span>
+                </div>
+                <div class="text-xs text-slate-500 mt-2 font-medium">
+                  Dewas / Ujjain APMC physical yard net
+                </div>
+              </div>
+            </div>
+            <!-- Simulated Visual Sparkline / Convergence Band -->
+            <div class="bg-[#FAF9F5] p-4 rounded-2xl border border-slate-200 mb-6">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-700 mb-2">
+                <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-[#2563EB]"></span> AI Predicted Trend</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-slate-400"></span> APMC Historical Spot</span>
+              </div>
+              <!-- SVG chart -->
+              <div class="h-24 w-full">
+                <svg class="w-full h-full" fill="none" preserveAspectRatio="none" viewBox="0 0 400 90">
+                  <path d="M0 65 Q 100 50, 200 40 T 400 20 L 400 35 Q 300 55, 200 55 T 0 75 Z" fill="#2563EB" fill-opacity="0.1"></path>
+                  <path d="M0 70 Q 100 62, 200 55 T 400 35" stroke="#94A3B8" stroke-dasharray="4 4" stroke-width="2.5"></path>
+                  <path d="M0 65 Q 100 48, 200 38 T 400 18" stroke="#2563EB" stroke-linecap="round" stroke-width="3"></path>
+                  <circle cx="390" cy="19" fill="#2563EB" r="4.5" stroke="#FFFFFF" stroke-width="2"></circle>
+                </svg>
+              </div>
+            </div>
+            <!-- Neural Model Explainability Pills -->
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
+                Why this price? Neural Model Explainability:
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-emerald-50 text-[#065F46] border border-emerald-200">
+                  📈 Market Demand (+4.2%)
+                </span>
+                <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-amber-50 text-[#D97706] border border-amber-200">
+                  🌾 Grade A Quality (10.4% Moisture)
+                </span>
+                <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-50 text-[#2563EB] border border-blue-200">
+                  📍 Local Inflow (-18% Mandi arrivals)
+                </span>
+                <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 border border-purple-200">
+                  🚚 Corridor Freight: Optimized
+                </span>
+                <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
+                  📊 FMCG Biscuit Manufacturer Pull
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. TRANSPARENCY SECTION -->
+    <section class="py-20 bg-white border-y border-slate-200/80" style="background: rgba(255, 255, 255, 0.75); border-top: 1px solid rgba(19, 117, 71, 0.12); border-bottom: 1px solid rgba(19, 117, 71, 0.12); box-shadow: rgba(255, 255, 255, 0.8) 0px 1px 0px inset;">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-[#065F46] font-bold text-xs uppercase tracking-wider mb-3">
+            Auditable Chain of Custody / पूर्ण पारदर्शिता
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Every Transaction. Clearly Visible.
+          </h2>
+          <p class="text-base text-slate-600 mt-3 font-medium">
+            From listing to payment, every important step is visible to the people involved.
+          </p>
+        </div>
+        <!-- Premium Horizontal Timeline Stepper -->
+        <div class="overflow-x-auto pb-4 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div class="min-w-[860px] relative">
+            <!-- Connecting Line -->
+            <div class="absolute top-6 left-8 right-8 h-1 bg-gradient-to-r from-[#10B981] via-[#137547] to-[#2563EB] -z-0"></div>
+            <!-- Stepper Nodes Grid -->
+            <div class="grid grid-cols-7 gap-4 relative z-10 text-center">
+              <!-- Step 1 -->
+              <div class="flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-[#137547] text-white flex items-center justify-center font-bold text-sm shadow-md ring-4 ring-white">✓</div>
+                <div class="text-xs font-bold text-slate-900 mt-3">1. Farmer Verified</div>
+                <div class="text-[11px] text-slate-500 font-medium mt-0.5">SFAC / Aadhaar</div>
+              </div>
+              <!-- Step 2 -->
+              <div class="flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-[#137547] text-white flex items-center justify-center font-bold text-sm shadow-md ring-4 ring-white">✓</div>
+                <div class="text-xs font-bold text-slate-900 mt-3">2. Quality Checked</div>
+                <div class="text-[11px] text-slate-500 font-medium mt-0.5">NABL Assay Lab</div>
+              </div>
+              <!-- Step 3 -->
+              <div class="flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-[#137547] text-white flex items-center justify-center font-bold text-sm shadow-md ring-4 ring-white">✓</div>
+                <div class="text-xs font-bold text-slate-900 mt-3">3. AI Price Set</div>
+                <div class="text-[11px] text-slate-500 font-medium mt-0.5">Fair Value Model</div>
+              </div>
+              <!-- Step 4 -->
+              <div class="flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-[#137547] text-white flex items-center justify-center font-bold text-sm shadow-md ring-4 ring-white">✓</div>
+                <div class="text-xs font-bold text-slate-900 mt-3">4. Buyer Verified</div>
+                <div class="text-[11px] text-slate-500 font-medium mt-0.5">Corporate KYC</div>
+              </div>
+              <!-- Step 5 -->
+              <div class="flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-[#137547] text-white flex items-center justify-center font-bold text-sm shadow-md ring-4 ring-white">✓</div>
+                <div class="text-xs font-bold text-slate-900 mt-3">5. Escrow Secured</div>
+                <div class="text-[11px] text-slate-500 font-medium mt-0.5">Funds in Node</div>
+              </div>
+              <!-- Step 6 -->
+              <div class="flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-[#137547] text-white flex items-center justify-center font-bold text-sm shadow-md ring-4 ring-white">✓</div>
+                <div class="text-xs font-bold text-slate-900 mt-3">6. GPS Logistics</div>
+                <div class="text-[11px] text-slate-500 font-medium mt-0.5">Cold Chain Monitored</div>
+              </div>
+              <!-- Step 7 -->
+              <div class="flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-[#2563EB] text-white flex items-center justify-center font-bold text-sm shadow-md ring-4 ring-white animate-pulse">₹</div>
+                <div class="text-xs font-bold text-[#2563EB] mt-3">7. Payment Sent</div>
+                <div class="text-[11px] text-slate-500 font-medium mt-0.5">T+0 Direct Credit</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. MARKETPLACE PREVIEW -->
+    <section class="py-20 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="marketplace">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-[#FEF3C7] text-[#D97706] font-bold text-xs uppercase tracking-wider mb-2">
+            Active Verified Lots / सक्रिय लॉट
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Find Buyers Who Value Your Produce
+          </h2>
+          <p class="text-base text-slate-600 mt-2 font-medium">
+            Real-time institutional lots ready for immediate procurement with verified assay sheets.
+          </p>
+        </div>
+        <button onclick="handleMarketplaceHeroCTA()" class="text-sm font-bold text-[#137547] hover:text-[#0B4F30] flex items-center gap-1">
+          View All Live Lots
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
         </button>
       </div>
+      <!-- 3 Authentic Product Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Card 1: Sharbati Wheat -->
+        <div class="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between group" style="border: 1px solid rgba(19, 117, 71, 0.14); box-shadow: rgba(19, 80, 50, 0.08) 0px 15px 30px -8px, rgba(19, 80, 50, 0.03) 0px 4px 12px -2px;">
+          <div class="relative w-full h-48 overflow-hidden bg-slate-100">
+            <img src="assets/produce/wheat.jpg" alt="Sharbati Wheat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='assets/produce/wheat.jpg';">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/20 pointer-events-none"></div>
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-[#065F46] flex items-center gap-1 shadow-xs border border-emerald-600/20">
+                <span class="material-symbols-outlined text-[14px] text-emerald-600 font-bold">verified</span> Verified Farmer
+              </span>
+            </div>
+            <div class="absolute top-3 right-3">
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-[#005b34] text-white font-mono shadow-xs">240 Qtl Avail</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#137547] transition-colors">
+              Sharbati Wheat
+            </h3>
+            <div class="text-xs text-slate-500 font-medium mt-0.5">Grade A • Moisture 10.4%</div>
+            <div class="text-xs text-slate-600 font-medium mt-2 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px] text-slate-400">location_on</span>
+              Dewas, Madhya Pradesh
+            </div>
+            <!-- Price Box -->
+            <div class="mt-6 p-4 rounded-2xl bg-[#FAF9F5] border border-slate-200/80">
+              <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">AI Fair Benchmark</div>
+              <div class="text-2xl font-extrabold text-[#137547] mt-0.5">
+                ₹2,780 <span class="text-xs font-semibold text-slate-500">/ Qtl</span>
+              </div>
+              <div class="text-[11px] text-slate-500 mt-1">3 Active Institutional Bids</div>
+            </div>
+          </div>
+          <div class="px-6 pb-6 pt-0">
+            <button onclick="handleMarketplaceHeroCTA()" class="w-full py-3 rounded-xl bg-[#FAF9F5] hover:bg-[#137547] text-slate-800 hover:text-white border border-slate-200 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-1.5" type="button">
+              <span>View Listing</span>
+              <span class="material-symbols-outlined text-[16px]">north_east</span>
+            </button>
+          </div>
+        </div>
+        <!-- Card 2: 1121 Basmati Rice -->
+        <div class="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between group" style="border: 1px solid rgba(19, 117, 71, 0.14); box-shadow: rgba(19, 80, 50, 0.08) 0px 15px 30px -8px, rgba(19, 80, 50, 0.03) 0px 4px 12px -2px;">
+          <div class="relative w-full h-48 overflow-hidden bg-slate-100">
+            <img src="assets/produce/rice.jpg" alt="1121 Basmati Rice" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='assets/produce/wheat.jpg';">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/20 pointer-events-none"></div>
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-[#2563EB] flex items-center gap-1 shadow-xs border border-blue-600/20">
+                <span class="material-symbols-outlined text-[14px] text-blue-600 font-bold">science</span> Quality Assured NABL
+              </span>
+            </div>
+            <div class="absolute top-3 right-3">
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-[#005b34] text-white font-mono shadow-xs">500 Qtl Avail</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#137547] transition-colors">
+              1121 Basmati Rice
+            </h3>
+            <div class="text-xs text-slate-500 font-medium mt-0.5">Premium Steam • Grain 8.35mm</div>
+            <div class="text-xs text-slate-600 font-medium mt-2 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px] text-slate-400">location_on</span>
+              Karnal, Haryana
+            </div>
+            <!-- Price Box -->
+            <div class="mt-6 p-4 rounded-2xl bg-[#FAF9F5] border border-slate-200/80">
+              <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">AI Fair Benchmark</div>
+              <div class="text-2xl font-extrabold text-[#137547] mt-0.5">
+                ₹4,400 <span class="text-xs font-semibold text-slate-500">/ Qtl</span>
+              </div>
+              <div class="text-[11px] text-slate-500 mt-1">Export Parity Match</div>
+            </div>
+          </div>
+          <div class="px-6 pb-6 pt-0">
+            <button onclick="handleMarketplaceHeroCTA()" class="w-full py-3 rounded-xl bg-[#FAF9F5] hover:bg-[#137547] text-slate-800 hover:text-white border border-slate-200 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-1.5" type="button">
+              <span>View Listing</span>
+              <span class="material-symbols-outlined text-[16px]">north_east</span>
+            </button>
+          </div>
+        </div>
+        <!-- Card 3: Yellow Soybean -->
+        <div class="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between group" style="border: 1px solid rgba(19, 117, 71, 0.14); box-shadow: rgba(19, 80, 50, 0.08) 0px 15px 30px -8px, rgba(19, 80, 50, 0.03) 0px 4px 12px -2px;">
+          <div class="relative w-full h-48 overflow-hidden bg-slate-100">
+            <img src="assets/produce/soybean.jpg" alt="Yellow Soybean" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='assets/produce/wheat.jpg';">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/20 pointer-events-none"></div>
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-[#D97706] flex items-center gap-1 shadow-xs border border-amber-600/20">
+                <span class="material-symbols-outlined text-[14px] text-amber-600 font-bold">eco</span> Verified Producer
+              </span>
+            </div>
+            <div class="absolute top-3 right-3">
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-[#005b34] text-white font-mono shadow-xs">150 Qtl Avail</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#137547] transition-colors">
+              Yellow Soybean (JS 9560)
+            </h3>
+            <div class="text-xs text-slate-500 font-medium mt-0.5">Grade A • Oil Content 18.9%</div>
+            <div class="text-xs text-slate-600 font-medium mt-2 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px] text-slate-400">location_on</span>
+              Ujjain, Madhya Pradesh
+            </div>
+            <!-- Price Box -->
+            <div class="mt-6 p-4 rounded-2xl bg-[#FAF9F5] border border-slate-200/80">
+              <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">AI Fair Benchmark</div>
+              <div class="text-2xl font-extrabold text-[#137547] mt-0.5">
+                ₹4,650 <span class="text-xs font-semibold text-slate-500">/ Qtl</span>
+              </div>
+              <div class="text-[11px] text-slate-500 mt-1">Crushing Plant Escrow Ready</div>
+            </div>
+          </div>
+          <div class="px-6 pb-6 pt-0">
+            <button onclick="handleMarketplaceHeroCTA()" class="w-full py-3 rounded-xl bg-[#FAF9F5] hover:bg-[#137547] text-slate-800 hover:text-white border border-slate-200 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-1.5" type="button">
+              <span>View Listing</span>
+              <span class="material-symbols-outlined text-[16px]">north_east</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-12">
+        <button onclick="handleMarketplaceHeroCTA()" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-white border-2 border-[#137547] text-[#137547] hover:bg-[#137547] hover:text-white font-bold text-base shadow-sm transition-all">
+          <span>Explore Institutional Marketplace</span>
+          <span>→</span>
+        </button>
+      </div>
+    </section>
 
-      <!-- Right: Stitch AI Price card -->
-      <div class="lg:col-span-7">
-        <div class="bg-white rounded-3xl p-6 sm:p-8 border relative overflow-hidden" style="border:1px solid rgba(19,117,71,0.14); box-shadow:rgba(19,80,50,0.12) 0 25px 50px -12px;">
-          <div class="absolute -top-16 -right-16 w-60 h-60 bg-blue-100/50 rounded-full blur-2xl pointer-events-none"></div>
-          <!-- Header -->
-          <div class="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-slate-100">
-            <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-[#2563EB] bg-blue-50 px-2.5 py-1 rounded-md">Live AI Appraisal</span>
-              <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">SHARBATI WHEAT · GRADE A</h3>
-              <p class="text-xs text-slate-500 font-medium">📍 Dewas, Madhya Pradesh • Assayed Lot #DW-782</p>
+    <!-- 9. FARM-TO-BUYER LOGISTICS -->
+    <section class="py-20 bg-white border-y border-slate-200/80" id="for-buyers" style="background: linear-gradient(rgba(244, 248, 245, 0.75) 0%, rgba(237, 245, 240, 0.8) 100%); border-top: 1px solid rgba(19, 117, 71, 0.12); border-bottom: 1px solid rgba(19, 117, 71, 0.12);">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <!-- Text column -->
+          <div class="lg:col-span-6 flex flex-col items-start gap-4">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-[#065F46] text-xs font-bold uppercase tracking-wider">
+              <span class="material-symbols-outlined text-[16px]">local_shipping</span>
+              Pooled Freight Network
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+              From Your Farm to Their Warehouse
+            </h2>
+            <p class="text-base text-slate-600 font-medium leading-relaxed">
+              Shared freight intelligence and live corridor geofencing cut logistics overheads by up to 32%. No empty return hauls, no freight leakage.
+            </p>
+            <div class="space-y-3 pt-2 w-full">
+              <div class="flex items-start gap-3 p-3 rounded-xl bg-[#FAF9F5] border border-slate-200/80">
+                <span class="material-symbols-outlined text-[#137547] text-[20px] mt-0.5">hub</span>
+                <div>
+                  <div class="text-sm font-bold text-slate-900">Dynamic Partial Truckload (PTL) Consolidation</div>
+                  <div class="text-xs text-slate-500">Pairs nearby lots along identical highway corridors to fill 16-wheelers to 95%+ capacity.</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 p-3 rounded-xl bg-[#FAF9F5] border border-slate-200/80">
+                <span class="material-symbols-outlined text-[#137547] text-[20px] mt-0.5">device_thermostat</span>
+                <div>
+                  <div class="text-sm font-bold text-slate-900">Cold Chain Telemetry</div>
+                  <div class="text-xs text-slate-500">Live humidity and thermal telemetry protects horticulture &amp; high-value seeds from deterioration.</div>
+                </div>
+              </div>
             </div>
-            <div class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#2563EB] text-xs font-bold">
-              <span class="w-2 h-2 rounded-full bg-[#2563EB] animate-ping"></span>
-              87% High Confidence
-            </div>
+            <button onclick="handleScreensCTA('tracking')" class="mt-2 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#137547] hover:bg-[#0B4F30] text-white font-bold text-sm shadow-md transition-all">
+              <span class="material-symbols-outlined text-[18px]">share_location</span>
+              <span>Explore Logistics &amp; Live Tracking</span>
+            </button>
           </div>
-          <!-- Price comparison -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-            <div class="bg-gradient-to-br from-emerald-50 to-teal-50/50 p-4 rounded-2xl border border-emerald-200">
-              <div class="text-xs font-bold text-emerald-800 uppercase tracking-wide">AI Recommended Fair Spot</div>
-              <div class="text-3xl font-extrabold text-[#0B4F30] mt-1">₹2,780 <span class="text-sm font-semibold text-slate-600">/ Qtl</span></div>
-              <div class="text-xs font-bold text-[#065F46] mt-2">+₹60 / Qtl (+2.2%) over local mandi</div>
-            </div>
-            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-              <div class="text-xs font-bold text-slate-500 uppercase tracking-wide">Local APMC Mandi Avg.</div>
-              <div class="text-3xl font-extrabold text-slate-700 mt-1">₹2,720 <span class="text-sm font-semibold text-slate-500">/ Qtl</span></div>
-              <div class="text-xs text-slate-500 mt-2 font-medium">Dewas / Ujjain APMC physical yard net</div>
-            </div>
-          </div>
-          <!-- Explainability pills -->
-          <div>
-            <div class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">Why this price? Neural Model Explainability:</div>
-            <div class="flex flex-wrap gap-2">
-              <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-emerald-50 text-[#065F46] border border-emerald-200">📈 Market Demand (+4.2%)</span>
-              <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-amber-50 text-[#D97706] border border-amber-200">🌾 Grade A Quality (10.4% Moisture)</span>
-              <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-50 text-[#2563EB] border border-blue-200">📍 Local Inflow (-18% Mandi arrivals)</span>
-              <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 border border-purple-200">🚚 Corridor Freight: Optimized</span>
+          <!-- Map-inspired Visual Container with Visual Route -->
+          <div class="lg:col-span-6">
+            <div class="bg-[#FAF9F5] p-6 rounded-3xl border border-slate-200/90 shadow-xl relative overflow-hidden" style="background: rgb(255, 255, 255); border: 1px solid rgba(19, 117, 71, 0.15); box-shadow: rgba(19, 80, 50, 0.1) 0px 20px 40px -12px, rgba(19, 80, 50, 0.04) 0px 4px 14px -2px;">
+              <!-- Map Grid Texture Simulation -->
+              <div class="bg-white rounded-2xl p-6 border border-slate-200 relative overflow-hidden shadow-inner min-h-[300px] flex flex-col justify-between">
+                <!-- Background subtle highway pattern -->
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#137547_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                <!-- Floating Live Vehicle Tracker Pill (Top) -->
+                <div class="relative z-10 bg-white/95 backdrop-blur-md p-3 rounded-2xl border border-slate-200 shadow-md flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-ping"></span>
+                    <span class="text-xs font-bold text-slate-900">MP-09-G-4491 • 16-Wheeler Multi-Axle</span>
+                  </div>
+                  <div class="flex items-center gap-3 text-xs font-semibold text-slate-600">
+                    <span class="text-[#065F46] font-bold">28 km remaining</span>
+                    <span>ETA 2h 18m</span>
+                    <span class="bg-blue-50 text-[#2563EB] px-2 py-0.5 rounded text-[11px]">Temp: 18°C Controlled</span>
+                  </div>
+                </div>
+                <!-- Visual Route Flow Simulation -->
+                <div class="relative z-10 my-8 py-4">
+                  <div class="flex items-center justify-between relative">
+                    <!-- Progress Bar Line -->
+                    <div class="absolute top-1/2 left-4 right-4 h-1.5 bg-slate-200 -translate-y-1/2 -z-0 rounded-full"></div>
+                    <div class="absolute top-1/2 left-4 w-3/4 h-1.5 bg-[#137547] -translate-y-1/2 -z-0 rounded-full"></div>
+                    <!-- Station 1: Farm -->
+                    <div class="flex flex-col items-center relative z-10">
+                      <div class="w-9 h-9 rounded-full bg-[#137547] text-white flex items-center justify-center text-sm shadow-md">🌾</div>
+                      <span class="text-[11px] font-bold text-slate-800 mt-2">Dewas FPO</span>
+                      <span class="text-[10px] text-slate-500">Dispatched</span>
+                    </div>
+                    <!-- Station 2: Transit -->
+                    <div class="flex flex-col items-center relative z-10">
+                      <div class="w-9 h-9 rounded-full bg-[#10B981] text-white flex items-center justify-center text-sm shadow-md ring-4 ring-emerald-100 animate-bounce">🚚</div>
+                      <span class="text-[11px] font-bold text-[#065F46] mt-2">Shared 32ft PTL</span>
+                      <span class="text-[10px] text-slate-500">En Route</span>
+                    </div>
+                    <!-- Station 3: Hub -->
+                    <div class="flex flex-col items-center relative z-10">
+                      <div class="w-9 h-9 rounded-full bg-white border-2 border-slate-300 text-slate-700 flex items-center justify-center text-sm shadow-sm">📦</div>
+                      <span class="text-[11px] font-bold text-slate-800 mt-2">Hub Crossdock</span>
+                      <span class="text-[10px] text-slate-500">Quality Check</span>
+                    </div>
+                    <!-- Station 4: Buyer -->
+                    <div class="flex flex-col items-center relative z-10">
+                      <div class="w-9 h-9 rounded-full bg-white border-2 border-slate-300 text-slate-700 flex items-center justify-center text-sm shadow-sm">🏢</div>
+                      <span class="text-[11px] font-bold text-slate-800 mt-2">JNPT / Mumbai</span>
+                      <span class="text-[10px] text-slate-500">Gate-in Node</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Bottom Status info -->
+                <div class="relative z-10 bg-emerald-50/80 p-2.5 rounded-xl border border-emerald-200 text-xs text-[#065F46] font-semibold flex items-center justify-between">
+                  <span>Geofence Status: Auto-Release Trigger Armed</span>
+                  <span class="font-bold">100% On-Time SLA</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── APPLICATION SCREENS SHOWCASE (tab IDs and classes preserved) ── -->
-  <section class="py-20 border-y" id="screens" style="background:linear-gradient(rgba(244,248,245,0.7) 0%,rgba(237,245,240,0.6) 100%); border-top:1px solid rgba(19,117,71,0.12); border-bottom:1px solid rgba(19,117,71,0.12);">
+    <!-- 10. FINAL CTA -->
+    <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="get-started">
+      <div class="relative rounded-3xl bg-gradient-to-br from-[#0B4F30] via-[#137547] to-[#065F46] text-white p-8 sm:p-16 shadow-2xl overflow-hidden text-center border border-emerald-400/20">
+        <!-- Warm wheat & emerald background glow -->
+        <div class="absolute -right-20 -top-20 w-96 h-96 bg-[#FEF3C7]/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-96 h-96 bg-emerald-300/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center gap-6">
+          <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-[#FEF3C7] text-xs font-bold uppercase tracking-wider border border-white/20">
+            🌾 भारत की आधुनिक डिजिटल कृषि मंडी
+          </span>
+          <h2 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+            Ready to connect your produce with the right market?
+          </h2>
+          <p class="text-base sm:text-lg text-emerald-100 max-w-2xl font-medium leading-relaxed">
+            List your produce, discover a transparent AI-powered price, and connect with verified institutional buyers across India.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <button onclick="handlePrimaryHeroCTA()" class="sheen-btn px-8 py-4 rounded-xl bg-[#F59E0B] hover:bg-[#D97706] text-slate-950 font-extrabold text-base shadow-lg transition-all">
+              Start Selling / फसल बेचें
+            </button>
+            <button onclick="handleMarketplaceHeroCTA()" class="px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-base border border-white/30 backdrop-blur-sm transition-all">
+              Explore Marketplace
+            </button>
+          </div>
+          <div class="pt-4 text-xs font-semibold text-emerald-200/90 flex flex-wrap items-center justify-center gap-y-2 gap-x-6">
+            <span>• Zero Listing Fees</span>
+            <span>• Regulated Escrow</span>
+            <span>• Direct Bank Transfer</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 11. FOOTER -->
+  <footer class="bg-white border-t border-slate-200/80 pt-16 pb-12" style="background-color: rgb(234, 241, 237); border-top: 1px solid rgba(19, 117, 71, 0.14);">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-3xl mx-auto mb-12">
-        <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-[#065F46] font-bold text-xs uppercase tracking-wider mb-3">Application Showcase</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Interactive Previews Across Key User Flows</h2>
-        <p class="text-base text-slate-600 mt-3 font-medium">Explore the unified portal for farmers, FPOs, and bulk buyers.</p>
-      </div>
-
-      <div class="screens-showcase">
-        <!-- Tab nav (original CSS class names preserved) -->
-        <div class="tabnav flex flex-wrap gap-2 justify-center mb-8">
-          <button class="tabbtn active" data-tab="tab-pricing">💰 AI Price Discovery</button>
-          <button class="tabbtn" data-tab="tab-market">🛒 Buyer Marketplace</button>
-          <button class="tabbtn" data-tab="tab-logistics">🗺️ Route Optimisation</button>
-          <button class="tabbtn" data-tab="tab-tracking">🚚 9-Stage Tracking</button>
-        </div>
-
-        <!-- TAB 1: AI Pricing -->
-        <div class="tabpanel active" id="tab-pricing">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div class="screen-desc">
-              <h3 class="text-xl font-bold text-slate-900 mb-3">Explainable Price Forecasting</h3>
-              <p class="text-slate-600 mb-4">Farmers receive granular, real-time modal forecasts based on historical market trends, local arrivals, and quality grades, avoiding distress sales.</p>
-              <ul class="feature-list space-y-2 mb-6">
-                <li><span class="check">✓</span> 95% Confidence Interval prediction bands</li>
-                <li><span class="check">✓</span> Grade A / B / C quality tier pricing multipliers</li>
-                <li><span class="check">✓</span> Regional mandi spread & demand elasticity analysis</li>
-              </ul>
-              <button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0B4F30] text-white font-bold text-sm shadow-md hover:bg-[#137547] transition-all"
-                      onclick="handleScreensCTA('ai-pricing')">
-                Experience AI Pricing →
-              </button>
-            </div>
-            <div class="screen-mock">
-              <div class="mock-header">
-                <span>AI Price Recommendation — Nashik APMC</span>
-                <span class="badge-status active">LIVE CALIBRATION</span>
-              </div>
-              <div class="mock-body">
-                <div class="mock-row"><span>Commodity: <strong>🍅 Tomato (Roma)</strong></span><span>Arrival: <strong>1,548 Quintals</strong></span></div>
-                <div class="mock-row"><span>Middleman Rate: <span style="color:var(--alert); text-decoration:line-through;">₹23.00/kg</span></span><span>Fair Price: <strong style="color:var(--olive); font-size:15px;">₹31.00/kg</strong></span></div>
-                <div class="mock-row"><span>95% Confidence Range</span><span style="font-family:'JetBrains Mono';">₹29.59 – ₹33.37 / kg</span></div>
-              </div>
-            </div>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+        <!-- Brand Block (Col 1 & 2 on mobile) -->
+        <div class="col-span-2 flex flex-col items-start gap-4">
+          <div class="h-10 w-auto">
+            <svg class="h-10 w-auto" fill="none" viewBox="0 0 280 72" xmlns="http://www.w3.org/2000/svg">
+              <g transform="translate(4, 8)">
+                <rect fill="#137547" height="56" rx="16" width="56"></rect>
+                <path d="M14 42C20 32 36 32 42 42" stroke="#FEF3C7" stroke-linecap="round" stroke-width="3.5"></path>
+                <path d="M28 36V18M28 18C24 22 20 23 18 23M28 18C32 22 36 23 38 23" stroke="#F59E0B" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+                <circle cx="28" cy="15" fill="#10B981" r="2.5"></circle>
+              </g>
+              <text fill="#0F172A" font-family="Plus Jakarta Sans, sans-serif" font-size="24" font-weight="800" x="72" y="38">Kisan Setu AI</text>
+              <text fill="#137547" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="600" x="72" y="55">किसान से बाजार तक</text>
+            </svg>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 max-w-sm font-medium leading-relaxed">
+            किसान से बाजार तक, सीधा, पारदर्शी और स्मार्ट। Bridging Indian agriculture with direct institutional procurement and fair price discovery.
+          </p>
+          <div class="text-xs font-bold text-[#137547]">
+            NABARD &amp; SFAC FPO Network Partner
           </div>
         </div>
-
-        <!-- TAB 2: Marketplace -->
-        <div class="tabpanel" id="tab-market">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div class="screen-desc">
-              <h3 class="text-xl font-bold text-slate-900 mb-3">Direct Bulk Marketplace</h3>
-              <p class="text-slate-600 mb-4">Institutional buyers filter by crop, quality grade, quantity, and verified farm locations, ordering direct fresh produce with real-time stock deduction.</p>
-              <ul class="feature-list space-y-2 mb-6">
-                <li><span class="check">✓</span> Live produce search & commodity filtering</li>
-                <li><span class="check">✓</span> Verified farmer identity & GPS farm coordinates</li>
-                <li><span class="check">✓</span> Direct escrow settlement upon delivery</li>
-              </ul>
-              <button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0B4F30] text-white font-bold text-sm shadow-md hover:bg-[#137547] transition-all"
-                      onclick="handleScreensCTA('marketplace')">
-                Browse Marketplace →
-              </button>
-            </div>
-            <div class="screen-mock">
-              <div class="mock-header"><span>Buyer Marketplace Feed</span><span class="badge-status active">6 Active Lots</span></div>
-              <div class="mock-body">
-                <div class="mock-row"><div><strong>🍅 Tomato · Grade A (840 kg avail)</strong><br><small>Ramesh Kumar · Dindori, Nashik</small></div><div style="text-align:right;"><strong style="color:var(--olive);">₹31.00/kg</strong><br><small>Save 18% vs retail</small></div></div>
-                <div class="mock-row"><div><strong>🧅 Onion · Grade A (2,100 kg avail)</strong><br><small>Lasalgaon FPO Hub · Nashik</small></div><div style="text-align:right;"><strong style="color:var(--olive);">₹19.00/kg</strong><br><small>Save 14% vs retail</small></div></div>
-              </div>
-            </div>
-          </div>
+        <!-- Product Column -->
+        <div class="flex flex-col gap-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-900">Product</div>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="javascript:void(0)" onclick="handleScreensCTA('ai-pricing')">Fair Price AI</a>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="javascript:void(0)" onclick="handleMarketplaceHeroCTA()">Marketplace</a>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="javascript:void(0)" onclick="handleScreensCTA('logistics')">Pooled Logistics</a>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="javascript:void(0)" onclick="handleScreensCTA('tracking')">Escrow Security</a>
         </div>
-
-        <!-- TAB 3: Logistics -->
-        <div class="tabpanel" id="tab-logistics">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div class="screen-desc">
-              <h3 class="text-xl font-bold text-slate-900 mb-3">OSRM Multi-Stop Route Optimisation</h3>
-              <p class="text-slate-600 mb-4">Automated TSP solver groups farm pickups and urban drop-offs, recalculating optimal sequence, driving time, and diesel fuel savings.</p>
-              <ul class="feature-list space-y-2 mb-6">
-                <li><span class="check">✓</span> Shared multi-farm collection routing</li>
-                <li><span class="check">✓</span> Real road geometry calculation via OSRM</li>
-                <li><span class="check">✓</span> Fuel savings of ~₹3,500 per aggregated run</li>
-              </ul>
-              <button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0B4F30] text-white font-bold text-sm shadow-md hover:bg-[#137547] transition-all"
-                      onclick="handleScreensCTA('logistics')">
-                Plan Logistics Route →
-              </button>
-            </div>
-            <div class="screen-mock">
-              <div class="mock-header"><span>Optimised Corridor Route</span><span class="badge-status in_transit">4 Stops Active</span></div>
-              <div class="mock-body">
-                <div class="mock-row"><span>Total Corridor Distance: <strong>325.3 km</strong></span><span>Est. Driving Time: <strong>10h 09m</strong></span></div>
-                <div class="mock-row"><span>Fuel Cost Savings</span><strong style="color:var(--olive);">₹3,532.70 saved</strong></div>
-              </div>
-            </div>
-          </div>
+        <!-- For Farmers Column -->
+        <div class="flex flex-col gap-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-900">For Farmers</div>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="javascript:void(0)" onclick="handlePrimaryHeroCTA()">List Produce</a>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="javascript:void(0)" onclick="handlePrimaryHeroCTA()">Farmer Dashboard</a>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="javascript:void(0)" onclick="showToast('NABL Testing Centers connected via DoCA API')">NABL Quality Labs</a>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="tel:18004190000">Kisan Helpline 1800-419</a>
         </div>
-
-        <!-- TAB 4: Tracking -->
-        <div class="tabpanel" id="tab-tracking">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div class="screen-desc">
-              <h3 class="text-xl font-bold text-slate-900 mb-3">9-Stage Custody Tracking</h3>
-              <p class="text-slate-600 mb-4">Full milestone visibility from crate grading and tamper-seal packing to highway freight transit and doorstep buyer settlement.</p>
-              <ul class="feature-list space-y-2 mb-6">
-                <li><span class="check">✓</span> Milestone verification from farm gate to outlet</li>
-                <li><span class="check">✓</span> Live status updates & GPS checkpoint events</li>
-                <li><span class="check">✓</span> Automatic farmer payout upon buyer acceptance</li>
-              </ul>
-              <button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0B4F30] text-white font-bold text-sm shadow-md hover:bg-[#137547] transition-all"
-                      onclick="handleScreensCTA('tracking')">
-                Track Live Order →
-              </button>
-            </div>
-            <div class="screen-mock">
-              <div class="mock-header"><span>Shipment #KS-1024</span><span class="badge-status in_transit">IN TRANSIT</span></div>
-              <div class="mock-body">
-                <div class="mock-row"><span>Current Checkpoint: <strong>Igatpuri Sector, NH-160</strong></span></div>
-                <div class="mock-row"><span>Driver: <strong>Karan Shinde</strong></span><span>Vehicle: <strong>MH-15-EG-4482</strong></span></div>
-              </div>
-            </div>
-          </div>
+        <!-- For Buyers & Company -->
+        <div class="flex flex-col gap-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-900">For Buyers</div>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="javascript:void(0)" onclick="handleMarketplaceHeroCTA()">Institutional Exchange</a>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="javascript:void(0)" onclick="openAuthModal('signup', 'BUYER_CONSUMER')">Request Bulk Quote</a>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="#home">About Kisan Setu</a>
+          <a class="text-xs sm:text-sm text-slate-600 hover:text-[#137547] transition-colors" href="javascript:void(0)" onclick="showToast('Support: support@kisansetu.in')">Contact Support</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ── MARKETPLACE PREVIEW ── -->
-  <section class="py-20 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="marketplace-preview">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
-      <div>
-        <span class="inline-block px-3 py-1 rounded-full bg-[#FEF3C7] text-[#D97706] font-bold text-xs uppercase tracking-wider mb-2">Active Verified Lots / सक्रिय लॉट</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Find Buyers Who Value Your Produce</h2>
-        <p class="text-base text-slate-600 mt-2 font-medium">Real-time institutional lots ready for procurement with verified assay sheets.</p>
-      </div>
-      <button onclick="handleMarketplaceHeroCTA()"
-        class="flex-shrink-0 inline-flex items-center gap-1 text-sm font-bold text-[#137547] hover:text-[#0B4F30] transition-colors">
-        View All Live Lots
-        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-      </button>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Card 1 -->
-      <div class="bg-white rounded-3xl border overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col group" style="border:1px solid rgba(19,117,71,0.14); box-shadow:rgba(19,80,50,0.08) 0 15px 30px -8px;">
-        <div class="p-6 flex-1">
-          <div class="flex items-center justify-between gap-2 mb-3">
-            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-[#065F46] flex items-center gap-1">
-              <span class="material-symbols-outlined text-[14px]">verified</span> Verified Farmer
-            </span>
-            <span class="text-xs font-bold text-slate-500">240 Qtl Available</span>
-          </div>
-          <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#137547] transition-colors">Sharbati Wheat</h3>
-          <div class="text-xs text-slate-500 font-medium mt-0.5">Grade A • Moisture 10.4%</div>
-          <div class="text-xs text-slate-600 font-medium mt-2 flex items-center gap-1">
-            <span class="material-symbols-outlined text-[16px] text-slate-400">location_on</span> Dewas, Madhya Pradesh
-          </div>
-          <div class="mt-6 p-4 rounded-2xl bg-[#FAF9F5] border border-slate-200/80">
-            <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">AI Fair Benchmark</div>
-            <div class="text-2xl font-extrabold text-[#137547] mt-0.5">₹2,780 <span class="text-xs font-semibold text-slate-500">/ Qtl</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">3 Active Institutional Bids</div>
-          </div>
+      <!-- Bottom Row -->
+      <div class="pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-medium">
+        <div>
+          © 2026 Kisan Setu AI. All rights reserved. Compliant with Ministry of Agriculture guidelines.
         </div>
-        <div class="px-6 pb-6">
-          <button onclick="handleMarketplaceHeroCTA()"
-            class="w-full py-3 rounded-xl bg-[#FAF9F5] hover:bg-[#137547] text-slate-800 hover:text-white border border-slate-200 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-1.5">
-            View Listing <span class="material-symbols-outlined text-[16px]">north_east</span>
-          </button>
-        </div>
-      </div>
-      <!-- Card 2 -->
-      <div class="bg-white rounded-3xl border overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col group" style="border:1px solid rgba(19,117,71,0.14); box-shadow:rgba(19,80,50,0.08) 0 15px 30px -8px;">
-        <div class="p-6 flex-1">
-          <div class="flex items-center justify-between gap-2 mb-3">
-            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-100 text-[#2563EB] flex items-center gap-1">
-              <span class="material-symbols-outlined text-[14px]">science</span> Quality Assured NABL
-            </span>
-            <span class="text-xs font-bold text-slate-500">500 Qtl Available</span>
-          </div>
-          <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#137547] transition-colors">1121 Basmati Rice</h3>
-          <div class="text-xs text-slate-500 font-medium mt-0.5">Premium Steam • Grain 8.35mm</div>
-          <div class="text-xs text-slate-600 font-medium mt-2 flex items-center gap-1">
-            <span class="material-symbols-outlined text-[16px] text-slate-400">location_on</span> Karnal, Haryana
-          </div>
-          <div class="mt-6 p-4 rounded-2xl bg-[#FAF9F5] border border-slate-200/80">
-            <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">AI Fair Benchmark</div>
-            <div class="text-2xl font-extrabold text-[#137547] mt-0.5">₹4,400 <span class="text-xs font-semibold text-slate-500">/ Qtl</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">Export Parity Match</div>
-          </div>
-        </div>
-        <div class="px-6 pb-6">
-          <button onclick="handleMarketplaceHeroCTA()"
-            class="w-full py-3 rounded-xl bg-[#FAF9F5] hover:bg-[#137547] text-slate-800 hover:text-white border border-slate-200 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-1.5">
-            View Listing <span class="material-symbols-outlined text-[16px]">north_east</span>
-          </button>
-        </div>
-      </div>
-      <!-- Card 3 -->
-      <div class="bg-white rounded-3xl border overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col group" style="border:1px solid rgba(19,117,71,0.14); box-shadow:rgba(19,80,50,0.08) 0 15px 30px -8px;">
-        <div class="p-6 flex-1">
-          <div class="flex items-center justify-between gap-2 mb-3">
-            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-[#FEF3C7] text-[#D97706] flex items-center gap-1">
-              <span class="material-symbols-outlined text-[14px]">eco</span> Verified Producer
-            </span>
-            <span class="text-xs font-bold text-slate-500">150 Qtl Available</span>
-          </div>
-          <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#137547] transition-colors">Yellow Soybean (JS 9560)</h3>
-          <div class="text-xs text-slate-500 font-medium mt-0.5">Grade A • Oil Content 18.9%</div>
-          <div class="text-xs text-slate-600 font-medium mt-2 flex items-center gap-1">
-            <span class="material-symbols-outlined text-[16px] text-slate-400">location_on</span> Ujjain, Madhya Pradesh
-          </div>
-          <div class="mt-6 p-4 rounded-2xl bg-[#FAF9F5] border border-slate-200/80">
-            <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">AI Fair Benchmark</div>
-            <div class="text-2xl font-extrabold text-[#137547] mt-0.5">₹4,650 <span class="text-xs font-semibold text-slate-500">/ Qtl</span></div>
-            <div class="text-[11px] text-slate-500 mt-1">Crushing Plant Escrow Ready</div>
-          </div>
-        </div>
-        <div class="px-6 pb-6">
-          <button onclick="handleMarketplaceHeroCTA()"
-            class="w-full py-3 rounded-xl bg-[#FAF9F5] hover:bg-[#137547] text-slate-800 hover:text-white border border-slate-200 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-1.5">
-            View Listing <span class="material-symbols-outlined text-[16px]">north_east</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="text-center mt-12">
-      <button onclick="handleMarketplaceHeroCTA()"
-        class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-white border-2 border-[#137547] text-[#137547] hover:bg-[#137547] hover:text-white font-bold text-base shadow-sm transition-all">
-        Explore Institutional Marketplace →
-      </button>
-    </div>
-  </section>
-
-  <!-- ── LEDGER: REAL IMPACT ── -->
-  <section id="ledger" class="ledger-section py-16 px-6 sm:px-10 mx-4 sm:mx-8 lg:mx-auto lg:max-w-7xl rounded-3xl my-12">
-    <div class="text-center mb-10">
-      <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-[#065F46] font-bold text-xs uppercase tracking-wider mb-3">Economics Comparison</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">The Real Impact of Removing Intermediaries</h2>
-      <p class="text-base text-slate-600 mt-3 font-medium">Direct trade transfers margin back to rural producers while reducing procurement friction for wholesale buyers.</p>
-    </div>
-    <div class="table-responsive">
-      <table class="ledger-table w-full">
-        <thead>
-          <tr>
-            <th>Commodity</th>
-            <th>Middleman APMC Price</th>
-            <th>Kisan Setu AI Fair Price</th>
-            <th>Buyer Retail Baseline</th>
-            <th>Farmer Net Gain</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="highlight-row">
-            <td><strong>🍅 Tomato (Grade A)</strong></td>
-            <td><span class="old">₹23.00/kg</span></td>
-            <td><strong style="color:var(--olive);">₹31.00/kg</strong></td>
-            <td>₹38.00/kg</td>
-            <td><span class="gain">+34.8% Gain</span></td>
-          </tr>
-          <tr>
-            <td><strong>🧅 Onion (Nashik Red)</strong></td>
-            <td><span class="old">₹14.00/kg</span></td>
-            <td><strong style="color:var(--olive);">₹19.00/kg</strong></td>
-            <td>₹23.50/kg</td>
-            <td><span class="gain">+35.7% Gain</span></td>
-          </tr>
-          <tr>
-            <td><strong>🌾 Wheat (Sharbati)</strong></td>
-            <td><span class="old">₹19.00/kg</span></td>
-            <td><strong style="color:var(--olive);">₹24.00/kg</strong></td>
-            <td>₹28.00/kg</td>
-            <td><span class="gain">+26.3% Gain</span></td>
-          </tr>
-          <tr>
-            <td><strong>🥔 Potato (Jyoti)</strong></td>
-            <td><span class="old">₹11.00/kg</span></td>
-            <td><strong style="color:var(--olive);">₹15.00/kg</strong></td>
-            <td>₹19.00/kg</td>
-            <td><span class="gain">+36.4% Gain</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ── CTA BAND ── -->
-  <div class="cta-band mx-4 sm:mx-8 lg:mx-auto lg:max-w-7xl rounded-3xl my-8">
-    <h2>Transform Agricultural Trade Across India</h2>
-    <p>Join farmers, FPOs, and bulk buyers using Kisan Setu for fair algorithmic price discovery and direct supply chain logistics.</p>
-    <button class="btn-primary" onclick="openAuthModal('signup')">Create Free Account →</button>
-  </div>
-
-  <!-- ── FOOTER ── -->
-  <footer class="border-t" style="border-top:1px solid rgba(19,117,71,0.12);">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-        <!-- Brand -->
-        <div class="flex items-center gap-3">
-          <svg class="h-9 w-auto" fill="none" viewBox="0 0 200 56" xmlns="http://www.w3.org/2000/svg">
-            <g transform="translate(2,4)">
-              <rect fill="#137547" height="48" rx="12" width="48"></rect>
-              <path d="M12 36C17 28 31 28 36 36" stroke="#FEF3C7" stroke-linecap="round" stroke-width="3"></path>
-              <path d="M24 30V15M24 15C21 18 18 19 16 19M24 15C27 18 30 19 32 19" stroke="#F59E0B" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
-              <circle cx="24" cy="12" fill="#10B981" r="2"></circle>
-            </g>
-            <text fill="#0F172A" font-family="Plus Jakarta Sans, sans-serif" font-size="18" font-weight="800" x="58" y="28">Kisan Setu AI</text>
-            <text fill="#137547" font-family="Plus Jakarta Sans, sans-serif" font-size="9" font-weight="600" x="58" y="44">किसान से बाजार तक</text>
-          </svg>
-        </div>
-
-        <div class="text-xs text-slate-500 font-medium max-w-xs">
-          Design concept for Ministry of Consumer Affairs, Food & Public Distribution — Dept. of Consumer Affairs (DoCA)
-        </div>
-
-        <div class="flex items-center gap-4 text-xs text-slate-500">
-          <span class="flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
-            Live ML Model · APMC Feed Active
+        <div class="flex items-center gap-6">
+          <a class="hover:text-slate-800 transition-colors" href="javascript:void(0)" onclick="showToast('Privacy Policy: Standard DoCA Data Protection guidelines')">Privacy Policy</a>
+          <a class="hover:text-slate-800 transition-colors" href="javascript:void(0)" onclick="showToast('Terms of Trade: APMC &amp; e-NAM aligned terms')">Terms of Trade</a>
+          <a class="hover:text-slate-800 transition-colors" href="javascript:void(0)" onclick="showToast('Help Center: Toll-free 1800-419-0000')">Help Center</a>
+          <span class="inline-flex items-center gap-1 text-[#137547] font-bold" id="nav-status-pill">
+            <span class="w-2 h-2 rounded-full bg-[#10B981]"></span> All Systems Operational
           </span>
         </div>
       </div>
@@ -1197,83 +1423,72 @@
      APPLICATION PORTAL (AUTHENTICATED & ROLE-BASED)
      ======================================================= -->
 <div id="app-portal">
-  <!-- STITCH B2B TERMINAL HEADER -->
-  <header class="app-header">
-    <!-- Left: Brand + Role Badge + Live Mandi Ticker -->
-    <div class="flex items-center gap-4">
+  <!-- =======================================================
+       STITCH B2B TERMINAL HEADER (FARMER DASHBOARD)
+       ======================================================= -->
+  <header class="app-header h-16 bg-surface-white/95 backdrop-blur-md border-b border-border-earth flex items-center justify-between px-6 z-50">
+    <!-- Left: Brand + Role Badge + Live Mandi Stream Location -->
+    <div class="flex items-center gap-6">
       <div class="flex items-center gap-3 cursor-pointer group" onclick="closeApp()" title="Return to Landing Page">
-        <div class="h-9 w-9 rounded-xl bg-emerald-50 text-[#137547] flex items-center justify-center font-bold text-lg border border-emerald-200 shadow-xs group-hover:bg-[#137547] group-hover:text-white transition-colors">
+        <div class="h-9 w-9 rounded-lg bg-emerald-50 text-primary flex items-center justify-center font-bold text-lg border border-emerald-200 shadow-xs group-hover:bg-[#137547] group-hover:text-white transition-colors">
           🌾
         </div>
         <div class="flex flex-col">
           <div class="flex items-center gap-2">
-            <span class="font-extrabold text-sm sm:text-base text-slate-900 leading-tight">Kisan Setu</span>
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-[#137547] border border-emerald-200" id="portal-user-role-tag">
-              Farmer Portal
+            <h1 class="font-bold text-sm sm:text-base text-gray-900 leading-tight">Farmer Dashboard / किसान डैशबोर्ड</h1>
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200" id="portal-user-role-tag">
+              📍 <span id="f-top-location">Dewas, Madhya Pradesh</span>
             </span>
           </div>
-          <span class="text-[10.5px] text-slate-500 font-medium">B2B Agri Terminal • APMC Live Stream</span>
+          <span class="text-xs text-gray-500 font-medium">Kisan Setu AI Mandi Network • APMC Live Stream</span>
         </div>
       </div>
-
-      <!-- Mandi Ticker (Stitch Reference) -->
-      <div class="hidden xl:flex items-center gap-2 bg-[#f0f3ff] px-3 py-1 rounded-full border border-slate-200/70 text-xs shadow-xs">
-        <span class="material-symbols-outlined text-[#16A34A] text-[17px]">trending_up</span>
-        <span class="font-semibold text-slate-700">Indore Mandi:</span>
-        <span class="font-bold text-[#137547]">Soybean ₹4,850 ▲</span>
-        <span class="text-slate-300">|</span>
-        <span class="font-semibold text-slate-700">Dewas:</span>
-        <span class="font-bold text-[#137547]">Sharbati ₹2,780 ▲</span>
-        <span class="text-slate-300">|</span>
-        <span class="font-semibold text-slate-700">Kota:</span>
-        <span class="font-bold text-[#793f00]">Mustard ₹5,420 ▼</span>
-      </div>
     </div>
 
-    <!-- Center: Search Bar (Stitch Reference) -->
-    <div class="flex-1 max-w-md mx-6 hidden md:block">
+    <!-- Center: Search Bar -->
+    <div class="flex-1 max-w-xl mx-8 hidden md:block">
       <div class="relative flex items-center">
-        <span class="material-symbols-outlined absolute left-3 text-slate-400 text-[18px] pointer-events-none">search</span>
-        <input class="w-full bg-slate-50 hover:bg-white border border-slate-200 focus:border-[#137547] focus:bg-white text-slate-800 pl-9 pr-20 py-1.5 rounded-lg text-xs transition-all focus:outline-none focus:ring-2 focus:ring-[#137547]/20" placeholder="Search mandi lots, commodities (गेहूं, चना, सोयाबीन)..." type="text">
-        <span class="absolute right-2 px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-500 bg-white border border-slate-200 rounded">APMC Live</span>
+        <span class="material-symbols-outlined absolute left-3.5 text-gray-400 text-[20px] pointer-events-none">search</span>
+        <input class="w-full bg-slate-50 hover:bg-white border border-border-earth focus:border-primary focus:bg-white text-gray-900 pl-11 pr-14 py-2 rounded-lg text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="Search mandi lots, buyers, orders..." type="text">
+        <kbd class="absolute right-3 px-2 py-0.5 text-[11px] font-mono font-semibold text-gray-400 bg-white border border-gray-200 rounded">APMC Live</kbd>
       </div>
     </div>
 
-    <!-- Right Controls: Wallet + Notifs + User Profile + Close/Logout -->
-    <div class="app-user-bar flex items-center gap-2 sm:gap-3">
-      <!-- Wallet / Spend Balance -->
-      <div class="wallet-pill flex items-center gap-1.5 bg-emerald-50/80 border border-emerald-200/80 px-3 py-1.5 rounded-xl text-xs font-semibold">
-        <span class="material-symbols-outlined text-[#137547] text-[16px]">account_balance_wallet</span>
-        <span id="wallet-label" class="text-slate-600 hidden sm:inline">Settled Earnings:</span>
-        <span class="bal text-[#137547] font-bold font-mono" id="wallet-amount">₹0.00</span>
-      </div>
-
-      <!-- Notifications -->
-      <button class="notif-btn relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors border border-slate-200/60 bg-white" onclick="toggleNotifications()" title="Notifications">
-        <span class="material-symbols-outlined text-[20px]">notifications</span>
-        <span class="notif-badge absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-white" id="notif-count" style="display:none;">0</span>
+    <!-- Right Controls: Language, Notifications, Farmer Chip, Exit, Logout -->
+    <div class="flex items-center gap-3">
+      <!-- Language Toggle -->
+      <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-earth bg-white hover:bg-slate-50 text-gray-700 text-xs font-semibold transition-colors" type="button" onclick="showToast('Language: English / हिन्दी')">
+        <span class="material-symbols-outlined text-[16px] text-primary">translate</span>
+        <span>EN / हिंदी</span>
       </button>
 
-      <!-- User Profile Pill (Dynamic) -->
-      <div class="user-badge-pill flex items-center gap-2 pl-1.5 py-1 pr-2.5 rounded-xl bg-white border border-slate-200/80 hover:border-[#137547]/40 transition-colors cursor-pointer" onclick="switchAppTab('profile')">
-        <span class="u-avatar w-7 h-7 rounded-full bg-emerald-100 text-[#137547] flex items-center justify-center text-sm font-bold ring-2 ring-emerald-500/20" id="app-user-avatar">🧑‍🌾</span>
-        <div class="hidden sm:flex flex-col text-left leading-tight">
+      <!-- Notifications -->
+      <button class="relative p-2 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-slate-100 transition-colors border border-transparent" type="button" onclick="toggleNotifications()" title="Notifications">
+        <span class="material-symbols-outlined text-[22px]">notifications</span>
+        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-emerald-600 rounded-full ring-2 ring-white" id="notif-count" style="display:none;"></span>
+      </button>
+
+      <div class="h-6 w-px bg-border-earth mx-1"></div>
+
+      <!-- Farmer Profile Chip -->
+      <div class="flex items-center gap-2.5 pl-1 py-1 pr-2 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer border border-transparent hover:border-border-earth" onclick="switchAppTab('profile')">
+        <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-base ring-2 ring-emerald-600/30" id="app-user-avatar">🧑‍🌾</div>
+        <div class="hidden xl:flex flex-col text-left leading-tight">
           <div class="flex items-center gap-1.5">
-            <span class="text-xs font-bold text-slate-900 truncate max-w-[120px]" id="app-user-name">Ramesh Kumar</span>
-            <span class="u-role farmer text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800" id="app-user-role-badge">FARMER</span>
+            <span class="text-xs font-bold text-gray-900" id="app-user-name">Rajesh Patel</span>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded" id="app-user-role-badge">Verified Farmer ✓</span>
           </div>
+          <span class="text-[11px] text-gray-500" id="app-user-fpo">Patel Farm FPO • ID #8891</span>
         </div>
       </div>
 
-      <div class="h-5 w-px bg-slate-200 mx-0.5 hidden sm:block"></div>
-
-      <!-- Minimize to landing -->
-      <button class="p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors" onclick="closeApp()" title="Minimize to landing">
+      <!-- Minimize to Landing Page -->
+      <button class="p-2 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-slate-100 transition-colors" onclick="closeApp()" title="Minimize to landing">
         <span class="material-symbols-outlined text-[20px]">close_fullscreen</span>
       </button>
 
       <!-- Logout -->
-      <button class="p-2 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors" onclick="logout()" title="Logout">
+      <button class="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" onclick="logout()" title="Logout">
         <span class="material-symbols-outlined text-[20px]">logout</span>
       </button>
     </div>
@@ -1291,125 +1506,162 @@
   </div>
 
   <div class="app-layout">
-    <!-- STITCH LEFT NAVIGATION (DYNAMIC ROLE-BASED SIDEBAR) -->
-    <aside class="app-sidebar">
-      <!-- TOP: Verified Badge Banner (Stitch Reference) -->
-      <div class="mb-3 p-2.5 rounded-xl bg-emerald-50/90 border border-emerald-200 flex items-center gap-2.5 shadow-2xs">
-        <div class="w-8 h-8 rounded-lg bg-[#137547] text-white flex items-center justify-center shrink-0 shadow-xs">
-          <span class="material-symbols-outlined text-[18px]">verified_user</span>
-        </div>
-        <div class="flex flex-col min-w-0">
-          <div class="flex items-center gap-1">
-            <span class="text-xs font-bold text-slate-900 leading-tight">Govt / NABL Verified</span>
-          </div>
-          <span class="text-[10px] font-semibold text-[#137547] leading-tight truncate">Grade A Trade Node • सत्यापित</span>
-        </div>
-      </div>
-
-      <!-- FARMER NAVIGATION MENU -->
-      <div id="sidebar-farmer-nav" class="flex flex-col gap-1">
-        <div class="sidebar-section-lbl">Overview</div>
-        <button class="app-nav-item active" onclick="switchAppTab('farmer-dashboard', this)">
-          <span class="ic material-symbols-outlined">space_dashboard</span>
-          <span>Dashboard</span>
-        </button>
-
-        <div class="sidebar-section-lbl">Produce &amp; Sales</div>
-        <button class="app-nav-item" onclick="switchAppTab('farmer-portal', this)">
-          <span class="ic material-symbols-outlined">add_box</span>
-          <span>List Produce &amp; AI</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('farmer-listings', this)">
-          <span class="ic material-symbols-outlined">inventory_2</span>
-          <span>My Listings</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('orders', this)">
-          <span class="ic material-symbols-outlined">receipt_long</span>
-          <span>Orders &amp; Dispatches</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('farmer-earnings', this)">
-          <span class="ic material-symbols-outlined">payments</span>
-          <span>Settled Earnings</span>
-        </button>
-
-        <div class="sidebar-section-lbl">Intelligence &amp; Maps</div>
-        <button class="app-nav-item flex items-center justify-between" onclick="switchAppTab('ai-pricing', this)">
+    <!-- STITCH SIDEBAR NAVIGATION -->
+    <aside class="app-sidebar w-64 bg-surface-white border-r border-border-earth z-40 flex flex-col justify-between p-4 overflow-y-auto shrink-0">
+      <div class="flex flex-col gap-4">
+        <!-- Logo Header -->
+        <div class="px-1 pt-1 pb-2 border-b border-border-earth/80 flex items-center justify-between">
           <div class="flex items-center gap-2.5">
-            <span class="ic material-symbols-outlined">auto_graph</span>
-            <span>AI Price Insights</span>
+            <div class="w-8 h-8 rounded-lg bg-[#137547] text-white flex items-center justify-center font-bold text-base shadow-xs">
+              🌾
+            </div>
+            <div class="flex flex-col">
+              <span class="font-bold text-base text-gray-900 tracking-tight leading-none">Kisan Setu AI</span>
+              <span class="text-[10px] font-semibold text-[#137547] mt-0.5">Agri-OS Terminal</span>
+            </div>
           </div>
-          <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">AI</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('demand', this)">
-          <span class="ic material-symbols-outlined">trending_up</span>
-          <span>Demand Prediction</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('logistics', this)">
-          <span class="ic material-symbols-outlined">route</span>
-          <span>Route Optimisation</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('tracking', this)">
-          <span class="ic material-symbols-outlined">local_shipping</span>
-          <span>Order Tracking</span>
-        </button>
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">v2.4</span>
+        </div>
+
+        <!-- Farmer Navigation Links -->
+        <nav class="flex flex-col gap-1" id="sidebar-farmer-nav">
+          <!-- Dashboard (Active) -->
+          <button class="app-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg bg-primary text-white font-semibold shadow-sm transition-all group active" onclick="switchAppTab('farmer-dashboard', this)">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+              <span class="text-sm">Dashboard</span>
+            </div>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-300"></span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('farmer-listings', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">inventory_2</span>
+            <span>My Produce / मेरी फसलें</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('farmer-portal', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">add_box</span>
+            <span>Add Produce / फसल जोड़ें</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('marketplace', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">storefront</span>
+            <span>Marketplace / बाजार</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('orders', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">account_balance_wallet</span>
+            <span>Orders &amp; Escrow</span>
+          </button>
+
+          <button class="app-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('ai-pricing', this)">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px] text-emerald-700">auto_graph</span>
+              <span>Fair Price AI</span>
+            </div>
+            <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">NEW</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('logistics', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">local_shipping</span>
+            <span>Shared Logistics</span>
+          </button>
+
+          <button class="app-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="toggleNotifications(event)" id="sidebar-notif-btn" type="button">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px] text-gray-500">notifications</span>
+              <span>Notifications</span>
+            </div>
+            <span id="sidebar-notif-count" class="w-5 h-5 rounded-full bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center">0</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('profile', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">badge</span>
+            <span>FPO Profile</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('profile', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">settings</span>
+            <span>Settings</span>
+          </button>
+        </nav>
+
+        <!-- Buyer Navigation Links (Preserved for Buyer Role) -->
+        <nav class="flex flex-col gap-1" id="sidebar-buyer-nav" style="display:none;">
+          <button class="app-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg bg-primary text-white font-semibold shadow-sm transition-all group active" onclick="switchAppTab('buyer-dashboard', this)">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+              <span class="text-sm">Buyer Terminal</span>
+            </div>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-300"></span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('marketplace', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">storefront</span>
+            <span>Marketplace / बाजार</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('buyer-search', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">search</span>
+            <span>Search Produce</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('buyer-saved', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">favorite</span>
+            <span>Saved Listings</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('orders', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">receipt_long</span>
+            <span>My Orders</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('tracking', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">local_shipping</span>
+            <span>Delivery Tracking</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('ai-pricing', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">auto_graph</span>
+            <span>Market Price Trends</span>
+          </button>
+
+          <button class="app-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="toggleNotifications(event)" id="buyer-sidebar-notif-btn" type="button">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px] text-gray-500">notifications</span>
+              <span>Notifications</span>
+            </div>
+            <span id="buyer-sidebar-notif-count" class="w-5 h-5 rounded-full bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center">0</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('profile', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">badge</span>
+            <span>Buyer Profile</span>
+          </button>
+
+          <button class="app-nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-slate-100 hover:text-gray-900 text-sm font-medium transition-colors" onclick="switchAppTab('profile', this)">
+            <span class="material-symbols-outlined text-[20px] text-gray-500">settings</span>
+            <span>Settings</span>
+          </button>
+        </nav>
       </div>
 
-      <!-- BUYER NAVIGATION MENU -->
-      <div id="sidebar-buyer-nav" class="flex flex-col gap-1" style="display:none;">
-        <div class="sidebar-section-lbl">Procurement</div>
-        <button class="app-nav-item active" onclick="switchAppTab('buyer-dashboard', this)">
-          <span class="ic material-symbols-outlined">space_dashboard</span>
-          <span>Dashboard</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('marketplace', this)">
-          <span class="ic material-symbols-outlined">storefront</span>
-          <span>Marketplace</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('buyer-search', this)">
-          <span class="ic material-symbols-outlined">search</span>
-          <span>Search Produce</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('buyer-saved', this)">
-          <span class="ic material-symbols-outlined">favorite</span>
-          <span>Saved Listings</span>
-        </button>
-
-        <div class="sidebar-section-lbl">Orders &amp; Deliveries</div>
-        <button class="app-nav-item" onclick="switchAppTab('orders', this)">
-          <span class="ic material-symbols-outlined">receipt_long</span>
-          <span>My Orders</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('tracking', this)">
-          <span class="ic material-symbols-outlined">local_shipping</span>
-          <span>Delivery Tracking</span>
-        </button>
-        <button class="app-nav-item" onclick="switchAppTab('ai-pricing', this)">
-          <span class="ic material-symbols-outlined">auto_graph</span>
-          <span>Market Price Trends</span>
-        </button>
-      </div>
-
-      <!-- BOTTOM: Helpline Card (Stitch Reference) + Shared Footer -->
-      <div class="sidebar-footer">
-        <!-- Helpline Card -->
-        <div class="p-2.5 rounded-xl bg-amber-50/90 border border-amber-200 flex flex-col gap-1 mb-2">
+      <!-- Bottom Sidebar Footer -->
+      <div class="flex flex-col gap-2.5 pt-3 border-t border-border-earth">
+        <div class="p-3 rounded-lg bg-emerald-50/90 border border-emerald-200 flex flex-col gap-1">
+          <div class="flex items-center gap-1.5 text-emerald-900 text-xs font-bold">
+            <span class="material-symbols-outlined text-[16px] text-emerald-700">verified</span>
+            <span>✓ Verified Farmer</span>
+          </div>
+          <p class="text-[11px] text-emerald-800 leading-tight">NABL &amp; SFAC Linked • Aadhaar KYC Cleared</p>
+        </div>
+        <div class="p-3 rounded-lg bg-amber-50/80 border border-amber-200 flex flex-col gap-1">
           <div class="flex items-center gap-1.5 text-amber-900 text-xs font-bold">
             <span class="material-symbols-outlined text-[16px] text-amber-700">support_agent</span>
-            <span>APMC 24/7 Helpline</span>
+            <span>Kisan Helpline 1800-180-1551</span>
           </div>
-          <div class="font-mono text-xs text-slate-900 font-bold">1800-180-1551</div>
-          <span class="text-[9.5px] text-amber-800">Kisan Call Centre • निःशुल्क सहायता</span>
+          <span class="text-[10px] text-amber-800">24/7 Support available • निःशुल्क सहायता</span>
         </div>
-
-        <button class="app-nav-item" onclick="switchAppTab('profile', this)">
-          <span class="ic material-symbols-outlined">badge</span>
-          <span>My Profile</span>
-        </button>
-        <button class="app-nav-item text-red-700 hover:text-red-800 hover:bg-red-50" onclick="logout()">
-          <span class="ic material-symbols-outlined text-red-600">logout</span>
-          <span>Logout</span>
-        </button>
-        <div class="text-center text-[10px] text-slate-400 font-medium pt-1.5">Kisan Setu Agri-OS v2.4 • DoCA</div>
       </div>
     </aside>
 
@@ -1611,12 +1863,12 @@
               </div>
               <!-- Action Buttons -->
               <div class="grid grid-cols-2 gap-2 mt-1">
-                <button onclick="switchAppTab('farmer-portal')" class="w-full py-2.5 px-3 bg-amber-400 hover:bg-amber-300 text-gray-950 font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1" type="button">
-                  <span class="material-symbols-outlined text-[16px]">add_circle</span>
-                  <span>+ List Produce</span>
+                <button id="applyPriceBtn" onclick="listAtRecommendedPrice()" class="w-full py-2.5 px-3 bg-amber-400 hover:bg-amber-300 text-gray-950 font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1 cursor-pointer" type="button">
+                  <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                  <span>Apply Price (<span id="f-ai-btn-price">₹34.00</span>)</span>
                 </button>
-                <button onclick="openApp('ai-pricing')" class="w-full py-2.5 px-3 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs rounded-xl border border-white/20 transition-all flex items-center justify-center gap-1" type="button">
-                  <span>Explore AI</span>
+                <button onclick="openApp('ai-pricing')" class="w-full py-2.5 px-3 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs rounded-xl border border-white/20 transition-all flex items-center justify-center gap-1 cursor-pointer" type="button">
+                  <span>View AI Analysis</span>
                   <span class="material-symbols-outlined text-[14px]">open_in_new</span>
                 </button>
               </div>
@@ -1688,6 +1940,333 @@
                 <span>View All Orders</span>
                 <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
               </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. SALES & PRICE REALIZATION TREND + SHARED LOGISTICS STATUS -->
+        <section class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          <!-- Left: Sales & Price Realization Trend (8 cols) -->
+          <div class="xl:col-span-8 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <div>
+                  <h3 class="text-base font-bold text-slate-900">Sales &amp; Price Realization Trend</h3>
+                  <p class="text-xs text-slate-500">Kisan Setu direct B2B buyer settlement vs APMC Physical Mandi</p>
+                </div>
+                <div class="flex items-center gap-4 text-xs font-semibold">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded-sm bg-[#005b34]"></span>
+                    <span class="text-slate-700">Kisan Setu Net Realized</span>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-3 h-1.5 bg-slate-400 rounded-sm"></span>
+                    <span class="text-slate-500">Local APMC Mandi</span>
+                  </div>
+                </div>
+              </div>
+              <!-- SVG Line Chart Area -->
+              <div class="w-full h-52 relative flex items-end pt-2">
+                <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 700 200">
+                  <line class="text-slate-200" stroke="currentColor" stroke-width="1" x1="0" x2="700" y1="170" y2="170"></line>
+                  <line class="text-slate-200" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="110" y2="110"></line>
+                  <line class="text-slate-200" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="50" y2="50"></line>
+                  <!-- APMC Benchmark (Dashed) -->
+                  <path d="M 40 160 L 150 145 L 260 135 L 370 120 L 480 95 L 590 80 L 660 70" fill="none" stroke="#94A3B8" stroke-dasharray="5 4" stroke-width="2"></path>
+                  <!-- Kisan Setu Realization line + gradient fill -->
+                  <defs>
+                    <linearGradient id="netRealizedGlow" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stop-color="#005b34" stop-opacity="0.18"></stop>
+                      <stop offset="100%" stop-color="#005b34" stop-opacity="0.0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path d="M 40 150 L 150 130 L 260 110 L 370 85 L 480 50 L 590 35 L 660 20 L 660 190 L 40 190 Z" fill="url(#netRealizedGlow)"></path>
+                  <path d="M 40 150 L 150 130 L 260 110 L 370 85 L 480 50 L 590 35 L 660 20" fill="none" stroke="#005b34" stroke-linecap="round" stroke-width="3"></path>
+                  <!-- Data points -->
+                  <circle cx="40" cy="150" fill="#005b34" r="4"></circle>
+                  <circle cx="150" cy="130" fill="#005b34" r="4"></circle>
+                  <circle cx="260" cy="110" fill="#005b34" r="4"></circle>
+                  <circle cx="370" cy="85" fill="#005b34" r="4"></circle>
+                  <circle cx="480" cy="50" fill="#005b34" r="4"></circle>
+                  <circle cx="590" cy="35" fill="#005b34" r="4"></circle>
+                  <circle cx="660" cy="20" fill="#16A34A" r="6" stroke="#FFFFFF" stroke-width="2"></circle>
+                </svg>
+              </div>
+              <!-- X-Axis Labels -->
+              <div class="flex justify-between text-[11px] font-semibold text-slate-500 pt-2 border-t border-slate-100">
+                <span>Nov (Kharif End)</span>
+                <span>Dec (Post-Harvest)</span>
+                <span>Jan (Storage Cycle)</span>
+                <span>Feb (Pre-Rabi)</span>
+                <span>Mar (Peak Arrival)</span>
+                <span>Current Week</span>
+              </div>
+            </div>
+            <!-- Bottom Metric Summary Bar -->
+            <div class="mt-4 p-3 rounded-xl bg-emerald-50/70 border border-emerald-200/80 flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5 text-[#005b34]">
+                <span class="material-symbols-outlined text-[18px]">insights</span>
+                <span class="text-xs font-bold">Cumulative Farmer Gain: +₹98,400</span>
+              </div>
+              <span class="text-xs text-slate-700 font-medium">Compared with Local Mandi: <strong>+4.6%</strong> (Commission &amp; middleman fee saved: ~7.8%)</span>
+            </div>
+          </div>
+
+          <!-- Right: Shared Logistics Status (4 cols) -->
+          <div class="xl:col-span-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[#005b34] text-[22px]">local_shipping</span>
+                  <h3 class="text-base font-bold text-slate-900">Shared Logistics Status</h3>
+                </div>
+                <span class="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-lg">Dewas Hub</span>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col gap-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg">
+                    Scheduled Pickup: Tomorrow, 07:30 AM
+                  </span>
+                  <span class="text-xs text-slate-600 font-semibold">Shared 32ft Truck</span>
+                </div>
+                <div class="flex items-center gap-3 pt-1">
+                  <div class="w-11 h-11 rounded-xl bg-slate-200/70 flex items-center justify-center text-slate-700">
+                    <span class="material-symbols-outlined text-[24px]">local_shipping</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="text-sm font-bold text-slate-900">Vehicle: MP-09-G-4491</div>
+                    <div class="text-xs text-slate-600 flex items-center gap-1">
+                      <span>Driver: Rameshwar Yadav</span>
+                      <span>•</span>
+                      <span class="text-[#005b34] font-semibold">+91 98260-XXXXX</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white p-2.5 rounded-lg border border-slate-200/80 text-xs">
+                  <div class="text-slate-600">Loading Bay: <strong class="text-slate-900">Dewas Hub Warehouse #2</strong></div>
+                  <div class="text-emerald-800 font-semibold mt-0.5">Status: Pickup Scheduled (Inspection Clear)</div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-xs text-slate-500">Waybill #WB-DWS-9904</span>
+              <button onclick="switchAppTab('logistics')" class="px-3.5 py-1.5 bg-[#005b34] hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-colors shadow-2xs flex items-center gap-1" type="button">
+                <span>View Route Pass</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. RECENT BULK ORDERS & ESCROW MILESTONE TRACKER -->
+        <section class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-col gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-900">Recent Bulk Orders &amp; Escrow Milestone Tracker</h3>
+              <p class="text-xs text-slate-500">Payment secured through ICICI / Kisan Setu Smart Escrow Vault</p>
+            </div>
+            <button onclick="switchAppTab('orders')" class="text-xs font-bold text-[#005b34] hover:underline flex items-center gap-1 self-start sm:self-auto" type="button">
+              <span>View All Orders</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </button>
+          </div>
+          <div class="flex flex-col gap-3">
+            <!-- Order 1: BigBasket Wholesale India (In-progress) -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col gap-3">
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center font-bold text-sm">
+                    BB
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm font-bold text-slate-900">BigBasket Wholesale India</span>
+                      <span class="text-xs bg-white border border-slate-200 px-2 py-0.5 rounded text-slate-600 font-medium">Order #ORD-7729</span>
+                    </div>
+                    <div class="text-xs text-slate-500 mt-0.5">120 Qtl Sharbati Wheat • Total: ₹3,24,000</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-4 self-end md:self-center">
+                  <div class="text-right">
+                    <span class="text-xs font-bold text-emerald-800 flex items-center gap-1 justify-end">
+                      <span class="material-symbols-outlined text-[16px]">lock</span>
+                      ₹3,20,000 in Escrow Secured
+                    </span>
+                    <span class="text-[11px] text-slate-500">Release upon Dewas Hub weighing</span>
+                  </div>
+                  <button onclick="switchAppTab('orders')" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-semibold text-xs border border-slate-200 transition-colors" type="button">
+                    Order Details
+                  </button>
+                </div>
+              </div>
+              <!-- Horizontal 5-Step Milestone Stepper -->
+              <div class="pt-2 px-1">
+                <div class="flex items-center justify-between relative">
+                  <!-- Step 1 -->
+                  <div class="flex flex-col items-center text-center">
+                    <div class="w-7 h-7 rounded-full bg-[#005b34] text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                      <span class="material-symbols-outlined text-[16px]">check</span>
+                    </div>
+                    <span class="text-[11px] font-bold text-slate-900 mt-1">Bid Accepted</span>
+                    <span class="text-[10px] text-slate-500">14 Mar</span>
+                  </div>
+                  <div class="flex-1 h-0.5 bg-[#005b34] mx-2"></div>
+                  <!-- Step 2 -->
+                  <div class="flex flex-col items-center text-center">
+                    <div class="w-7 h-7 rounded-full bg-[#005b34] text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                      <span class="material-symbols-outlined text-[16px]">check</span>
+                    </div>
+                    <span class="text-[11px] font-bold text-slate-900 mt-1">Quality Assay Approved</span>
+                    <span class="text-[10px] text-slate-500">NABL Lab</span>
+                  </div>
+                  <div class="flex-1 h-0.5 bg-[#005b34] mx-2"></div>
+                  <!-- Step 3 -->
+                  <div class="flex flex-col items-center text-center">
+                    <div class="w-7 h-7 rounded-full bg-[#005b34] text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                      <span class="material-symbols-outlined text-[15px]">lock</span>
+                    </div>
+                    <span class="text-[11px] font-bold text-emerald-800 mt-1">Escrow Locked</span>
+                    <span class="text-[10px] text-slate-500">100% Funded</span>
+                  </div>
+                  <div class="flex-1 h-0.5 bg-emerald-300 mx-2"></div>
+                  <!-- Step 4 -->
+                  <div class="flex flex-col items-center text-center">
+                    <div class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center text-xs font-bold animate-pulse">
+                      <span class="material-symbols-outlined text-[16px]">local_shipping</span>
+                    </div>
+                    <span class="text-[11px] font-bold text-[#005b34] mt-1">Truck Dispatched</span>
+                    <span class="text-[10px] text-slate-500">Dewas Hub Out</span>
+                  </div>
+                  <div class="flex-1 h-0.5 bg-slate-200 mx-2"></div>
+                  <!-- Step 5 -->
+                  <div class="flex flex-col items-center text-center opacity-60">
+                    <div class="w-7 h-7 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">
+                      <span class="material-symbols-outlined text-[16px]">done_all</span>
+                    </div>
+                    <span class="text-[11px] font-medium text-slate-600 mt-1">Payment Released</span>
+                    <span class="text-[10px] text-slate-500">Instant IMPS</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Order 2: Adani Wilmar Edible Oils (Completed) -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-900 text-white flex items-center justify-center font-bold text-sm">
+                  AW
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-bold text-slate-900">Adani Wilmar Edible Oils</span>
+                    <span class="text-xs bg-white border border-slate-200 px-2 py-0.5 rounded text-slate-600 font-medium">Order #ORD-7688</span>
+                  </div>
+                  <div class="text-xs text-slate-500 mt-0.5">80 Qtl Soybean • ₹1,96,400 • Status: Logistics Weighbridge Approved</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 self-end md:self-center">
+                <div class="text-right">
+                  <span class="text-xs font-bold text-emerald-800 block">Payment Released to Farmer Account</span>
+                  <span class="text-[11px] text-slate-500">Settled via State Bank of India</span>
+                </div>
+                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200">
+                  <span class="material-symbols-outlined text-[16px]">check_circle</span> Complete
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. TRUST SAFEGUARDS & RECENT ACTIVITY -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-2">
+          <!-- Left: Trust Safeguards (5 cols) -->
+          <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-base font-bold text-slate-900">Your Transaction Trust Status</h3>
+              <span class="text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-lg">
+                5/5 Active
+              </span>
+            </div>
+            <div class="grid grid-cols-1 gap-2">
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-emerald-700 text-[18px]">verified_user</span>
+                <div class="flex-1">
+                  <span class="text-xs font-bold text-slate-900 block">✓ Farmer Aadhaar &amp; SFAC Authenticated</span>
+                  <span class="text-[11px] text-slate-500">Direct biometric and FPO verification</span>
+                </div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-emerald-700 text-[18px]">science</span>
+                <div class="flex-1">
+                  <span class="text-xs font-bold text-slate-900 block">✓ Produce NABL Tested &amp; Assayed</span>
+                  <span class="text-[11px] text-slate-500">Moisture &amp; purity certificate linked to QR</span>
+                </div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-emerald-700 text-[18px]">business</span>
+                <div class="flex-1">
+                  <span class="text-xs font-bold text-slate-900 block">✓ Buyer KYC &amp; Corporate Cleared</span>
+                  <span class="text-[11px] text-slate-500">Institutional credit pre-check cleared</span>
+                </div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-emerald-700 text-[18px]">lock</span>
+                <div class="flex-1">
+                  <span class="text-xs font-bold text-slate-900 block">✓ Escrow ICICI Secured Prior to Dispatch</span>
+                  <span class="text-[11px] text-slate-500">100% funds locked in tripartite account</span>
+                </div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-emerald-700 text-[18px]">share_location</span>
+                <div class="flex-1">
+                  <span class="text-xs font-bold text-slate-900 block">✓ GPS &amp; Cold-Chain Telemetry Continuous</span>
+                  <span class="text-[11px] text-slate-500">Real-time IoT sensors on freight corridor</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Recent Activity (7 cols) -->
+          <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-base font-bold text-slate-900">Recent Activity / हालिया गतिविधि</h3>
+              <span class="text-xs text-slate-500 font-medium">Real-time event stream</span>
+            </div>
+            <div class="space-y-2">
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-base">🤖</span>
+                  <span class="text-slate-800">AI fair price increased by <strong>+4.8%</strong> for Sharbati Wheat</span>
+                </div>
+                <span class="text-slate-400 font-medium text-[11px]">2 mins ago</span>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-base">🏢</span>
+                  <span class="text-slate-800">New buyer offer received from <strong>ITC Agri Business</strong> · 100 Qtl</span>
+                </div>
+                <span class="text-slate-400 font-medium text-[11px]">14 mins ago</span>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-base">🚚</span>
+                  <span class="text-slate-800">Shipment <strong>MP-09-G-4491</strong> scheduled for tomorrow 07:30 AM</span>
+                </div>
+                <span class="text-slate-400 font-medium text-[11px]">1 hour ago</span>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-base text-emerald-600 font-bold">✓</span>
+                  <span class="text-slate-800">Escrow payment of <strong>₹3,20,000</strong> locked by ICICI Trustee for BigBasket order</span>
+                </div>
+                <span class="text-slate-400 font-medium text-[11px]">3 hours ago</span>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-base">🌾</span>
+                  <span class="text-slate-800">Assay Certificate generated for <strong>Soybean JS-335</strong> (Grade A NABL)</span>
+                </div>
+                <span class="text-slate-400 font-medium text-[11px]">5 hours ago</span>
+              </div>
             </div>
           </div>
         </section>
@@ -1955,44 +2534,224 @@
         </div>
       </div>
 
-      <!-- ================= 6. BUYER MARKETPLACE ================= -->
-      <div class="app-view" id="view-marketplace">
-        <div class="view-header">
-          <div>
-            <h2 class="view-title">Direct Agricultural Marketplace</h2>
-            <p class="view-subtitle">Procure bulk harvest directly from verified farmers &amp; FPOs across India.</p>
+      <!-- ================= 6. BUYER MARKETPLACE (STITCH REDESIGN) ================= -->
+      <div class="app-view flex flex-col gap-6" id="view-marketplace">
+        <!-- 1. PAGE HEADER -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200/80">
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <h1 class="text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2.5">
+                <span class="p-1.5 rounded-xl bg-emerald-100 text-[#137547] flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[24px]">storefront</span>
+                </span>
+                Institutional Commodity Marketplace <span class="text-slate-400 font-normal">/ कृषि बाजार</span>
+              </h1>
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-[#005b34] text-xs font-bold border border-emerald-300/40">
+                B2B Verified Terminal
+              </span>
+            </div>
+            <p class="text-sm text-slate-600 font-normal max-w-3xl">
+              Buy directly from verified farmers and FPOs with transparent AI pricing, NABL quality assays and traceable freight.
+            </p>
+          </div>
+          <div class="flex items-center gap-4 flex-shrink-0">
+            <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-xl border border-slate-200/80 shadow-xs">
+              <div class="flex flex-col text-right">
+                <span class="text-[11px] text-slate-500 font-medium">Terminal Status</span>
+                <span class="text-xs font-extrabold text-slate-900">Live Agmarknet</span>
+              </div>
+              <div class="w-px h-7 bg-slate-200"></div>
+              <div class="flex flex-col text-left">
+                <span class="text-[11px] text-slate-500 font-medium">Custody Vault</span>
+                <span class="text-xs font-extrabold text-[#137547]">ICICI Escrow 100%</span>
+              </div>
+            </div>
+            <button class="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#005b34] hover:bg-[#137547] text-white text-xs font-bold transition-all shadow-xs active:scale-95 cursor-pointer" type="button" onclick="openApp('farmer-portal')">
+              <span class="material-symbols-outlined text-[18px]">add_circle</span>
+              <span>+ List Your Produce</span>
+            </button>
           </div>
         </div>
 
-        <div class="card" style="padding:16px 20px; margin-bottom:20px;">
-          <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
-            <input type="text" class="form-control" id="market-search-input" placeholder="🔍 Search crop, variety, farmer or district..." style="flex:2; min-width:220px;" oninput="filterMarketplace()">
-            
-            <select class="form-control" id="market-crop-filter" style="flex:1; min-width:140px;" onchange="filterMarketplace()">
-              <option value="ALL">All Crops</option>
-              <option value="Tomato">🍅 Tomato</option>
-              <option value="Onion">🧅 Onion</option>
-              <option value="Wheat">🌾 Wheat</option>
-              <option value="Potato">🥔 Potato</option>
-            </select>
+        <!-- 2. SEARCH & FILTER CONTROLS BAR -->
+        <div class="bg-white p-4 lg:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col gap-3.5" style="box-shadow: rgba(19, 80, 50, 0.06) 0px 10px 24px -4px, rgba(19, 80, 50, 0.04) 0px 3px 8px -2px; border-color: rgba(19, 117, 71, 0.14);">
+          <div class="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center">
+            <!-- Search Bar -->
+            <div class="relative flex-1">
+              <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-slate-400 pointer-events-none text-[20px]">search</span>
+              <input class="w-full bg-slate-50 hover:bg-white text-slate-900 pl-11 pr-4 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#137547] focus:border-[#137547] transition-all" id="market-search-input" placeholder="Search crops, varieties, farmers, districts, or mandis..." type="text" oninput="filterMarketplace()">
+            </div>
+            <!-- Dropdown Filters -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 flex-shrink-0">
+              <!-- Crop Filter -->
+              <div class="relative">
+                <select class="w-full appearance-none bg-slate-50 hover:bg-white text-slate-900 pl-3 pr-7 py-2 rounded-xl text-xs font-semibold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#137547] cursor-pointer" id="market-crop-filter" onchange="filterMarketplace()">
+                  <option value="ALL">All Crops (सभी फसलें)</option>
+                  <option value="Wheat">🌾 Wheat (गेहूं)</option>
+                  <option value="Tomato">🍅 Tomato (टमाटर)</option>
+                  <option value="Onion">🧅 Onion (प्याज)</option>
+                  <option value="Potato">🥔 Potato (आलू)</option>
+                  <option value="Soybean">🌱 Soybean (सोयाबीन)</option>
+                  <option value="Rice">🍚 Rice (चावल)</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+              </div>
+              <!-- Grade Filter -->
+              <div class="relative">
+                <select class="w-full appearance-none bg-slate-50 hover:bg-white text-slate-900 pl-3 pr-7 py-2 rounded-xl text-xs font-semibold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#137547] cursor-pointer" id="market-grade-filter" onchange="filterMarketplace()">
+                  <option value="ALL">All Grades (सभी ग्रेड)</option>
+                  <option value="Grade A">Grade A (NABL Assayed)</option>
+                  <option value="Grade B">Grade B (FAQ Standard)</option>
+                  <option value="Organic">Organic (Jaivik Bharat)</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+              </div>
+              <!-- Sort Filter -->
+              <div class="relative col-span-2 sm:col-span-1">
+                <select class="w-full appearance-none bg-slate-50 hover:bg-white text-slate-900 pl-3 pr-7 py-2 rounded-xl text-xs font-semibold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#137547] cursor-pointer" id="market-sort-filter" onchange="filterMarketplace()">
+                  <option value="dist_asc">📍 Nearest Distance</option>
+                  <option value="price_asc">₹ Price: Low to High</option>
+                  <option value="qty_desc">📦 Highest Quantity</option>
+                  <option value="date_desc">🕒 Newest Listed</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+              </div>
+            </div>
+          </div>
 
-            <select class="form-control" id="market-grade-filter" style="flex:1; min-width:130px;" onchange="filterMarketplace()">
-              <option value="ALL">All Grades</option>
-              <option value="Grade A">Grade A</option>
-              <option value="Grade B">Grade B</option>
-            </select>
-
-            <select class="form-control" id="market-sort-filter" style="flex:1; min-width:140px;" onchange="filterMarketplace()">
-              <option value="dist_asc">📍 Nearest Distance</option>
-              <option value="price_asc">₹ Price: Low to High</option>
-              <option value="qty_desc">📦 Highest Quantity</option>
-              <option value="date_desc">🕒 Newest Listed</option>
-            </select>
+          <!-- Commodity Category Pills -->
+          <div class="flex items-center gap-2 overflow-x-auto pt-2 border-t border-slate-100 no-scrollbar">
+            <button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#005b34] text-white text-xs font-bold whitespace-nowrap shadow-xs cursor-pointer" onclick="filterMarketplaceByPill('ALL')">
+              <span class="material-symbols-outlined text-[15px]">grid_view</span>
+              <span>All Commodities</span>
+            </button>
+            <button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer" onclick="filterMarketplaceByPill('Wheat')">
+              <span>🌾 Wheat (गेहूं)</span>
+            </button>
+            <button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer" onclick="filterMarketplaceByPill('Tomato')">
+              <span>🍅 Tomato (टमाटर)</span>
+            </button>
+            <button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer" onclick="filterMarketplaceByPill('Onion')">
+              <span>🧅 Onion (प्याज)</span>
+            </button>
+            <button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer" onclick="filterMarketplaceByPill('Potato')">
+              <span>🥔 Potato (आलू)</span>
+            </button>
+            <button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer" onclick="filterMarketplaceByPill('Soybean')">
+              <span>🌱 Soybean (सोयाबीन)</span>
+            </button>
           </div>
         </div>
 
-        <div class="market-grid" id="marketplace-cards-container">
-          <!-- Populated dynamically -->
+        <!-- 3. MARKETPLACE SUMMARY (4 compact KPI cards) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between text-slate-500">
+              <span class="text-[11px] font-bold uppercase tracking-wider">ACTIVE LOTS</span>
+              <span class="material-symbols-outlined text-[#137547] text-[20px]">dataset</span>
+            </div>
+            <div class="mt-2">
+              <div class="text-2xl font-extrabold text-slate-900" id="market-kpi-lots">24+ Batches</div>
+              <div class="text-xs text-emerald-700 font-semibold mt-0.5 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">verified</span>
+                <span>Direct FPO farm gate lots</span>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between text-slate-500">
+              <span class="text-[11px] font-bold uppercase tracking-wider">VERIFIED FARMERS &amp; FPOS</span>
+              <span class="material-symbols-outlined text-[#137547] text-[20px]">groups</span>
+            </div>
+            <div class="mt-2">
+              <div class="text-2xl font-extrabold text-slate-900">1,240+</div>
+              <div class="text-xs text-slate-500 mt-0.5">SFAC &amp; Aadhaar biometric verified</div>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between text-slate-500">
+              <span class="text-[11px] font-bold uppercase tracking-wider">INSTITUTIONAL BUYERS</span>
+              <span class="material-symbols-outlined text-[#137547] text-[20px]">corporate_fare</span>
+            </div>
+            <div class="mt-2">
+              <div class="text-2xl font-extrabold text-slate-900">180+</div>
+              <div class="text-xs text-slate-500 mt-0.5 truncate">ITC, Adani, BigBasket, Reliance Retail</div>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+            <div class="flex items-center justify-between text-slate-500">
+              <span class="text-[11px] font-bold uppercase tracking-wider">ESCROW PROTECTION</span>
+              <span class="material-symbols-outlined text-[#137547] text-[20px]">security</span>
+            </div>
+            <div class="mt-2">
+              <div class="text-2xl font-extrabold text-[#005b34]">100% Secure</div>
+              <div class="text-xs text-amber-700 font-bold mt-0.5">ICICI Bank Custody Vault</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. PRODUCT LISTINGS GRID -->
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <h2 class="text-lg font-extrabold text-slate-900">Verified Institutional Lots Ready for Procurement</h2>
+            </div>
+            <span class="text-xs text-slate-500 font-medium" id="market-results-count">Live Produce Batches</span>
+          </div>
+
+          <!-- Dynamic Cards Container (Preserved ID) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5" id="marketplace-cards-container">
+            <div class="col-span-full text-center py-12 text-slate-400">Loading verified agricultural lots...</div>
+          </div>
+        </div>
+
+        <!-- 5. AGRICULTURAL SOURCING CORRIDORS -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col gap-3">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <h3 class="text-base font-bold text-slate-900">Where the Produce Comes From (Agricultural Sourcing Corridors)</h3>
+              <p class="text-xs text-slate-500">Real-time aggregate harvest hubs across high-output state corridors</p>
+            </div>
+            <span class="text-xs text-[#005b34] font-bold">5 Major Commodity Belts Live</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            <div class="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 transition-colors">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-900">Maharashtra</span>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">Nashik</span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Tomato, Onion, Grapes</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 transition-colors">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-900">Madhya Pradesh</span>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">Malwa</span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Sharbati Wheat, Soybean</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 transition-colors">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-900">Punjab</span>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">Khanna</span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Basmati Rice, Wheat</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 transition-colors">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-900">Odisha</span>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">Khordha</span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Paddy, Fresh Vegetables</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 transition-colors">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-900">Gujarat</span>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">Surat</span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Groundnut, Cotton, Pulses</p>
+            </div>
+          </div>
         </div>
       </div>
 

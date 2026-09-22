@@ -33,6 +33,56 @@
   var leafletMarkers = window.leafletMarkers || {};
   var leafletLayers = window.leafletLayers || {};
 
+  // --- STITCH Produce Image Assets Mapping ---
+  var STITCH_PRODUCE_IMAGES = {
+    wheat: 'assets/produce/wheat.jpg',
+    rice: 'assets/produce/rice.jpg',
+    soybean: 'assets/produce/soybean.jpg',
+    orange: 'assets/produce/orange.jpg',
+    oranges: 'assets/produce/orange.jpg',
+    chilli: 'assets/produce/chilli.jpg',
+    chili: 'assets/produce/chilli.jpg',
+    redchilli: 'assets/produce/chilli.jpg',
+    apple: 'assets/produce/apple.jpg',
+    apples: 'assets/produce/apple.jpg',
+    pulses: 'assets/produce/pulses.jpg',
+    chana: 'assets/produce/pulses.jpg',
+    moong: 'assets/produce/pulses.jpg',
+    dal: 'assets/produce/pulses.jpg',
+    tomato: 'assets/produce/tomato.jpg',
+    tomatoes: 'assets/produce/tomato.jpg',
+    onion: 'assets/produce/onion.jpg',
+    onions: 'assets/produce/onion.jpg',
+    potato: 'assets/produce/potato.jpg',
+    potatoes: 'assets/produce/potato.jpg',
+    maize: 'assets/produce/maize.jpg',
+    corn: 'assets/produce/maize.jpg'
+  };
+
+  function getProduceImage(crop, variety, photoUrl) {
+    if (photoUrl && typeof photoUrl === 'string' && (photoUrl.startsWith('http://') || photoUrl.startsWith('https://') || photoUrl.startsWith('/assets/') || photoUrl.startsWith('assets/'))) {
+      return photoUrl;
+    }
+    const c = (crop || '').toLowerCase().trim();
+    const v = (variety || '').toLowerCase().trim();
+
+    if (c.includes('wheat') || v.includes('sharbati') || c.includes('gehu')) return STITCH_PRODUCE_IMAGES.wheat;
+    if (c.includes('rice') || v.includes('basmati') || c.includes('chawal') || c.includes('paddy')) return STITCH_PRODUCE_IMAGES.rice;
+    if (c.includes('soybean') || c.includes('soya')) return STITCH_PRODUCE_IMAGES.soybean;
+    if (c.includes('orange') || c.includes('citrus') || c.includes('santre') || c.includes('fruit')) return STITCH_PRODUCE_IMAGES.orange;
+    if (c.includes('chilli') || c.includes('chili') || c.includes('mirch') || v.includes('teja') || c.includes('spice')) return STITCH_PRODUCE_IMAGES.chilli;
+    if (c.includes('apple') || c.includes('seb')) return STITCH_PRODUCE_IMAGES.apple;
+    if (c.includes('pulse') || c.includes('chana') || c.includes('moong') || c.includes('gram') || c.includes('dal') || c.includes('daal')) return STITCH_PRODUCE_IMAGES.pulses;
+    if (c.includes('tomato') || c.includes('tamatar') || v.includes('roma')) return STITCH_PRODUCE_IMAGES.tomato;
+    if (c.includes('onion') || c.includes('pyaz') || c.includes('kanda')) return STITCH_PRODUCE_IMAGES.onion;
+    if (c.includes('potato') || c.includes('aloo') || c.includes('alu') || v.includes('jyoti')) return STITCH_PRODUCE_IMAGES.potato;
+    if (c.includes('maize') || c.includes('corn') || c.includes('makka')) return STITCH_PRODUCE_IMAGES.maize;
+    if (c.includes('garlic') || c.includes('lahsun')) return STITCH_PRODUCE_IMAGES.onion;
+    if (c.includes('grape') || c.includes('pomegranate')) return STITCH_PRODUCE_IMAGES.apple;
+
+    return STITCH_PRODUCE_IMAGES[c] || 'assets/produce/wheat.jpg';
+  }
+
   // Initialize application on load
   document.addEventListener('DOMContentLoaded', async () => {
     // Set today's date
@@ -242,9 +292,9 @@
 
     // Toggle Sidebars
     const fNav = document.getElementById('sidebar-farmer-nav');
-    if (fNav) fNav.style.display = isFarmer ? 'block' : 'none';
+    if (fNav) fNav.style.display = isFarmer ? 'flex' : 'none';
     const bNav = document.getElementById('sidebar-buyer-nav');
-    if (bNav) bNav.style.display = isFarmer ? 'none' : 'block';
+    if (bNav) bNav.style.display = isFarmer ? 'none' : 'flex';
 
     // Update notifications
     loadNotifications();
@@ -1084,10 +1134,10 @@
 
   // --- Tab Navigation inside App ---
   function switchAppTab(tabId, navBtn = null, extraArg = null) {
-    // Role guard: prevent farmer from accessing buyer views and vice versa
+    // Role guard: redirect role-specific primary dashboard views
     if (currentUser) {
       const isFarmer = currentUser.role === 'FARMER_FPO';
-      if (isFarmer && (tabId === 'buyer-dashboard' || tabId === 'marketplace' || tabId === 'buyer-search' || tabId === 'buyer-saved')) {
+      if (isFarmer && tabId === 'buyer-dashboard') {
         tabId = 'farmer-dashboard';
       } else if (!isFarmer && (tabId === 'farmer-dashboard' || tabId === 'farmer-portal' || tabId === 'farmer-listings' || tabId === 'farmer-earnings')) {
         tabId = 'buyer-dashboard';
@@ -1234,16 +1284,14 @@
             produceTbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">No active produce lots listed yet. Click <strong>+ New Listing</strong> to publish your harvest.</td></tr>`;
           } else {
             produceTbody.innerHTML = listings.map(l => {
-              const cropEmoji = l.photo_url || (CROP_EMOJIS[l.crop] || '🌾');
+              const cropImg = getProduceImage(l.crop, l.variety, l.photo_url);
               const gain = (l.asking_price || 0) - (l.base_mandi_price || 0);
               const gainBadge = gain > 0 ? `<span class="text-[10px] text-[#005b34] font-bold block">+₹${gain.toFixed(2)}/kg vs mandi</span>` : '';
               return `
                 <tr class="hover:bg-slate-50/70 transition-colors">
                   <td class="py-3 px-3">
                     <div class="flex items-center gap-2.5">
-                      <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-xl shrink-0">
-                        ${cropEmoji}
-                      </div>
+                      <img src="${cropImg}" alt="${l.crop}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0" onerror="this.onerror=null; this.src='assets/produce/wheat.jpg';">
                       <div>
                         <span class="font-bold text-slate-900 block text-xs">${l.crop} (${l.variety || 'Standard'})</span>
                         <span class="text-[11px] text-slate-500">Lot #KS-LOT-${l.id} • ${l.farm_location || 'Farm Gate'}</span>
@@ -1306,6 +1354,8 @@
         if (elMandi) elMandi.innerText = `₹${mandiP.toFixed(2)} / kg`;
         const elGain = document.getElementById('f-ai-gain');
         if (elGain) elGain.innerText = `+₹${deltaP.toFixed(2)}/kg (+${deltaPct}%)`;
+        const elBtnPrice = document.getElementById('f-ai-btn-price');
+        if (elBtnPrice) elBtnPrice.innerText = `₹${askP.toFixed(2)}`;
       }
 
       // 3. Fetch Orders (For Escrow, KPIs, and Buyer Bids & Offers)
@@ -1727,16 +1777,29 @@
     }
   }
 
+  function filterMarketplaceByPill(crop) {
+    const select = document.getElementById('market-crop-filter');
+    if (select) {
+      select.value = crop;
+      loadMarketplaceListings();
+    }
+  }
+
   function renderMarketplaceCards(items) {
     const container = document.getElementById('marketplace-cards-container');
+    const countEl = document.getElementById('market-results-count');
+    const kpiLotsEl = document.getElementById('market-kpi-lots');
+    if (countEl) countEl.innerText = `Showing ${items.length} Live Terminal Batches`;
+    if (kpiLotsEl) kpiLotsEl.innerText = `${items.length} Active Lots`;
+
     if (!container) return;
 
     if (items.length === 0) {
       container.innerHTML = `
-        <div style="grid-column:1/-1; padding:40px; text-align:center; background:var(--paper); border-radius:14px; border:1px solid var(--line);">
-          <div style="font-size:36px; margin-bottom:8px;">🌾</div>
-          <h3 style="margin:0 0 6px; font-family:'Fraunces',serif;">No Produce Lots Found</h3>
-          <p style="font-size:13.5px; color:var(--soil-soft); margin:0;">Try adjusting your search criteria or clear active filters.</p>
+        <div class="col-span-full text-center py-16 px-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs">
+          <div class="text-4xl mb-3">🌾</div>
+          <h3 class="text-base font-bold text-slate-900 mb-1">No Produce Lots Found</h3>
+          <p class="text-xs text-slate-500">Try clearing active filters or search for another commodity (e.g. Tomato, Wheat, Soybean).</p>
         </div>
       `;
       return;
@@ -1746,38 +1809,89 @@
   }
 
   function renderProduceCardHTML(item) {
+    const imgSrc = getProduceImage(item.crop, item.variety, item.photo_url);
+    const mandiRate = item.base_mandi_price || (item.asking_price * 0.85);
+    const gain = item.asking_price - mandiRate;
+    const gainBadge = gain > 0
+      ? `<span class="text-[11px] font-bold text-[#137547]">+₹${gain.toFixed(2)}/kg vs Mandi</span>`
+      : `<span class="text-[11px] font-medium text-slate-500">Par with Spot Mandi</span>`;
+
     return `
-      <div class="produce-card">
-        <div class="produce-card-header">
-          <div class="crop-ico">${item.photo_url || '🌿'}</div>
-          <button class="save-btn ${item.is_saved ? 'saved' : ''}" onclick="toggleSaveListing(${item.id})" title="Save lot">
-            ${item.is_saved ? '❤️' : '🤍'}
+      <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all flex flex-col justify-between overflow-hidden group" style="box-shadow: rgba(19, 80, 50, 0.06) 0px 10px 24px -4px, rgba(19, 80, 50, 0.04) 0px 3px 8px -2px; border-color: rgba(19, 117, 71, 0.14);">
+        <div class="p-4 flex flex-col gap-3">
+          <!-- Top Card Media Banner (Stitch Design) -->
+          <div class="relative w-full h-44 rounded-xl overflow-hidden bg-slate-100">
+            <img src="${imgSrc}" alt="${item.crop} - ${item.variety || 'Lot'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='assets/produce/wheat.jpg';">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/20 pointer-events-none"></div>
+            <div class="absolute top-2.5 left-2.5 flex items-center gap-1 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-slate-900 text-[11px] font-bold border border-emerald-600/20 shadow-xs">
+              <span class="material-symbols-outlined text-[14px] text-emerald-600 font-bold">verified</span>
+              <span>✓ ${item.quality_grade || 'Grade A Assayed'}</span>
+            </div>
+            <div class="absolute top-2.5 right-2.5 flex items-center gap-1.5">
+              <span class="bg-[#005b34] text-white text-[11px] font-semibold px-2 py-0.5 rounded-md shadow-xs font-mono">
+                Lot #${item.id}
+              </span>
+              <button class="w-7 h-7 rounded-full bg-white/90 hover:bg-white text-sm shadow-xs flex items-center justify-center border border-slate-200 transition-transform active:scale-90" onclick="toggleSaveListing(${item.id})" title="Save lot">
+                ${item.is_saved ? '❤️' : '🤍'}
+              </button>
+            </div>
+            <div class="absolute bottom-2.5 left-2.5 bg-amber-50/95 border border-amber-300/60 text-amber-900 px-2.5 py-0.5 rounded-md text-[11px] font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-amber-600">auto_awesome</span>
+              <span>AI Fair Price Verified</span>
+            </div>
+          </div>
+
+          <!-- Lot Title & Location -->
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center justify-between text-slate-500 text-xs">
+              <span class="flex items-center gap-1 text-slate-700 font-medium truncate">
+                <span class="material-symbols-outlined text-[15px] text-[#137547]">location_on</span>
+                <span>${item.farm_location || (item.district ? `${item.district}, ${item.state}` : 'Farm Gate')}</span>
+              </span>
+              <span class="text-[11px] text-slate-500 font-semibold flex-shrink-0">📍 ${item.distance_km || 160} km</span>
+            </div>
+            <h3 class="text-base font-extrabold text-slate-900 group-hover:text-[#137547] transition-colors leading-snug">
+              ${item.crop.toUpperCase()} (${item.variety || 'Standard'})
+            </h3>
+            <div class="flex items-center justify-between text-xs text-slate-500 mt-0.5">
+              <span>Producer: <strong class="text-slate-800">${item.farmer_name}</strong></span>
+              <span class="px-2 py-0.5 rounded bg-emerald-50 text-[#005b34] font-bold text-[11px] border border-emerald-200">SFAC KYC ✓</span>
+            </div>
+          </div>
+
+          <!-- Price & Volume Specs Box -->
+          <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col gap-1.5">
+            <div class="flex items-baseline justify-between">
+              <div class="flex flex-col">
+                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">AI Fair Price Rate</span>
+                <span class="text-xl font-black text-[#005b34] leading-none font-mono">
+                  ₹${item.asking_price.toFixed(2)} <span class="text-xs font-normal text-slate-500">/ kg</span>
+                </span>
+                <span class="text-[10px] text-slate-500 font-mono mt-0.5">₹${(item.asking_price * 100).toLocaleString('en-IN', {maximumFractionDigits:0})} / Qtl eq.</span>
+              </div>
+              <div class="text-right">
+                <div class="text-xs text-slate-500">Available: <strong class="text-slate-900 font-mono">${(item.available_kg || 0).toLocaleString()} kg</strong></div>
+                ${gainBadge}
+              </div>
+            </div>
+            <div class="pt-1.5 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-600">
+              <span>Harvest: <strong class="text-slate-800 font-medium">${item.harvest_date || 'Fresh'}</strong></span>
+              <span>Retail Est: <strong class="text-slate-800 font-mono">₹${item.retail_estimated_price ? item.retail_estimated_price.toFixed(2) : (item.asking_price * 1.25).toFixed(2)}</strong></span>
+              <span class="text-emerald-700 font-bold">Save ${item.buyer_savings_pct || 15}%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action CTAs -->
+        <div class="p-4 pt-0 flex items-center gap-2">
+          <button class="flex-1 py-2 px-3 rounded-xl bg-[#005b34] hover:bg-[#137547] text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1 cursor-pointer" onclick="openOrderModal(${item.id})">
+            <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+            <span>Request Bulk Quote / Buy</span>
           </button>
-        </div>
-        <div class="produce-card-body">
-          <div class="farmer-info">
-            <span>🧑‍🌾 ${item.farmer_name}</span>
-            <span>·</span>
-            <span>${item.district || item.state}</span>
-          </div>
-          <h3 class="title">${item.crop} (${item.variety})</h3>
-          <div class="dist-tag">📍 ${item.distance_km || 160} km away from your location</div>
-          <div style="font-size:12px; color:var(--soil-soft);">
-            Available: <strong>${item.available_kg.toLocaleString()} kg</strong> (${item.quality_grade})
-          </div>
-          <div class="price-row">
-            <div>
-              <span class="asking">₹${item.asking_price.toFixed(2)}</span>
-              <span style="font-size:12px; color:var(--soil-soft);"> / kg</span>
-            </div>
-            <div style="text-align:right;">
-              <span class="market-ref">Retail ~₹${item.retail_estimated_price.toFixed(2)}</span>
-              <div style="font-size:11px; font-weight:700; color:var(--olive);">Save ${item.buyer_savings_pct}%</div>
-            </div>
-          </div>
-        </div>
-        <div class="produce-card-footer">
-          <button class="btn-primary" style="width:100%; justify-content:center; padding:10px;" onclick="openOrderModal(${item.id})">Place Order →</button>
+          <button class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold border border-slate-200 transition-colors cursor-pointer flex items-center gap-1" onclick="openApp('ai-pricing')">
+            <span class="material-symbols-outlined text-[16px] text-amber-600">query_stats</span>
+            <span>AI Price</span>
+          </button>
         </div>
       </div>
     `;
@@ -1811,11 +1925,13 @@
           grid.innerHTML = `<div style="grid-column:1/-1; padding:30px; text-align:center; color:var(--soil-soft);">No saved lots. Click the ❤️ icon on any marketplace card to bookmark it.</div>`;
           return;
         }
-        grid.innerHTML = saved.map(item => `
+        grid.innerHTML = saved.map(item => {
+          const imgSrc = getProduceImage(item.crop, item.variety, item.photo_url);
+          return `
           <div class="produce-card">
-            <div class="produce-card-header">
-              <div class="crop-ico">${item.photo_url || '🌿'}</div>
-              <button class="save-btn saved" onclick="toggleSaveListing(${item.id})">❤️</button>
+            <div class="produce-card-header" style="position:relative; height:140px; overflow:hidden; border-radius:12px; margin-bottom:10px;">
+              <img src="${imgSrc}" alt="${item.crop}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='assets/produce/wheat.jpg';">
+              <button class="save-btn saved" style="position:absolute; top:8px; right:8px;" onclick="toggleSaveListing(${item.id})">❤️</button>
             </div>
             <div class="produce-card-body">
               <div class="farmer-info">🧑‍🌾 ${item.farmer_name}</div>
@@ -1827,7 +1943,7 @@
               <button class="btn-primary" style="width:100%; justify-content:center;" onclick="openOrderModal(${item.id})">Order Now →</button>
             </div>
           </div>
-        `).join('');
+        `;}).join('');
       }
     } catch(err) {
       console.error("Saved listings error:", err);
@@ -3068,79 +3184,127 @@
   }
 
   // --- Profile Page View ---
-  function loadUserProfileView() {
-    if (!currentUser) return;
-    const isFarmer = currentUser.role === 'FARMER_FPO';
+  async function loadUserProfileView() {
+    function populateFields() {
+      if (!currentUser) return;
+      const isFarmer = currentUser.role === 'FARMER_FPO';
 
-    document.getElementById('p-name').value = currentUser.name || '';
-    document.getElementById('p-email').value = currentUser.email || '';
-    document.getElementById('p-phone').value = currentUser.phone || '';
-    document.getElementById('p-role-display').value = isFarmer ? 'FARMER / FPO' : 'BUYER / CONSUMER';
+      const pName = document.getElementById('p-name');
+      const pEmail = document.getElementById('p-email');
+      const pPhone = document.getElementById('p-phone');
+      const pRole = document.getElementById('p-role-display');
 
-    document.getElementById('p-farmer-specific').style.display = isFarmer ? 'block' : 'none';
-    document.getElementById('p-buyer-specific').style.display = isFarmer ? 'none' : 'block';
+      if (pName) pName.value = currentUser.name || '';
+      if (pEmail) pEmail.value = currentUser.email || '';
+      if (pPhone) pPhone.value = currentUser.phone || '';
+      if (pRole) pRole.value = isFarmer ? 'FARMER / FPO' : 'BUYER / CONSUMER';
 
-    const lbl = document.getElementById('p-address-lbl');
-    if (lbl) lbl.innerText = isFarmer ? 'Search registered farm gate address *' : 'Search registered delivery address *';
+      const pFarmerSpec = document.getElementById('p-farmer-specific');
+      const pBuyerSpec = document.getElementById('p-buyer-specific');
+      if (pFarmerSpec) pFarmerSpec.style.display = isFarmer ? 'block' : 'none';
+      if (pBuyerSpec) pBuyerSpec.style.display = isFarmer ? 'none' : 'block';
 
-    if (isFarmer && currentUser.farmer_profile) {
-      const fp = currentUser.farmer_profile;
-      document.getElementById('p-farm-name').value = fp.farm_name || '';
-      document.getElementById('p-farm-size').value = fp.farm_size_acres || 5;
-      document.getElementById('p-crops-grown').value = fp.crops_grown || 'Tomato, Onion';
-      
-      const locData = {
-        formatted_address: fp.farm_location || fp.address || 'KIIT University, Patia, Bhubaneswar, Odisha 751024, India',
-        state: fp.state || 'Odisha',
-        district: fp.district || 'Khordha',
-        city: fp.city || 'Bhubaneswar',
-        pincode: fp.pincode || '751024',
-        lat: fp.lat || 20.3548,
-        lon: fp.lon || 85.8182,
-        place_id: fp.google_place_id || ''
-      };
-      applyLocationSelection('p', locData, false);
-      const badgeText = document.getElementById('p-loc-badge-text');
-      if (badgeText) badgeText.innerText = 'Registered Farm Location';
-    } else if (!isFarmer && currentUser.buyer_profile) {
-      const bp = currentUser.buyer_profile;
-      document.getElementById('p-business-name').value = bp.business_name || '';
-      document.getElementById('p-buyer-type').value = bp.buyer_type || 'Retailer';
-      
-      const locData = {
-        formatted_address: bp.delivery_location || bp.address || 'Dadar Wholesale Market, Mumbai, Maharashtra',
-        state: bp.state || 'Maharashtra',
-        district: bp.district || 'Mumbai City',
-        city: bp.city || 'Mumbai',
-        pincode: bp.pincode || '400028',
-        lat: bp.lat || 19.0178,
-        lon: bp.lon || 72.8478,
-        place_id: bp.google_place_id || ''
-      };
-      applyLocationSelection('p', locData, false);
-      const badgeText = document.getElementById('p-loc-badge-text');
-      if (badgeText) badgeText.innerText = 'Registered Delivery Location';
+      const lbl = document.getElementById('p-address-lbl');
+      if (lbl) lbl.innerText = isFarmer ? 'Search registered farm gate address *' : 'Search registered delivery address *';
+
+      if (isFarmer && currentUser.farmer_profile) {
+        const fp = currentUser.farmer_profile;
+        const pFarmName = document.getElementById('p-farm-name');
+        const pFarmSize = document.getElementById('p-farm-size');
+        const pCrops = document.getElementById('p-crops-grown');
+        if (pFarmName) pFarmName.value = fp.farm_name || '';
+        if (pFarmSize) pFarmSize.value = fp.farm_size_acres || 5;
+        if (pCrops) pCrops.value = fp.crops_grown || 'Tomato, Onion';
+        
+        const locData = {
+          formatted_address: fp.farm_location || fp.address || 'KIIT University, Patia, Bhubaneswar, Odisha 751024, India',
+          state: fp.state || 'Odisha',
+          district: fp.district || 'Khordha',
+          city: fp.city || 'Bhubaneswar',
+          pincode: fp.pincode || '751024',
+          lat: fp.lat || 20.3548,
+          lon: fp.lon || 85.8182,
+          place_id: fp.google_place_id || ''
+        };
+        applyLocationSelection('p', locData, false);
+        const badgeText = document.getElementById('p-loc-badge-text');
+        if (badgeText) badgeText.innerText = 'Registered Farm Location';
+      } else if (!isFarmer && currentUser.buyer_profile) {
+        const bp = currentUser.buyer_profile;
+        const pBizName = document.getElementById('p-business-name');
+        const pBuyerType = document.getElementById('p-buyer-type');
+        if (pBizName) pBizName.value = bp.business_name || '';
+        if (pBuyerType) pBuyerType.value = bp.buyer_type || 'Retailer';
+        
+        const locData = {
+          formatted_address: bp.delivery_location || bp.address || 'Dadar Wholesale Market, Mumbai, Maharashtra',
+          state: bp.state || 'Maharashtra',
+          district: bp.district || 'Mumbai City',
+          city: bp.city || 'Mumbai',
+          pincode: bp.pincode || '400028',
+          lat: bp.lat || 19.0178,
+          lon: bp.lon || 72.8478,
+          place_id: bp.google_place_id || ''
+        };
+        applyLocationSelection('p', locData, false);
+        const badgeText = document.getElementById('p-loc-badge-text');
+        if (badgeText) badgeText.innerText = 'Registered Delivery Location';
+      }
     }
 
-    setTimeout(() => initLocationPickerMap('p'), 200);
+    // 1. Populate immediately from memory
+    if (currentUser) {
+      populateFields();
+    }
+
+    // 2. Fetch fresh /auth/me in background and update
+    if (authToken) {
+      try {
+        const res = await fetch(`${API_BASE}/auth/me`, { headers: getAuthHeaders() });
+        if (res.ok) {
+          currentUser = await res.json();
+          updateUserUI();
+          populateFields();
+        }
+      } catch(e) {
+        console.warn("[PROFILE] Could not refresh /auth/me:", e);
+      }
+    }
+
+    // 3. Initialize interactive Leaflet map and invalidate size
+    setTimeout(() => {
+      initLocationPickerMap('p');
+      const canvasId = 'p-map-canvas';
+      const map = leafletMaps[canvasId] || profileMapObj;
+      if (map && map.invalidateSize) {
+        map.invalidateSize();
+      }
+    }, 200);
   }
 
   async function handleUpdateProfile(e) {
     if (e && e.preventDefault) e.preventDefault();
     const isFarmer = (currentUser && currentUser.role === 'FARMER_FPO');
 
-    const stateVal = document.getElementById('p-state').value.trim();
-    const districtVal = document.getElementById('p-district').value.trim();
-    const cityVal = document.getElementById('p-city').value.trim();
-    const pincodeVal = document.getElementById('p-pincode').value.trim();
-    const addressVal = document.getElementById('p-address').value.trim();
-    const latVal = parseFloat(document.getElementById('p-lat').value) || (isFarmer ? 20.3548 : 19.0178);
-    const lonVal = parseFloat(document.getElementById('p-lon').value) || (isFarmer ? 85.8182 : 72.8478);
-    const placeIdVal = document.getElementById('p-place-id').value.trim();
+    const submitBtn = document.querySelector('#form-edit-profile button[type="submit"]');
+    const origBtnText = submitBtn ? submitBtn.innerText : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Saving Profile...";
+    }
+
+    const stateVal = document.getElementById('p-state') ? document.getElementById('p-state').value.trim() : '';
+    const districtVal = document.getElementById('p-district') ? document.getElementById('p-district').value.trim() : '';
+    const cityVal = document.getElementById('p-city') ? document.getElementById('p-city').value.trim() : '';
+    const pincodeVal = document.getElementById('p-pincode') ? document.getElementById('p-pincode').value.trim() : '';
+    const addressVal = document.getElementById('p-address') ? document.getElementById('p-address').value.trim() : '';
+    const latVal = parseFloat(document.getElementById('p-lat') ? document.getElementById('p-lat').value : 0) || (isFarmer ? 20.3548 : 19.0178);
+    const lonVal = parseFloat(document.getElementById('p-lon') ? document.getElementById('p-lon').value : 0) || (isFarmer ? 85.8182 : 72.8478);
+    const placeIdVal = document.getElementById('p-place-id') ? document.getElementById('p-place-id').value.trim() : '';
 
     const payload = {
-      name: document.getElementById('p-name').value.trim(),
-      phone: document.getElementById('p-phone').value.trim(),
+      name: document.getElementById('p-name') ? document.getElementById('p-name').value.trim() : '',
+      phone: document.getElementById('p-phone') ? document.getElementById('p-phone').value.trim() : '',
       state: stateVal,
       district: districtVal,
       city: cityVal,
@@ -3152,13 +3316,13 @@
     };
 
     if (isFarmer) {
-      payload.farm_name = document.getElementById('p-farm-name').value.trim();
+      payload.farm_name = document.getElementById('p-farm-name') ? document.getElementById('p-farm-name').value.trim() : '';
       payload.farm_location = addressVal;
-      payload.crops_grown = document.getElementById('p-crops-grown').value.trim();
-      payload.farm_size_acres = parseFloat(document.getElementById('p-farm-size').value || 5);
+      payload.crops_grown = document.getElementById('p-crops-grown') ? document.getElementById('p-crops-grown').value.trim() : '';
+      payload.farm_size_acres = parseFloat((document.getElementById('p-farm-size') ? document.getElementById('p-farm-size').value : '') || 5);
     } else {
-      payload.business_name = document.getElementById('p-business-name').value.trim();
-      payload.buyer_type = document.getElementById('p-buyer-type').value;
+      payload.business_name = document.getElementById('p-business-name') ? document.getElementById('p-business-name').value.trim() : '';
+      payload.buyer_type = document.getElementById('p-buyer-type') ? document.getElementById('p-buyer-type').value : 'Retailer';
       payload.delivery_location = addressVal;
       payload.address = addressVal;
     }
@@ -3180,55 +3344,180 @@
       }
     } catch(err) {
       showToast("❌ Server error updating profile.");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = origBtnText || "Save Profile Changes →";
+      }
     }
   }
 
   // --- Notifications ---
   async function loadNotifications() {
+    if (!authToken) return;
     try {
       const res = await fetch(`${API_BASE}/auth/notifications`, { headers: getAuthHeaders() });
       if (res.ok) {
         const data = await res.json();
         const notifs = Array.isArray(data) ? data : [];
         const unread = notifs.filter(n => !n.is_read).length;
+
+        // 1. Header Bell Badge
         const countBadge = document.getElementById('notif-count');
         if (countBadge) {
           if (unread > 0) {
-            countBadge.innerText = unread;
+            countBadge.innerText = unread > 99 ? '99+' : unread;
             countBadge.style.display = 'flex';
           } else {
             countBadge.style.display = 'none';
           }
         }
 
+        // 2. Sidebar Badges (Farmer & Buyer)
+        ['sidebar-notif-count', 'buyer-sidebar-notif-count'].forEach(id => {
+          const sidebarBadge = document.getElementById(id);
+          if (sidebarBadge) {
+            if (unread > 0) {
+              sidebarBadge.innerText = unread > 99 ? '99+' : unread;
+              sidebarBadge.style.display = 'flex';
+            } else {
+              sidebarBadge.style.display = 'none';
+            }
+          }
+        });
+
+        // 3. Dropdown Container Content
         const container = document.getElementById('notif-list-container');
         if (!container) return;
         if (notifs.length === 0) {
-          container.innerHTML = `<div style="padding:16px; text-align:center; color:var(--soil-soft); font-size:12px;">No new notifications</div>`;
+          container.innerHTML = `
+            <div style="padding:28px 16px; text-align:center; color:var(--soil-soft); font-size:12px;">
+              <span class="material-symbols-outlined text-slate-300 text-[32px] block mb-1">notifications_off</span>
+              No notifications yet. You're all caught up!
+            </div>
+          `;
           return;
         }
 
-        container.innerHTML = notifs.map(n => `
-          <div class="notif-item ${n.is_read ? '' : 'unread'}">
-            <div class="n-title">${n.title}</div>
-            <div class="n-msg">${n.message}</div>
-          </div>
-        `).join('');
+        container.innerHTML = notifs.map(n => {
+          const isUnread = !n.is_read;
+          const timeStr = n.created_at ? new Date(n.created_at).toLocaleDateString('en-IN', {
+            month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+          }) : '';
+
+          let icon = 'notifications';
+          let iconColor = 'text-emerald-700 bg-emerald-50';
+          if (n.type === 'ORDER') {
+            icon = 'shopping_cart';
+            iconColor = 'text-blue-700 bg-blue-50';
+          } else if (n.type === 'DELIVERY') {
+            icon = 'local_shipping';
+            iconColor = 'text-amber-700 bg-amber-50';
+          } else if (n.type === 'PAYMENT') {
+            icon = 'payments';
+            iconColor = 'text-green-700 bg-green-50';
+          }
+
+          return `
+            <div class="notif-item ${isUnread ? 'unread' : ''}" style="display:flex; gap:12px; align-items:flex-start; padding:12px 14px; border-bottom:1px solid #f1f5f9; position:relative; ${isUnread ? 'background:#f0fdf4;' : 'background:#ffffff;'}">
+              <div class="w-8 h-8 rounded-full ${iconColor} flex items-center justify-center shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-[16px]">${icon}</span>
+              </div>
+              <div style="flex:1; min-width:0;">
+                <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px;">
+                  <span style="font-weight:700; font-size:12px; color:#0f172a; line-height:1.3;">${n.title}</span>
+                  <span style="font-size:10px; color:#94a3b8; white-space:nowrap;">${timeStr}</span>
+                </div>
+                <div style="font-size:11.5px; color:#475569; margin-top:3px; line-height:1.4;">${n.message}</div>
+                ${isUnread ? `
+                  <div style="margin-top:6px; display:flex; justify-content:flex-end;">
+                    <button type="button" onclick="markNotificationAsRead(${n.id}, event)" class="text-[10.5px] font-semibold text-emerald-700 hover:text-emerald-900 bg-white border border-emerald-300 rounded px-2 py-0.5 flex items-center gap-1 transition-colors">
+                      <span class="material-symbols-outlined text-[12px]">done</span> Mark read
+                    </button>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
       }
     } catch(err) {
       console.warn("Notifications error:", err);
     }
   }
 
-  function toggleNotifications() {
+  function toggleNotifications(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
     const d = document.getElementById('notif-dropdown');
-    d.classList.toggle('open');
+    if (!d) return;
+
+    const isOpen = d.classList.contains('open');
+    if (isOpen) {
+      d.classList.remove('open');
+      return;
+    }
+
+    // Determine trigger origin (sidebar vs header bell)
+    const isSidebar = e && e.target && (e.target.closest('#sidebar-farmer-nav') || e.target.closest('#sidebar-buyer-nav'));
+    if (isSidebar) {
+      d.style.left = '264px';
+      d.style.right = 'auto';
+      d.style.top = '64px';
+    } else {
+      d.style.left = 'auto';
+      d.style.right = '24px';
+      d.style.top = '64px';
+    }
+
+    d.classList.add('open');
+    loadNotifications();
   }
 
-  function clearAllNotifications() {
-    document.getElementById('notif-count').style.display = 'none';
-    document.querySelectorAll('.notif-item').forEach(i => i.classList.remove('unread'));
-    showToast("Notifications marked as read.");
+  // Click outside to dismiss notification dropdown
+  document.addEventListener('click', (e) => {
+    const d = document.getElementById('notif-dropdown');
+    if (d && d.classList.contains('open')) {
+      const isInside = d.contains(e.target) || (e.target.closest && e.target.closest('button[onclick*="toggleNotifications"]'));
+      if (!isInside) {
+        d.classList.remove('open');
+      }
+    }
+  });
+
+  async function clearAllNotifications() {
+    try {
+      const res = await fetch(`${API_BASE}/auth/notifications`, { headers: getAuthHeaders() });
+      if (res.ok) {
+        const notifs = await res.json();
+        const unreadList = (Array.isArray(notifs) ? notifs : []).filter(n => !n.is_read);
+        await Promise.all(unreadList.map(n => 
+          fetch(`${API_BASE}/auth/notifications/${n.id}/read`, {
+            method: 'PATCH',
+            headers: getAuthHeaders()
+          })
+        ));
+      }
+    } catch(e) {
+      console.warn("Error marking all notifications as read:", e);
+    }
+    await loadNotifications();
+    showToast("✓ All notifications marked as read");
+  }
+
+  async function markNotificationAsRead(id, e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    try {
+      const res = await fetch(`${API_BASE}/auth/notifications/${id}/read`, {
+        method: 'PATCH',
+        headers: getAuthHeaders()
+      });
+      if (res.ok) {
+        await loadNotifications();
+        showToast("✓ Notification marked as read");
+      }
+    } catch(err) {
+      console.warn("Error marking notification as read:", err);
+    }
   }
 
   // --- Landing Page Interactive Tabs & Revealer ---
@@ -3318,6 +3607,7 @@
   window.contactParticipant = contactParticipant;
   window.toggleNotifications = toggleNotifications;
   window.clearAllNotifications = clearAllNotifications;
+  window.markNotificationAsRead = markNotificationAsRead;
   window.selectPhoneCrop = selectPhoneCrop;
   window.showToast = showToast;
   window.getOrCreateLeafletMap = getOrCreateLeafletMap;
