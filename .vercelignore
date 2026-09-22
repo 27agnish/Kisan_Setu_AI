@@ -11,11 +11,7 @@ test_backend_api.py
 scripts/
 run_app.py
 
-# Offline ML training pipelines & redundant model weights
-ml/training/
-ml/train_model.py
-ml/generate_dataset.py
-ml/evaluate.py
+# Redundant offline model weights (only best_model.joblib, preprocessor.joblib, metrics.json needed)
 ml/models/rf_price_model.joblib
 ml/models/xgboost_price_model.joblib
 
