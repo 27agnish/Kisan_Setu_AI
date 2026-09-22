@@ -10,14 +10,17 @@ from config.settings import settings, BASE_DIR
 
 # Robust absolute path resolution for SQLite to prevent CWD dependency
 db_url = settings.database_url
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
 if db_url.startswith("sqlite:///./"):
     rel_part = db_url[len("sqlite:///./"):]
     abs_path = os.path.join(str(BASE_DIR), rel_part)
     db_url = f"sqlite:///{abs_path}"
 elif db_url.startswith("sqlite:///") and not db_url.startswith("sqlite:////"):
     rel_part = db_url[len("sqlite:///"):]
-    abs_path = os.path.join(str(BASE_DIR), rel_part)
-    db_url = f"sqlite:///{abs_path}"
+    if not os.path.isabs(rel_part):
+        abs_path = os.path.join(str(BASE_DIR), rel_part)
+        db_url = f"sqlite:///{abs_path}"
 
 # For SQLite, ensure check_same_thread is False for multi-threaded FastAPI workers
 connect_args = {"check_same_thread": False} if db_url.startswith("sqlite") else {}

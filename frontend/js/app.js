@@ -1,5 +1,5 @@
 // API Endpoint
-  var API_BASE = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1')
+  var API_BASE = (window.location.origin && window.location.origin !== 'null' && !window.location.protocol.startsWith('file'))
     ? `${window.location.origin}/api`
     : 'http://localhost:8000/api';
 

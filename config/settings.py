@@ -25,10 +25,12 @@ class Settings:
     host: str = os.getenv("HOST", "0.0.0.0")
     port: int = int(os.getenv("PORT", "8000"))
     
-    # Database URL: default to database/kisan_setu.db under project root
-    database_url: str = os.getenv(
-        "DATABASE_URL",
-        f"sqlite:///{BASE_DIR / 'database' / 'kisan_setu.db'}"
+    # Database URL: default to database/kisan_setu.db under project root (or /tmp on Vercel)
+    is_vercel: bool = os.getenv("VERCEL") == "1" or os.getenv("VERCEL_ENV") is not None
+    database_url: str = (
+        "sqlite:////tmp/kisan_setu.db"
+        if (os.getenv("VERCEL") == "1" or os.getenv("VERCEL_ENV") is not None) and (not os.getenv("DATABASE_URL") or (os.getenv("DATABASE_URL", "").startswith("sqlite") and "/tmp" not in os.getenv("DATABASE_URL", "")))
+        else os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'database' / 'kisan_setu.db'}").replace("postgres://", "postgresql://", 1)
     )
     
     # ML Models and Data
