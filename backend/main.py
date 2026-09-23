@@ -56,6 +56,23 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """
+    Ensure all unhandled exceptions return a structured JSON response
+    instead of Starlette's plain text 'Internal Server Error'.
+    """
+    import traceback
+    traceback.print_exc()
+    error_msg = str(exc) or "Internal server error occurred."
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": error_msg,
+            "error_type": exc.__class__.__name__
+        }
+    )
+
 # CORS Configuration
 origins = ["*"]
 app.add_middleware(

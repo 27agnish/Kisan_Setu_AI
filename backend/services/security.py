@@ -38,15 +38,19 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
         expire = datetime.utcnow() + timedelta(minutes=settings.access_token_expire_minutes)
         
     to_encode.update({"exp": expire, "iat": datetime.utcnow()})
-    encoded_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.jwt_algorithm)
+    secret = (getattr(settings, "secret_key", None) or "").strip() or "kisan_setu_secret_key_2026_super_secure_jwt"
+    algo = (getattr(settings, "jwt_algorithm", None) or "").strip() or "HS256"
+    encoded_jwt = jwt.encode(to_encode, secret, algorithm=algo)
     return encoded_jwt
 
 def decode_access_token(token: str) -> Optional[dict]:
     """Decodes and validates a JWT access token."""
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.jwt_algorithm])
+        secret = (getattr(settings, "secret_key", None) or "").strip() or "kisan_setu_secret_key_2026_super_secure_jwt"
+        algo = (getattr(settings, "jwt_algorithm", None) or "").strip() or "HS256"
+        payload = jwt.decode(token, secret, algorithms=[algo])
         return payload
-    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, jwt.InvalidKeyError):
         return None
 
 def get_current_user(

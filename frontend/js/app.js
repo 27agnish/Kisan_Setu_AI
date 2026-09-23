@@ -3,6 +3,24 @@
     ? `${window.location.origin}/api`
     : 'http://localhost:8000/api';
 
+  // Safe HTTP Response JSON Parser (handles text/plain, HTML error pages, and valid JSON)
+  async function safeJsonResponse(res) {
+    if (!res) return { ok: false, status: 0, data: { detail: "No response from server" } };
+    const contentType = (res.headers && res.headers.get("content-type")) || "";
+    let data;
+    try {
+      if (contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        data = { detail: text || `Server error (${res.status} ${res.statusText || ""})`.trim() };
+      }
+    } catch (err) {
+      data = { detail: `Error reading server response (${res.status})` };
+    }
+    return { ok: res.ok, status: res.status, data: data };
+  }
+
   // Global State
   var currentUser = window.currentUser || null;
   var authToken = localStorage.getItem('kisan_auth_token');
@@ -465,10 +483,11 @@
         body: JSON.stringify(payload)
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        console.warn(`[AUTH] Signup failed: ${data.detail}`);
-        showToast(`❌ ${data.detail || 'Signup failed'}`);
+      const { ok, data } = await safeJsonResponse(res);
+      if (!ok) {
+        console.warn(`[AUTH] Signup failed:`, data);
+        const errMsg = (data && data.detail) || 'Signup failed';
+        showToast(`❌ ${errMsg}`);
         return;
       }
 
@@ -519,12 +538,13 @@
         body: JSON.stringify(payload)
       });
 
-      const data = await res.json();
-      console.log(`[AUTH] Login response status: ${res.status}`);
+      const { ok, status, data } = await safeJsonResponse(res);
+      console.log(`[AUTH] Login response status: ${status}`);
 
-      if (!res.ok) {
-        console.warn(`[AUTH] Login rejected: ${data.detail}`);
-        showToast(`❌ ${data.detail || 'Invalid email or password'}`);
+      if (!ok) {
+        console.warn(`[AUTH] Login rejected:`, data);
+        const errMsg = (data && data.detail) || 'Invalid email or password';
+        showToast(`❌ ${errMsg}`);
         return;
       }
 
@@ -566,8 +586,12 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
       });
-      const data = await res.json();
-      showToast(`✓ ${data.message}`);
+      const { ok, data } = await safeJsonResponse(res);
+      if (!ok) {
+        showToast(`❌ ${(data && data.detail) || 'Failed to process password reset request.'}`);
+        return;
+      }
+      showToast(`✓ ${data.message || 'Password reset link sent.'}`);
       setTimeout(() => switchAuthView('login'), 2500);
     } catch(err) {
       showToast("Server error requesting password reset.");

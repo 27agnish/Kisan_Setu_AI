@@ -61,10 +61,11 @@ def signup(user_data: UserSignup, db: Session = Depends(get_db)):
     db.commit()
 
     token = create_access_token(data={"sub": str(new_user.id), "role": new_user.role})
+    user_response = UserResponse.model_validate(new_user)
     return {
         "access_token": token,
         "token_type": "bearer",
-        "user": new_user
+        "user": user_response
     }
 
 @router.post("/login", response_model=TokenResponse)
@@ -84,10 +85,11 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=403, detail="Account is deactivated.")
 
     token = create_access_token(data={"sub": str(user.id), "role": user.role})
+    user_response = UserResponse.model_validate(user)
     return {
         "access_token": token,
         "token_type": "bearer",
-        "user": user
+        "user": user_response
     }
 
 @router.post("/forgot-password")
@@ -196,12 +198,12 @@ def setup_profile(
             
     db.commit()
     db.refresh(current_user)
-    return current_user
+    return UserResponse.model_validate(current_user)
 
 @router.get("/me", response_model=UserResponse)
 def get_me(current_user: User = Depends(get_current_user)):
     """Retrieve currently authenticated user and profile information."""
-    return current_user
+    return UserResponse.model_validate(current_user)
 
 @router.put("/profile", response_model=UserResponse)
 def update_profile(

@@ -21,8 +21,8 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
-    farmer_profile = relationship("FarmerProfile", uselist=False, back_populates="user", cascade="all, delete-orphan")
-    buyer_profile = relationship("BuyerProfile", uselist=False, back_populates="user", cascade="all, delete-orphan")
+    farmer_profile = relationship("FarmerProfile", uselist=False, back_populates="user", cascade="all, delete-orphan", lazy="joined")
+    buyer_profile = relationship("BuyerProfile", uselist=False, back_populates="user", cascade="all, delete-orphan", lazy="joined")
     listings = relationship("Listing", back_populates="farmer", cascade="all, delete-orphan")
     orders_placed = relationship("Order", foreign_keys="Order.buyer_id", back_populates="buyer")
     orders_received = relationship("Order", foreign_keys="Order.farmer_id", back_populates="farmer")

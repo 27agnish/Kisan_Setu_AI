@@ -38,8 +38,8 @@ class Settings:
     data_dir: str = os.getenv("DATA_DIR", str(BASE_DIR / "ml" / "data"))
     
     # Security / Auth
-    secret_key: str = os.getenv("SECRET_KEY", "kisan_setu_secret_key_2026_super_secure_jwt")
-    jwt_algorithm: str = os.getenv("JWT_ALGORITHM", "HS256")
+    secret_key: str = (os.getenv("SECRET_KEY") or "").strip() or "kisan_setu_secret_key_2026_super_secure_jwt"
+    jwt_algorithm: str = (os.getenv("JWT_ALGORITHM") or "").strip() or "HS256"
     access_token_expire_minutes: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES") or "1440") # 24 hours
     cors_origins: str = os.getenv("CORS_ORIGINS", "*")
     
