@@ -85,6 +85,7 @@ app.include_router(price_prediction.router)
 app.include_router(logistics.router)
 
 @app.get("/api/health")
+@app.get("/health", include_in_schema=False)
 def health_check():
     """System health check and ML status."""
     return {
@@ -94,6 +95,17 @@ def health_check():
         "active_model": predictor.metrics.get("best_model", "RandomForest"),
         "total_historical_records": predictor.metrics.get("total_records", 48084),
         "has_google_maps_key": bool(settings.google_maps_api_key and len(settings.google_maps_api_key) > 5)
+    }
+
+@app.get("/api", include_in_schema=False)
+def api_root_info():
+    """API overview and health links."""
+    return {
+        "service": "Kisan Setu API",
+        "status": "online",
+        "version": app.version,
+        "docs": "/docs",
+        "health": "/api/health"
     }
 
 @app.post("/api/reset-demo-data")
