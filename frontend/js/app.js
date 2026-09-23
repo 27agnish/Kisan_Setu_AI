@@ -101,8 +101,166 @@
     return STITCH_PRODUCE_IMAGES[c] || 'assets/produce/wheat.jpg';
   }
 
+  // =========================================================================
+  // MULTILINGUAL INTERNATIONALIZATION (i18n) ENGINE
+  // Supports English ('en'), Bengali ('bn'), and Hindi ('hi')
+  // =========================================================================
+  let currentLanguage = 'en';
+  try {
+    currentLanguage = localStorage.getItem('kisan_lang') || 'en';
+  } catch (e) {
+    currentLanguage = 'en';
+  }
+
+  function getNestedTranslation(obj, path) {
+    if (!obj || !path) return null;
+    return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : null), obj);
+  }
+
+  function t(key, fallback = '') {
+    const dict = (typeof translations !== 'undefined' && translations[currentLanguage]) ? translations[currentLanguage] : (typeof translations !== 'undefined' ? translations['en'] : null);
+    if (!dict) return fallback || key;
+    const val = getNestedTranslation(dict, key);
+    return val !== null && val !== undefined ? val : (fallback || key);
+  }
+
+  function setLanguage(lang, notify = true) {
+    const validLangs = ['en', 'bn', 'hi'];
+    if (!validLangs.includes(lang)) lang = 'en';
+
+    currentLanguage = lang;
+    try {
+      localStorage.setItem('kisan_lang', lang);
+    } catch (e) {
+      console.warn('localStorage access denied for kisan_lang', e);
+    }
+
+    // Set HTML lang attribute
+    document.documentElement.lang = lang;
+
+    const dict = (typeof translations !== 'undefined' && translations[lang]) ? translations[lang] : {};
+    const langName = dict.lang_name || (lang === 'bn' ? 'বাংলা' : (lang === 'hi' ? 'हिंदी' : 'English'));
+
+    // Update label text in all language buttons
+    document.querySelectorAll('.lang-label-text').forEach(el => {
+      el.textContent = langName;
+    });
+
+    // Update active highlight and checkmarks in all dropdown menus
+    document.querySelectorAll('.lang-opt-item').forEach(item => {
+      const itemLang = item.getAttribute('data-lang');
+      const checkEl = item.querySelector('.lang-check');
+      if (itemLang === lang) {
+        item.classList.add('active');
+        if (checkEl) checkEl.style.display = 'inline-block';
+      } else {
+        item.classList.remove('active');
+        if (checkEl) checkEl.style.display = 'none';
+      }
+    });
+
+    // Update all text nodes with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const translated = getNestedTranslation(dict, key);
+      if (translated !== null && translated !== undefined) {
+        if (key.endsWith('_html')) {
+          el.innerHTML = translated;
+        } else {
+          el.textContent = translated;
+        }
+      }
+    });
+
+    // Update input placeholders with data-i18n-placeholder attribute
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      const translated = getNestedTranslation(dict, key);
+      if (translated !== null && translated !== undefined) {
+        el.placeholder = translated;
+      }
+    });
+
+    // Update tooltips and titles with data-i18n-title attribute
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      const key = el.getAttribute('data-i18n-title');
+      const translated = getNestedTranslation(dict, key);
+      if (translated !== null && translated !== undefined) {
+        el.title = translated;
+      }
+    });
+
+    // Close any open dropdown menus
+    closeAllLanguageDropdowns();
+
+    // Optional toast notification on user selection
+    if (notify) {
+      const toastMsg = dict.toasts && dict.toasts.lang_changed 
+        ? dict.toasts.lang_changed 
+        : (lang === 'bn' ? 'ভাষা পরিবর্তিত হয়েছে: বাংলা' : (lang === 'hi' ? 'भाषा बदली गई: हिंदी' : 'Language set to English'));
+      showToast(toastMsg);
+    }
+  }
+
+  function selectLanguage(lang) {
+    setLanguage(lang, true);
+  }
+
+  function toggleLanguageDropdown(context, event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const menuId = context === 'app' ? 'app-lang-menu' : 'landing-lang-menu';
+    const btnId = context === 'app' ? 'app-lang-btn' : 'landing-lang-btn';
+    const menu = document.getElementById(menuId);
+    const btn = document.getElementById(btnId);
+    if (!menu) return;
+
+    const isCurrentlyOpen = menu.classList.contains('show');
+    closeAllLanguageDropdowns();
+
+    if (!isCurrentlyOpen) {
+      menu.classList.add('show');
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  function closeAllLanguageDropdowns() {
+    document.querySelectorAll('.lang-dropdown-menu').forEach(menu => {
+      menu.classList.remove('show');
+    });
+    document.querySelectorAll('#landing-lang-btn, #app-lang-btn').forEach(btn => {
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  // Dismiss dropdown when clicking anywhere outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#landing-lang-container') && !e.target.closest('#app-lang-container')) {
+      closeAllLanguageDropdowns();
+    }
+  });
+
+  // Close dropdown on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeAllLanguageDropdowns();
+    }
+  });
+
+  // Expose functions globally for inline HTML onclick attributes
+  window.setLanguage = setLanguage;
+  window.selectLanguage = selectLanguage;
+  window.toggleLanguageDropdown = toggleLanguageDropdown;
+  window.closeAllLanguageDropdowns = closeAllLanguageDropdowns;
+  window.t = t;
+
   // Initialize application on load
   document.addEventListener('DOMContentLoaded', async () => {
+    // 0. Initialize selected language
+    setLanguage(currentLanguage, false);
+
     // Set today's date
     const today = new Date().toISOString().split('T')[0];
     const hInput = document.getElementById('f-harvest-date');
