@@ -23,7 +23,7 @@
   body{
     background:var(--creme);
     color:var(--soil);
-    font-family:'Inter', 'Noto Sans Bengali', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family:'Inter', 'Noto Sans Bengali', 'Noto Sans Devanagari', 'Noto Sans Oriya', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
@@ -936,5 +936,23 @@ body {
   font-weight: 700;
 }
 
-
-
+/* ── Interactive Review Star Buttons ── */
+.review-star-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: transform 0.15s ease, color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+.review-star-btn:hover {
+  transform: scale(1.15);
+}
+.review-star-btn:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+}

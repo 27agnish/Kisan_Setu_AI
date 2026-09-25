@@ -125,7 +125,7 @@
   }
 
   function setLanguage(lang, notify = true) {
-    const validLangs = ['en', 'bn', 'hi'];
+    const validLangs = ['en', 'bn', 'hi', 'or', 'mr'];
     if (!validLangs.includes(lang)) lang = 'en';
 
     currentLanguage = lang;
@@ -139,7 +139,14 @@
     document.documentElement.lang = lang;
 
     const dict = (typeof translations !== 'undefined' && translations[lang]) ? translations[lang] : {};
-    const langName = dict.lang_name || (lang === 'bn' ? 'বাংলা' : (lang === 'hi' ? 'हिंदी' : 'English'));
+    const langNames = {
+      'en': 'English',
+      'bn': 'বাংলা',
+      'hi': 'हिंदी',
+      'or': 'ଓଡ଼ିଆ',
+      'mr': 'मराठी'
+    };
+    const langName = dict.lang_name || langNames[lang] || 'English';
 
     // Update label text in all language buttons
     document.querySelectorAll('.lang-label-text').forEach(el => {
@@ -190,14 +197,26 @@
       }
     });
 
+    // Re-render dynamic customer reviews list with updated language
+    if (typeof renderReviewsList === 'function') {
+      renderReviewsList();
+    }
+
     // Close any open dropdown menus
     closeAllLanguageDropdowns();
 
     // Optional toast notification on user selection
     if (notify) {
+      const defaultToastMap = {
+        'en': 'Language set to English',
+        'bn': 'ভাষা পরিবর্তিত হয়েছে: বাংলা',
+        'hi': 'भाषा बदली गई: हिंदी',
+        'or': 'ଭାଷା ପରିବର୍ତ୍ତିତ ହୋଇଛି: ଓଡ଼ିଆ',
+        'mr': 'भाषा बदलली: मराठी'
+      };
       const toastMsg = dict.toasts && dict.toasts.lang_changed 
         ? dict.toasts.lang_changed 
-        : (lang === 'bn' ? 'ভাষা পরিবর্তিত হয়েছে: বাংলা' : (lang === 'hi' ? 'भाषा बदली गई: हिंदी' : 'Language set to English'));
+        : (defaultToastMap[lang] || 'Language updated');
       showToast(toastMsg);
     }
   }
@@ -240,14 +259,336 @@
     if (!e.target.closest('#landing-lang-container') && !e.target.closest('#app-lang-container')) {
       closeAllLanguageDropdowns();
     }
+    const reviewModal = document.getElementById('review-modal');
+    if (reviewModal && e.target === reviewModal) {
+      closeReviewModal();
+    }
   });
 
-  // Close dropdown on Escape key
+  // Close dropdown or review modal on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeAllLanguageDropdowns();
+      closeReviewModal();
     }
   });
+
+  // ========================================================
+  // CUSTOMER REVIEWS MODULE (DEMO SAMPLES & LOCAL PERSISTENCE)
+  //
+  // NOTE ON REVIEW STORAGE:
+  // Submitted reviews are stored in browser localStorage ('kisan_reviews').
+  // To connect to a real backend API in the future:
+  // 1. In `saveUserReviewToStorage`, replace localStorage.setItem with:
+  //    await fetch('/api/reviews', { method: 'POST', body: JSON.stringify(review) })
+  // 2. In `getStoredUserReviews`, replace localStorage.getItem with:
+  //    await fetch('/api/reviews').then(res => res.json())
+  // No fake backend API was introduced.
+  // ========================================================
+
+  const DEFAULT_DEMO_REVIEWS = [
+    {
+      id: "demo-rev-farmer-1",
+      name: "Rajeshwar Shinde",
+      role: "Farmer",
+      roleKey: "reviews.role_farmer",
+      rating: 5,
+      date: "2026-09-18",
+      comment: "The AI spot pricing gave me 18% higher return than the local yard. Digital escrow settlement directly to my bank account with zero middleman deductions.",
+      avatarBg: "#137547",
+      initials: "RS",
+      isDemo: true
+    },
+    {
+      id: "demo-rev-buyer-1",
+      name: "Sunil Agri Foods Ltd.",
+      role: "Buyer",
+      roleKey: "reviews.role_buyer",
+      rating: 5,
+      date: "2026-09-20",
+      comment: "Procured 12 metric tonnes of Sharbati wheat directly from verified producers with NABL lab assay sheets. Pooled freight tracking kept logistics completely predictable.",
+      avatarBg: "#0B4F30",
+      initials: "SA",
+      isDemo: true
+    },
+    {
+      id: "demo-rev-fpo-1",
+      name: "Utkal Krushi Producer Co.",
+      role: "FPO",
+      roleKey: "reviews.role_fpo",
+      rating: 4,
+      date: "2026-09-22",
+      comment: "Consolidated lot listings helped our 140 member farmers secure bulk contracts with corporate buyers. Escrow release happened immediately upon warehouse delivery confirmation.",
+      avatarBg: "#D97706",
+      initials: "UK",
+      isDemo: true
+    }
+  ];
+
+  const REVIEWS_STORAGE_KEY = "kisan_reviews";
+  let currentReviewRating = 5;
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function getStoredUserReviews() {
+    try {
+      const raw = localStorage.getItem(REVIEWS_STORAGE_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (err) {
+      console.warn("Unable to load reviews from localStorage:", err);
+      return [];
+    }
+  }
+
+  function saveUserReviewToStorage(review) {
+    try {
+      const existing = getStoredUserReviews();
+      existing.unshift(review);
+      localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(existing));
+      return true;
+    } catch (err) {
+      console.error("Unable to save review to localStorage:", err);
+      return false;
+    }
+  }
+
+  function getAllReviews() {
+    const userReviews = getStoredUserReviews();
+    return [...userReviews, ...DEFAULT_DEMO_REVIEWS];
+  }
+
+  function renderReviewsList() {
+    const container = document.getElementById("reviews-list-container");
+    if (!container) return;
+
+    const reviews = getAllReviews();
+    if (reviews.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-full text-center py-12 text-slate-500">
+          <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">rate_review</span>
+          <p data-i18n="reviews.empty_msg">${t('reviews.empty_msg', 'No reviews yet. Be the first to share your experience!')}</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = reviews.map(rev => {
+      const initials = rev.initials || rev.name.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'KS';
+      const roleText = rev.roleKey ? t(rev.roleKey, rev.role) : (
+        rev.role === 'Farmer' ? t('reviews.role_farmer', 'Farmer') :
+        rev.role === 'Buyer' ? t('reviews.role_buyer', 'Buyer') :
+        rev.role === 'FPO' ? t('reviews.role_fpo', 'FPO') :
+        t('reviews.role_other', 'Other')
+      );
+
+      let starsHtml = '';
+      for (let i = 1; i <= 5; i++) {
+        if (i <= rev.rating) {
+          starsHtml += '<span class="material-symbols-outlined text-[20px] text-amber-400" style="font-variation-settings: \'FILL\' 1;">star</span>';
+        } else {
+          starsHtml += '<span class="material-symbols-outlined text-[20px] text-slate-200">star</span>';
+        }
+      }
+
+      const badgeHtml = rev.isDemo ? `
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200" data-i18n="reviews.demo_badge">
+          ${t('reviews.demo_badge', 'Sample Review')}
+        </span>
+      ` : `
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-[#137547] border border-emerald-200">
+          Verified User ✓
+        </span>
+      `;
+
+      const roleColorClass = rev.role === 'Farmer' 
+        ? 'bg-emerald-50 text-[#065F46] border-emerald-200' 
+        : (rev.role === 'Buyer' 
+            ? 'bg-blue-50 text-[#1E40AF] border-blue-200' 
+            : (rev.role === 'FPO' 
+                ? 'bg-amber-50 text-[#92400E] border-amber-200' 
+                : 'bg-slate-50 text-slate-700 border-slate-200'));
+
+      return `
+        <article class="bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-all duration-200">
+          <div>
+            <div class="flex items-start justify-between gap-3 mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white text-sm shadow-inner flex-shrink-0" style="background-color: ${rev.avatarBg || '#137547'};">
+                  ${initials}
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-900 text-base leading-tight">${escapeHtml(rev.name)}</h3>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold border ${roleColorClass}">
+                      ${roleText}
+                    </span>
+                    <span class="text-xs text-slate-400 font-medium">${rev.date || ''}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-shrink-0">${badgeHtml}</div>
+            </div>
+            <div class="flex items-center gap-0.5 mb-3" aria-label="${rev.rating} out of 5 stars">
+              ${starsHtml}
+              <span class="text-xs font-bold text-slate-700 ml-1.5">${rev.rating}.0</span>
+            </div>
+            <p class="text-slate-600 text-sm leading-relaxed">${escapeHtml(rev.comment)}</p>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  function openReviewModal() {
+    const modal = document.getElementById('review-modal');
+    if (!modal) return;
+
+    const errBox = document.getElementById('review-form-error');
+    if (errBox) {
+      errBox.style.display = 'none';
+      errBox.textContent = '';
+    }
+
+    setReviewRating(5);
+    modal.classList.add('open');
+    modal.style.display = 'flex';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    const nameInput = document.getElementById('review-name-input');
+    if (nameInput) {
+      setTimeout(() => nameInput.focus(), 60);
+    }
+  }
+
+  function closeReviewModal() {
+    const modal = document.getElementById('review-modal');
+    if (!modal) return;
+
+    modal.classList.remove('open');
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
+
+    const form = document.getElementById('review-form');
+    if (form) form.reset();
+    setReviewRating(5);
+  }
+
+  function setReviewRating(stars) {
+    stars = parseInt(stars, 10);
+    if (isNaN(stars) || stars < 1) stars = 1;
+    if (stars > 5) stars = 5;
+    currentReviewRating = stars;
+
+    const hiddenInput = document.getElementById('review-rating-input');
+    if (hiddenInput) hiddenInput.value = String(stars);
+
+    const starButtons = document.querySelectorAll('.review-star-btn');
+    starButtons.forEach(btn => {
+      const s = parseInt(btn.getAttribute('data-star'), 10);
+      const icon = btn.querySelector('.material-symbols-outlined');
+      if (s <= stars) {
+        btn.classList.add('text-amber-400');
+        btn.classList.remove('text-slate-200');
+        if (icon) {
+          icon.style.fontVariationSettings = "'FILL' 1";
+          icon.classList.add('text-amber-400');
+          icon.classList.remove('text-slate-200');
+        }
+      } else {
+        btn.classList.remove('text-amber-400');
+        btn.classList.add('text-slate-200');
+        if (icon) {
+          icon.style.fontVariationSettings = "'FILL' 0";
+          icon.classList.remove('text-amber-400');
+          icon.classList.add('text-slate-200');
+        }
+      }
+    });
+
+    const ratingHint = document.getElementById('review-rating-hint');
+    if (ratingHint) {
+      ratingHint.textContent = `${stars} / 5 ${t('reviews.rating_label', 'Rating').replace('*', '').trim()}`;
+    }
+  }
+
+  function handleReviewSubmit(e) {
+    if (e) e.preventDefault();
+
+    const nameInput = document.getElementById('review-name-input');
+    const roleSelect = document.getElementById('review-role-select');
+    const textInput = document.getElementById('review-text-input');
+    const errBox = document.getElementById('review-form-error');
+
+    const nameVal = nameInput ? nameInput.value.trim() : '';
+    const roleVal = roleSelect ? roleSelect.value.trim() : '';
+    const commentVal = textInput ? textInput.value.trim() : '';
+    const ratingVal = currentReviewRating || 5;
+
+    function showError(msg) {
+      if (errBox) {
+        errBox.textContent = msg;
+        errBox.style.display = 'block';
+      } else {
+        alert(msg);
+      }
+    }
+
+    if (!nameVal || nameVal.length < 2) {
+      showError(t('reviews.val_name', 'Please enter your name (minimum 2 characters).'));
+      if (nameInput) nameInput.focus();
+      return false;
+    }
+
+    if (!roleVal || !['Farmer', 'Buyer', 'FPO', 'Other'].includes(roleVal)) {
+      showError(t('reviews.val_role', 'Please select your role.'));
+      if (roleSelect) roleSelect.focus();
+      return false;
+    }
+
+    if (!ratingVal || ratingVal < 1 || ratingVal > 5) {
+      showError(t('reviews.val_rating', 'Please select a star rating (1 to 5 stars).'));
+      return false;
+    }
+
+    if (!commentVal || commentVal.length < 10) {
+      showError(t('reviews.val_text', 'Please write a review (minimum 10 characters).'));
+      if (textInput) textInput.focus();
+      return false;
+    }
+
+    const newReview = {
+      id: "rev-user-" + Date.now(),
+      name: nameVal,
+      role: roleVal,
+      roleKey: roleVal === 'Farmer' ? 'reviews.role_farmer' : (roleVal === 'Buyer' ? 'reviews.role_buyer' : (roleVal === 'FPO' ? 'reviews.role_fpo' : 'reviews.role_other')),
+      rating: ratingVal,
+      date: new Date().toISOString().split('T')[0],
+      comment: commentVal,
+      avatarBg: roleVal === 'Farmer' ? '#137547' : (roleVal === 'Buyer' ? '#0B4F30' : (roleVal === 'FPO' ? '#D97706' : '#2563EB')),
+      isDemo: false
+    };
+
+    saveUserReviewToStorage(newReview);
+    renderReviewsList();
+    closeReviewModal();
+
+    const successToast = t('reviews.success_msg', 'Review submitted successfully! Thank you for your feedback.');
+    showToast(successToast);
+
+    return false;
+  }
 
   // Expose functions globally for inline HTML onclick attributes
   window.setLanguage = setLanguage;
@@ -255,11 +596,19 @@
   window.toggleLanguageDropdown = toggleLanguageDropdown;
   window.closeAllLanguageDropdowns = closeAllLanguageDropdowns;
   window.t = t;
+  window.openReviewModal = openReviewModal;
+  window.closeReviewModal = closeReviewModal;
+  window.setReviewRating = setReviewRating;
+  window.handleReviewSubmit = handleReviewSubmit;
+  window.renderReviewsList = renderReviewsList;
 
   // Initialize application on load
   document.addEventListener('DOMContentLoaded', async () => {
     // 0. Initialize selected language
     setLanguage(currentLanguage, false);
+
+    // Initialize reviews
+    renderReviewsList();
 
     // Set today's date
     const today = new Date().toISOString().split('T')[0];
